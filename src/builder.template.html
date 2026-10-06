@@ -1,0 +1,35 @@
+<section id="builder" class="guide-section" data-num="0">
+<h1>Snippet builder</h1>
+<p class="subtitle">Fill in the form to get a ready-to-run Python script for scoring one variant. Nothing is sent anywhere — the code is generated in your browser. Your API key is <strong>never</strong> requested: the script reads <code>ALPHA_GENOME_API_KEY</code> from the environment (see <a href="index.html#4-installation-and-api-key">§4</a>).</p>
+<aside class="callout callout-warning" role="note"><p class="callout-title">Coordinates</p><p>The variant position is <strong>1-based</strong> (copy <code>POS</code> straight from a VCF) and must be on <strong>hg38</strong>. Check that <code>REF</code> matches hg38 at that position. See <a href="index.html#51-coordinates-the-1-source-of-bugs">§5.1</a>.</p></aside>
+<form id="builder-form" class="card builder" novalidate autocomplete="off">
+<div class="form-grid">
+<div class="field"><label for="f-chrom">Chromosome</label><input id="f-chrom" list="chrom-list" value="chr22" inputmode="text" aria-describedby="e-chrom"><datalist id="chrom-list"></datalist><span class="hint">chr1–chr22, chrX, chrY</span><span class="err" id="e-chrom" aria-live="polite"></span></div>
+<div class="field"><label for="f-pos">Position (1-based)</label><input id="f-pos" value="36201698" inputmode="numeric" aria-describedby="e-pos"><span class="hint">Positive integer, VCF-style</span><span class="err" id="e-pos" aria-live="polite"></span></div>
+<div class="field"><label for="f-ref">REF</label><input id="f-ref" value="A" aria-describedby="e-ref" spellcheck="false"><span class="hint">Letters A, C, G, T only</span><span class="err" id="e-ref" aria-live="polite"></span></div>
+<div class="field"><label for="f-alt">ALT</label><input id="f-alt" value="C" aria-describedby="e-alt" spellcheck="false"><span class="hint">Letters A, C, G, T only</span><span class="err" id="e-alt" aria-live="polite"></span></div>
+<div class="field"><label for="f-len">Sequence length</label>
+<select id="f-len"><option value="SEQUENCE_LENGTH_16KB">16 KB</option><option value="SEQUENCE_LENGTH_100KB">100 KB</option><option value="SEQUENCE_LENGTH_500KB">500 KB</option><option value="SEQUENCE_LENGTH_1MB" selected>1 MB (recommended)</option></select>
+<span class="hint">16 KB for fast exploration; 1 MB gives the best results (§5.2)</span></div>
+<div class="field"><label for="f-onto">Ontology term(s)</label><input id="f-onto" value="UBERON:0002107" aria-describedby="e-onto" spellcheck="false" placeholder="e.g. UBERON:0002107"><div class="presets" role="group" aria-label="Ontology presets">
+<button type="button" data-onto="UBERON:0002107">Liver</button><button type="button" data-onto="UBERON:0002048">Lung</button><button type="button" data-onto="CL:0000084">T cell</button><button type="button" data-onto="EFO:0002067">K562</button></div>
+<span class="hint">Comma-separate several; leave empty for all tracks (§5.3)</span><span class="err" id="e-onto" aria-live="polite"></span></div>
+</div>
+<fieldset class="field"><legend class="lbl">Scorers</legend>
+<div class="scorers" id="scorers">
+<label><input type="checkbox" value="RNA_SEQ" checked> RNA_SEQ</label>
+<label><input type="checkbox" value="DNASE"> DNASE</label>
+<label><input type="checkbox" value="ATAC"> ATAC</label>
+<label><input type="checkbox" value="CHIP_HISTONE"> CHIP_HISTONE</label>
+<label><input type="checkbox" value="CAGE"> CAGE</label>
+<label><input type="checkbox" value="SPLICE_SITES"> SPLICE_SITES</label>
+<label><input type="checkbox" value="SPLICE_SITE_USAGE"> SPLICE_SITE_USAGE</label>
+<label><input type="checkbox" value="SPLICE_JUNCTIONS"> SPLICE_JUNCTIONS</label>
+</div><span class="err" id="e-scorers" aria-live="polite"></span></fieldset>
+</form>
+<div class="builder">
+<div class="btn-row"><button type="button" class="btn btn-primary" id="copy-snippet">Copy code</button></div>
+<p id="snippet-status" role="status" aria-live="polite"></p>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span></div><pre tabindex="0"><code id="snippet-output" class="language-python"></code></pre></div>
+</div>
+</section>

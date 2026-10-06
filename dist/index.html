@@ -1,0 +1,1081 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>AlphaGenome — A Practical Technical Guide — AlphaGenome Guide</title>
+<meta name="description" content="Unofficial internal guide to AlphaGenome: installation, variant scoring, splicing analysis and troubleshooting.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script>try{var t=localStorage.getItem('ag-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="index">
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+<button type="button" class="icon-btn menu-btn" id="menu-btn" aria-label="Toggle navigation" aria-expanded="false" aria-controls="sidebar"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+<a class="brand" href="#home">AlphaGenome Guide</a>
+<div class="search" role="search">
+<input id="search" type="search" placeholder="Search the guide  ( / )" aria-label="Search the guide" role="combobox" aria-expanded="false" aria-controls="search-results" aria-autocomplete="list" autocomplete="off" spellcheck="false">
+<ul id="search-results" role="listbox" aria-label="Search results" hidden></ul>
+</div>
+<button type="button" class="icon-btn" id="theme-btn" aria-label="Toggle light/dark theme" title="Toggle theme"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2a8 8 0 1 0 8 8 6 6 0 0 1-8-8z" fill="currentColor"/></svg></button>
+</header>
+<div class="layout">
+<nav class="sidebar" id="sidebar" aria-label="Guide sections"><ul><li><a href="#home" data-section="home">Home</a></li><li><a href="#1-what-alphagenome-is-and-isnt" data-section="1-what-alphagenome-is-and-isnt">1. What AlphaGenome is (and isn't)</a></li><li><a href="#2-alphagenome-vs-alphafold-vs-alphamissense" data-section="2-alphagenome-vs-alphafold-vs-alphamissense">2. AlphaGenome vs AlphaFold vs AlphaMissense</a></li><li><a href="#3-ways-to-access-the-model" data-section="3-ways-to-access-the-model">3. Ways to access the model</a></li><li><a href="#4-installation-and-api-key" data-section="4-installation-and-api-key">4. Installation and API key</a></li><li><a href="#5-core-concepts-you-must-get-right" data-section="5-core-concepts-you-must-get-right">5. Core concepts you must get right</a></li><li><a href="#6-recipes-code" data-section="6-recipes-code">6. Recipes (code)</a></li><li><a href="#7-use-case-catalogue" data-section="7-use-case-catalogue">7. Use-case catalogue</a></li><li><a href="#8-interpreting-scores--best-practices" data-section="8-interpreting-scores--best-practices">8. Interpreting scores — best practices</a></li><li><a href="#9-limitations" data-section="9-limitations">9. Limitations</a></li><li><a href="#10-troubleshooting-and-quotas" data-section="10-troubleshooting-and-quotas">10. Troubleshooting and quotas</a></li><li><a href="#11-resources-and-citation" data-section="11-resources-and-citation">11. Resources and citation</a></li>
+<li class="nav-sep"><a href="snippet-builder.html" data-page="builder">Snippet builder</a></li></ul></nav>
+<div class="scrim" id="scrim" hidden></div>
+<div class="content-wrap">
+<main id="main" class="content" tabindex="-1">
+<article>
+<section id="home" class="guide-section" data-num="0">
+<h1>AlphaGenome — A Practical Technical Guide</h1>
+<p class="subtitle"><em>From installation to variant scoring, splicing analysis, batch pipelines and the Atlas.</em></p>
+<h2 class="plain-h">What is AlphaGenome</h2>
+<p>AlphaGenome (Google DeepMind; Avsec et al., <em>Nature</em> 2026) is a sequence-to-function deep learning model. It takes <strong>up to 1 Mb of DNA sequence</strong> and predicts thousands of <strong>functional genomic tracks</strong>, mostly at <strong>single-base resolution</strong>, for human (hg38) and mouse (mm10).</p>
+
+<div class="cards">
+<a class="card link-card" href="#4-installation-and-api-key"><span class="card-kicker">1</span><strong>Install</strong><span>Python ≥ 3.10 · pip, conda, uv, source or Colab · API key</span></a>
+<a class="card link-card" href="#56-client-methods-at-a-glance"><span class="card-kicker">2</span><strong>Predict tracks</strong><span><code>predict_sequence</code>, <code>predict_interval</code>, <code>predict_variant</code></span></a>
+<a class="card link-card" href="snippet-builder.html"><span class="card-kicker">3</span><strong>Score variants</strong><span>Scalar ALT-vs-REF effect scores — try the snippet builder</span></a>
+<a class="card link-card" href="#21-how-to-combine-them-variant-to-structure"><span class="card-kicker">4</span><strong>Splicing</strong><span><code>SPLICE_SITES</code>, <code>SPLICE_SITE_USAGE</code>, <code>SPLICE_JUNCTIONS</code></span></a>
+</div>
+<div class="card helper" id="model-helper"><h3 class="plain-h">Which DeepMind model do I need?</h3>
+<fieldset><legend>I want to know…</legend>
+<label class="opt"><input type="radio" name="model" value="0"><span>What does this DNA <em>do</em> in this cell type, and what changes when I mutate it?</span></label>
+<label class="opt"><input type="radio" name="model" value="1"><span>What 3D structure does this protein (or complex) adopt?</span></label>
+<label class="opt"><input type="radio" name="model" value="2"><span>Is this amino-acid substitution likely pathogenic?</span></label>
+<label class="opt"><input type="radio" name="model" value="3"><span>Instant lookup of precomputed scores for all ~9 billion possible human SNVs; AVI score</span></label>
+</fieldset>
+<div id="helper-result" aria-live="polite">
+<div class="result" data-i="0" hidden><p class="result-name">→ AlphaGenome</p><dl><dt>Input</dt><dd>DNA sequence, 16 kb–1 Mb</dd><dt>Output</dt><dd>Expression, splicing, accessibility, histone marks, TF binding, 3D contacts; variant deltas</dd><dt>Access</dt><dd>Free API (non-commercial), Atlas portal, weights for local use</dd></dl><p><a href="#2-alphagenome-vs-alphafold-vs-alphamissense">Read more in this guide</a></p></div>
+<div class="result" data-i="1" hidden><p class="result-name">→ AlphaFold</p><dl><dt>Input</dt><dd>Protein sequence(s); AF3 also takes DNA/RNA, ligands, ions and PTMs</dd><dt>Output</dt><dd>Atomic coordinates + confidence (pLDDT, PAE, ipTM)</dd><dt>Access</dt><dd>AlphaFold Server (AF3, non-commercial), AF3 code + weights on academic request, AlphaFold DB</dd></dl><p><a href="#2-alphagenome-vs-alphafold-vs-alphamissense">Read more in this guide</a></p></div>
+<div class="result" data-i="2" hidden><p class="result-name">→ AlphaMissense</p><dl><dt>Input</dt><dd>Missense variant (protein position + AA change)</dd><dt>Output</dt><dd>Pathogenicity score from 0 to 1</dd><dt>Access</dt><dd>Precomputed tables (≈71M variants), AlphaFold DB annotations</dd></dl><p><a href="#2-alphagenome-vs-alphafold-vs-alphamissense">Read more in this guide</a></p></div>
+<div class="result" data-i="3" hidden><p class="result-name">→ AlphaGenome Atlas</p><dl><dt>Route</dt><dd><strong>AlphaGenome Atlas</strong> (web portal + <code>alphagenome.atlas</code> API)</dd><dt>Cost / licence</dt><dd>Free for academic research</dd><dt>Hardware</dt><dd>None</dd></dl><p><a href="#3-ways-to-access-the-model">Read more in this guide</a></p></div>
+</div></div>
+<p class="updated"><em>Last checked against the <code>alphagenome</code> Python package v0.9.x and alphagenomedocs.com, October 2026.</em> · Site built 2026-10-06.</p>
+</section>
+<section id="1-what-alphagenome-is-and-isnt" class="guide-section" data-num="1">
+<h2><a class="anchor" href="#1-what-alphagenome-is-and-isnt" aria-label="Link to this heading">#</a>1. What AlphaGenome is (and isn&#39;t)</h2>
+<p>AlphaGenome (Google DeepMind; Avsec et al., <em>Nature</em> 2026) is a sequence-to-function deep learning model. It takes <strong>up to 1 Mb of DNA sequence</strong> and predicts thousands of <strong>functional genomic tracks</strong>, mostly at <strong>single-base resolution</strong>, for human (hg38) and mouse (mm10).</p>
+<p><strong>Input:</strong> one DNA sequence (or genomic interval) of 16 kb, ~100 kb, ~500 kb or 1 Mb.
+<strong>Output:</strong> predicted experimental signals across hundreds of cell types and tissues, plus variant-effect scores (ALT − REF).</p>
+<p><strong>It does NOT:</strong> predict protein structure, protein function, or patient-level phenotypes. It is not diploid-aware and is not a clinical diagnostic tool.</p>
+<h3 id="11-output-types-human-model"><a class="anchor" href="#11-output-types-human-model" aria-label="Link to this heading">#</a>1.1 Output types (human model)</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table data-sortable><thead><tr>
+<th><code>OutputType</code></th>
+<th>What it predicts</th>
+<th>Resolution</th>
+<th>Human tracks</th>
+</tr>
+</thead><tbody><tr>
+<td><code>RNA_SEQ</code></td>
+<td>Gene expression (polyA+ and total RNA; some stranded)</td>
+<td>1 bp</td>
+<td>667</td>
+</tr>
+<tr>
+<td><code>CAGE</code></td>
+<td>TSS activity (Cap Analysis of Gene Expression)</td>
+<td>1 bp</td>
+<td>546</td>
+</tr>
+<tr>
+<td><code>PROCAP</code></td>
+<td>TSS activity (PRO-cap)</td>
+<td>1 bp</td>
+<td>12</td>
+</tr>
+<tr>
+<td><code>DNASE</code></td>
+<td>Chromatin accessibility (DNase-seq)</td>
+<td>1 bp</td>
+<td>305</td>
+</tr>
+<tr>
+<td><code>ATAC</code></td>
+<td>Chromatin accessibility (ATAC-seq)</td>
+<td>1 bp</td>
+<td>167</td>
+</tr>
+<tr>
+<td><code>CHIP_HISTONE</code></td>
+<td>24 histone marks (H3K27ac, H3K4me3, …)</td>
+<td>128 bp</td>
+<td>1,116</td>
+</tr>
+<tr>
+<td><code>CHIP_TF</code></td>
+<td>Binding of 43 transcription factors</td>
+<td>128 bp</td>
+<td>1,617</td>
+</tr>
+<tr>
+<td><code>SPLICE_SITES</code></td>
+<td>Donor/acceptor probability per base</td>
+<td>1 bp</td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>SPLICE_SITE_USAGE</code></td>
+<td>Fraction of transcripts using each site</td>
+<td>1 bp</td>
+<td>734</td>
+</tr>
+<tr>
+<td><code>SPLICE_JUNCTIONS</code></td>
+<td>Junction read counts (≤512 donors × 512 acceptors per strand)</td>
+<td>1 bp</td>
+<td>734</td>
+</tr>
+<tr>
+<td><code>CONTACT_MAPS</code></td>
+<td>3D contacts (Hi-C/Micro-C, distance-normalised)</td>
+<td>2,048 bp</td>
+<td>28</td>
+</tr>
+</tbody></table></div>
+<p>Track counts differ for mouse. Query them with <code>dna_model.output_metadata(...)</code> (see §6.1).</p>
+<h3 id="12-model-versions"><a class="anchor" href="#12-model-versions" aria-label="Link to this heading">#</a>1.2 Model versions</h3>
+<ul>
+<li><code>ModelVersion.ALL_FOLDS</code> (the default): a distilled student model trained from an ensemble of teachers. Use this one.</li>
+<li><code>FOLD_0</code> … <code>FOLD_3</code>: each has one quarter of the genome held out. Use these only for benchmarking on held-out regions.</li>
+</ul>
+</section>
+
+<section id="2-alphagenome-vs-alphafold-vs-alphamissense" class="guide-section" data-num="2">
+<h2><a class="anchor" href="#2-alphagenome-vs-alphafold-vs-alphamissense" aria-label="Link to this heading">#</a>2. AlphaGenome vs AlphaFold vs AlphaMissense</h2>
+<p>These three DeepMind models answer different questions. People often mix them up.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th></th>
+<th><strong>AlphaGenome</strong></th>
+<th><strong>AlphaFold (2/3)</strong></th>
+<th><strong>AlphaMissense</strong></th>
+</tr>
+</thead><tbody><tr>
+<td>Question answered</td>
+<td>What does this DNA <em>do</em> in this cell type, and what changes when I mutate it?</td>
+<td>What 3D structure does this protein (or complex) adopt?</td>
+<td>Is this amino-acid substitution likely pathogenic?</td>
+</tr>
+<tr>
+<td>Input</td>
+<td>DNA sequence, 16 kb–1 Mb</td>
+<td>Protein sequence(s); AF3 also takes DNA/RNA, ligands, ions and PTMs</td>
+<td>Missense variant (protein position + AA change)</td>
+</tr>
+<tr>
+<td>Output</td>
+<td>Expression, splicing, accessibility, histone marks, TF binding, 3D contacts; variant deltas</td>
+<td>Atomic coordinates + confidence (pLDDT, PAE, ipTM)</td>
+<td>Pathogenicity score from 0 to 1</td>
+</tr>
+<tr>
+<td>Genome scope</td>
+<td>Coding + <strong>non-coding</strong> (~98% of genome)</td>
+<td>Protein-coding only</td>
+<td>Missense only</td>
+</tr>
+<tr>
+<td>Access</td>
+<td>Free API (non-commercial), Atlas portal, weights for local use</td>
+<td>AlphaFold Server (AF3, non-commercial), AF3 code + weights on academic request, AlphaFold DB</td>
+<td>Precomputed tables (≈71M variants), AlphaFold DB annotations</td>
+</tr>
+</tbody></table></div>
+<h3 id="21-how-to-combine-them-variant-to-structure"><a class="anchor" href="#21-how-to-combine-them-variant-to-structure" aria-label="Link to this heading">#</a>2.1 How to combine them: variant to structure</h3>
+<p>A typical workflow for a variant near an exon:</p>
+<ol>
+<li><strong>AlphaGenome:</strong> score the variant for splicing (§6.6). Is a donor or acceptor lost, a cryptic site created, or an exon skipped?</li>
+<li><strong>AlphaGenome:</strong> inspect the predicted junctions (sashimi plot, PSI) to reconstruct the likely aberrant transcript.</li>
+<li><strong>Translate</strong> the aberrant transcript yourself (Biopython/EMBOSS). Does it keep the frame or create an in-frame deletion? Is there a premature stop codon (PTC)? A PTC that sits more than ~50–55 nt upstream of the last exon–exon junction usually triggers NMD.</li>
+<li><strong>AlphaFold (Server/AF3):</strong> for an in-frame isoform, predict the variant protein&#39;s structure. Compare it to the WT model in the AlphaFold DB (pLDDT, domain integrity, interfaces with partners).</li>
+<li><strong>AlphaMissense:</strong> if the variant is also missense, check its protein-level pathogenicity score.</li>
+<li><strong>AlphaGenome Atlas (AVI score):</strong> the AVI score already combines AlphaGenome&#39;s regulatory predictions with AlphaMissense into a single number for every possible SNV. Use it as a quick first pass.</li>
+</ol>
+<aside class="callout callout-tip" role="note"><p class="callout-title">Tip</p><p>Rule of thumb: AlphaGenome tells you <strong>whether and how the RNA changes</strong>. AlphaFold tells you <strong>what the resulting protein looks like</strong>.</p>
+</aside>
+</section>
+
+<section id="3-ways-to-access-the-model" class="guide-section" data-num="3">
+<h2><a class="anchor" href="#3-ways-to-access-the-model" aria-label="Link to this heading">#</a>3. Ways to access the model</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th>Route</th>
+<th>Best for</th>
+<th>Cost / licence</th>
+<th>Hardware</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>AlphaGenome API</strong> (<code>alphagenome</code> Python client)</td>
+<td>Most users; up to thousands of predictions</td>
+<td>Free, <strong>non-commercial</strong>; rate varies with demand</td>
+<td>Any laptop, or Colab</td>
+</tr>
+<tr>
+<td><strong>AlphaGenome Atlas</strong> (web portal + <code>alphagenome.atlas</code> API)</td>
+<td>Instant lookup of precomputed scores for all ~9 billion possible human SNVs; AVI score</td>
+<td>Free for academic research</td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>Local weights</strong> (<code>alphagenome_research</code>, JAX)</td>
+<td>More than ~1M predictions, offline/private data, custom heads</td>
+<td>Weights under non-commercial terms (Kaggle / Hugging Face)</td>
+<td>NVIDIA H100-class GPU for inference</td>
+</tr>
+<tr>
+<td><strong>Google Cloud</strong> (Model Garden / Agent Platform)</td>
+<td>Commercial use</td>
+<td>Paid</td>
+<td>Managed</td>
+</tr>
+</tbody></table></div>
+<p>The API is &quot;well suited for smaller to medium-scale analyses (1000s of predictions)&quot; and &quot;likely not suitable for … more than 1 million predictions&quot;. Above that scale, use local weights.</p>
+</section>
+
+<section id="4-installation-and-api-key" class="guide-section" data-num="4">
+<h2><a class="anchor" href="#4-installation-and-api-key" aria-label="Link to this heading">#</a>4. Installation and API key</h2>
+<h3 id="41-get-an-api-key"><a class="anchor" href="#41-get-an-api-key" aria-label="Link to this heading">#</a>4.1 Get an API key</h3>
+<ol>
+<li>Go to <strong><a href="https://deepmind.google.com/science/alphagenome" target="_blank" rel="noopener">https://deepmind.google.com/science/alphagenome</a></strong> and request a key (requires accepting the non-commercial terms).</li>
+<li>Store it as an environment variable. <strong>Never hard-code it</strong> in notebooks you share.</li>
+</ol>
+<div class="code-block"><div class="code-head"><span class="lang-badge">bash</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-bash"><span class="token comment"># ~/.bashrc or ~/.zshrc</span>
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">ALPHA_GENOME_API_KEY</span><span class="token operator">=</span><span class="token string">"your-key-here"</span></code></pre></div>
+<p><code>alphagenome.colab_utils.get_api_key()</code> checks the <code>ALPHA_GENOME_API_KEY</code> environment variable first, then Colab secrets.</p>
+<h3 id="42-install-python--310"><a class="anchor" href="#42-install-python--310" aria-label="Link to this heading">#</a>4.2 Install (Python ≥ 3.10)</h3>
+<div class="tabs" data-tabs><div role="tablist" aria-label="Installation method"><button type="button" role="tab" id="tab-1-0" aria-controls="panel-1-0" aria-selected="true" tabindex="0">pip + venv</button><button type="button" role="tab" id="tab-1-1" aria-controls="panel-1-1" aria-selected="false" tabindex="-1">conda</button><button type="button" role="tab" id="tab-1-2" aria-controls="panel-1-2" aria-selected="false" tabindex="-1">uv</button><button type="button" role="tab" id="tab-1-3" aria-controls="panel-1-3" aria-selected="false" tabindex="-1">From source</button><button type="button" role="tab" id="tab-1-4" aria-controls="panel-1-4" aria-selected="false" tabindex="-1">Colab</button></div><div role="tabpanel" id="panel-1-0" aria-labelledby="tab-1-0" data-label="pip + venv" tabindex="0"><p class="tab-note">pip + venv (simplest)</p><div class="code-block"><div class="code-head"><span class="lang-badge">bash</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-bash">python <span class="token parameter variable">-m</span> venv ag-env
+<span class="token builtin class-name">source</span> ag-env/bin/activate        <span class="token comment"># Windows: ag-env\Scripts\activate</span>
+pip <span class="token function">install</span> <span class="token parameter variable">-U</span> alphagenome</code></pre></div>
+</div><div role="tabpanel" id="panel-1-1" aria-labelledby="tab-1-1" data-label="conda" tabindex="0" hidden><p class="tab-note">conda</p><div class="code-block"><div class="code-head"><span class="lang-badge">bash</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-bash">conda create <span class="token parameter variable">-n</span> alphagenome <span class="token assign-left variable">python</span><span class="token operator">=</span><span class="token number">3.11</span> <span class="token parameter variable">-y</span>
+conda activate alphagenome
+pip <span class="token function">install</span> <span class="token parameter variable">-U</span> alphagenome        <span class="token comment"># also available via: conda install -c bioconda alphagenome</span></code></pre></div>
+</div><div role="tabpanel" id="panel-1-2" aria-labelledby="tab-1-2" data-label="uv" tabindex="0" hidden><p class="tab-note">uv (fast)</p><div class="code-block"><div class="code-head"><span class="lang-badge">bash</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-bash">uv venv <span class="token operator">&amp;&amp;</span> <span class="token builtin class-name">source</span> .venv/bin/activate
+uv pip <span class="token function">install</span> alphagenome</code></pre></div>
+</div><div role="tabpanel" id="panel-1-3" aria-labelledby="tab-1-3" data-label="From source" tabindex="0" hidden><p class="tab-note">From source (latest/dev)</p><div class="code-block"><div class="code-head"><span class="lang-badge">bash</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-bash"><span class="token function">git</span> clone https://github.com/google-deepmind/alphagenome.git
+pip <span class="token function">install</span> <span class="token parameter variable">-e</span> ./alphagenome</code></pre></div>
+</div><div role="tabpanel" id="panel-1-4" aria-labelledby="tab-1-4" data-label="Colab" tabindex="0" hidden><p class="tab-note">Google Colab</p><ol>
+<li>Open a notebook and click 🔑 <strong>Secrets</strong> in the left panel.</li>
+<li>Add a secret named <code>ALPHA_GENOME_API_KEY</code>, paste your key, and enable notebook access.</li>
+<li>Run <code>!pip install alphagenome</code>.</li>
+</ol>
+</div></div>
+<p><strong>Extras you will want for analysis:</strong> <code>pip install jupyterlab pyfaidx pysam cyvcf2 seaborn</code></p>
+<h3 id="43-google-colab"><a class="anchor" href="#43-google-colab" aria-label="Link to this heading">#</a>4.3 Google Colab</h3>
+<ol>
+<li>Open a notebook and click 🔑 <strong>Secrets</strong> in the left panel.</li>
+<li>Add a secret named <code>ALPHA_GENOME_API_KEY</code>, paste your key, and enable notebook access.</li>
+<li>Run <code>!pip install alphagenome</code>.</li>
+</ol>
+<h3 id="44-smoke-test"><a class="anchor" href="#44-smoke-test" aria-label="Link to this heading">#</a>4.4 Smoke test</h3>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python"><span class="token keyword">from</span> alphagenome <span class="token keyword">import</span> colab_utils
+<span class="token keyword">from</span> alphagenome<span class="token punctuation">.</span>models <span class="token keyword">import</span> dna_client
+
+dna_model <span class="token operator">=</span> dna_client<span class="token punctuation">.</span>create<span class="token punctuation">(</span>colab_utils<span class="token punctuation">.</span>get_api_key<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+out <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>predict_sequence<span class="token punctuation">(</span>
+    sequence<span class="token operator">=</span><span class="token string">'GATTACA'</span><span class="token punctuation">.</span>center<span class="token punctuation">(</span>dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_16KB<span class="token punctuation">,</span> <span class="token string">'N'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    requested_outputs<span class="token operator">=</span><span class="token punctuation">[</span>dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>DNASE<span class="token punctuation">]</span><span class="token punctuation">,</span>
+    ontology_terms<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'UBERON:0002048'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>   <span class="token comment"># lung</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>out<span class="token punctuation">.</span>dnase<span class="token punctuation">.</span>values<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>            <span class="token comment"># (16384, n_tracks)</span></code></pre></div>
+<p>If this prints a shape, everything works.</p>
+</section>
+
+<section id="5-core-concepts-you-must-get-right" class="guide-section" data-num="5">
+<h2><a class="anchor" href="#5-core-concepts-you-must-get-right" aria-label="Link to this heading">#</a>5. Core concepts you must get right</h2>
+<h3 id="51-coordinates-the-1-source-of-bugs"><a class="anchor" href="#51-coordinates-the-1-source-of-bugs" aria-label="Link to this heading">#</a>5.1 Coordinates: the #1 source of bugs</h3>
+<aside class="callout callout-pitfall" role="note"><p class="callout-title">⚠️ Common pitfall: coordinate systems</p><div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th>Object</th>
+<th>Convention</th>
+<th>Example</th>
+</tr>
+</thead><tbody><tr>
+<td><code>genome.Interval(chrom, start, end)</code></td>
+<td><strong>0-based, half-open</strong> <code>[start, end)</code>, like BED</td>
+<td>First base of chr1 = <code>Interval(&#39;chr1&#39;, 0, 1)</code></td>
+</tr>
+<tr>
+<td><code>genome.Variant(chrom, position, ref, alt)</code></td>
+<td><strong>1-based</strong> position, like VCF</td>
+<td>Copy <code>POS</code> from a VCF directly</td>
+</tr>
+<tr>
+<td>Genome build</td>
+<td><strong>hg38</strong> (GRCh38.p13) / <strong>mm10</strong> (GRCm38.p6)</td>
+<td>LiftOver hg19 → hg38 first</td>
+</tr>
+<tr>
+<td>Chromosome names</td>
+<td><code>&#39;chr1&#39;</code>, <code>&#39;chrX&#39;</code> (UCSC style)</td>
+<td><code>Variant.from_str</code> adds <code>chr</code> if missing</td>
+</tr>
+</tbody></table></div>
+</aside>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python"><span class="token keyword">from</span> alphagenome<span class="token punctuation">.</span>data <span class="token keyword">import</span> genome
+v <span class="token operator">=</span> genome<span class="token punctuation">.</span>Variant<span class="token punctuation">.</span>from_str<span class="token punctuation">(</span><span class="token string">'chr22:36201698:A>C'</span><span class="token punctuation">)</span>   <span class="token comment"># format chrom:pos:REF>ALT</span></code></pre></div>
+<p>Always check that <code>REF</code> matches hg38 at that position, for example with <code>pyfaidx</code> or <code>alphagenome.io.fasta.FastaExtractor</code>.</p>
+<h3 id="52-supported-sequence-lengths"><a class="anchor" href="#52-supported-sequence-lengths" aria-label="Link to this heading">#</a>5.2 Supported sequence lengths</h3>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_16KB    <span class="token comment"># 16,384</span>
+dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_100KB   <span class="token comment"># 131,072</span>
+dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_500KB   <span class="token comment"># 524,288</span>
+dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_1MB     <span class="token comment"># 1,048,576  ← recommended</span></code></pre></div>
+<p>Use <code>interval.resize(L)</code> to grow or shrink an interval around its centre. This uses real flanking genome sequence, not padding. For variants, use <code>variant.reference_interval.resize(L)</code>.</p>
+<p><strong>1 Mb gives the best results</strong>, especially for gene-level expression and splicing. Use 16 kb for fast exploration and for ISM.</p>
+<h3 id="53-ontology-terms-cell-type--tissue"><a class="anchor" href="#53-ontology-terms-cell-type--tissue" aria-label="Link to this heading">#</a>5.3 Ontology terms (cell type / tissue)</h3>
+<p>Tracks are tagged with ontology CURIEs:</p>
+<ul>
+<li><code>UBERON:</code> = tissues (e.g. <code>UBERON:0002107</code> liver, <code>UBERON:0002048</code> lung)</li>
+<li><code>CL:</code> = cell types (e.g. <code>CL:0000084</code> T cell)</li>
+<li><code>EFO:</code> / <code>CLO:</code> = cell lines (e.g. <code>EFO:0002067</code> K562)</li>
+</ul>
+<p>Pass <code>ontology_terms=[...]</code> to restrict predictions, which makes them faster and lighter. Pass <code>None</code> to get every track. Look up terms in the metadata (§6.1) or with EBI OLS (<a href="https://www.ebi.ac.uk/ols4" target="_blank" rel="noopener">https://www.ebi.ac.uk/ols4</a>).</p>
+<h3 id="54-strand"><a class="anchor" href="#54-strand" aria-label="Link to this heading">#</a>5.4 Strand</h3>
+<p>Track metadata uses <code>+</code>, <code>-</code> or <code>.</code> (unstranded). Stranded RNA assays have two tracks per biosample. For a minus-strand gene, use <code>.filter_to_negative_strand()</code> or <code>.filter_to_nonpositive_strand()</code>, which keeps unstranded tracks too.</p>
+<h3 id="55-key-objects"><a class="anchor" href="#55-key-objects" aria-label="Link to this heading">#</a>5.5 Key objects</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th>Object</th>
+<th>Contains</th>
+</tr>
+</thead><tbody><tr>
+<td><code>Output</code></td>
+<td>One attribute per output type (<code>.rna_seq</code>, <code>.dnase</code>, <code>.splice_junctions</code>, …)</td>
+</tr>
+<tr>
+<td><code>TrackData</code></td>
+<td><code>.values</code> (np.ndarray, positions × tracks), <code>.metadata</code> (DataFrame), <code>.interval</code>, <code>.resolution</code></td>
+</tr>
+<tr>
+<td><code>VariantOutput</code></td>
+<td><code>.reference</code> and <code>.alternate</code>, each an <code>Output</code></td>
+</tr>
+<tr>
+<td>Variant scores</td>
+<td><code>anndata.AnnData</code>: <code>.X</code> scores, <code>.obs</code> genes, <code>.var</code> tracks, <code>.uns</code> variant/interval/scorer, <code>.layers[&#39;quantiles&#39;]</code> when available</td>
+</tr>
+</tbody></table></div>
+<p>Useful <code>TrackData</code> methods: <code>.resize()</code>, <code>.slice_by_interval()</code>, <code>.slice_by_positions()</code>, <code>.select_tracks_by_name()</code>, <code>.select_tracks_by_index()</code>, <code>.filter_tracks(mask)</code>, <code>.change_resolution()</code>, <code>.reverse_complement()</code>, <code>.filter_to_positive_strand()</code> and the other strand filters.</p>
+<h3 id="56-client-methods-at-a-glance"><a class="anchor" href="#56-client-methods-at-a-glance" aria-label="Link to this heading">#</a>5.6 Client methods at a glance</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th>Method</th>
+<th>Use</th>
+</tr>
+</thead><tbody><tr>
+<td><code>predict_sequence(s)</code></td>
+<td>Raw DNA string(s) of a supported length</td>
+</tr>
+<tr>
+<td><code>predict_interval(s)</code></td>
+<td>Reference genome interval(s)</td>
+</tr>
+<tr>
+<td><code>predict_variant(s)</code></td>
+<td>REF and ALT tracks for a variant</td>
+</tr>
+<tr>
+<td><code>score_variant(s)</code></td>
+<td>Scalar ALT-vs-REF effect scores (per gene × track)</td>
+</tr>
+<tr>
+<td><code>score_ism_variants</code></td>
+<td>All 3 alternatives at every base of a sub-interval</td>
+</tr>
+<tr>
+<td><code>score_interval(s)</code></td>
+<td>Scalar summaries of an interval (e.g. gene expression level)</td>
+</tr>
+<tr>
+<td><code>output_metadata(organism)</code></td>
+<td>Track catalogue</td>
+</tr>
+</tbody></table></div>
+<p>Plural methods take <code>max_workers</code> (default 5) and <code>progress_bar</code>. Every method accepts <code>organism=dna_client.Organism.MUS_MUSCULUS</code> for mouse.</p>
+</section>
+
+<section id="6-recipes-code" class="guide-section" data-num="6">
+<h2><a class="anchor" href="#6-recipes-code" aria-label="Link to this heading">#</a>6. Recipes (code)</h2>
+<p>All recipes assume this common setup:</p>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python"><span class="token keyword">from</span> alphagenome <span class="token keyword">import</span> colab_utils
+<span class="token keyword">from</span> alphagenome<span class="token punctuation">.</span>data <span class="token keyword">import</span> gene_annotation<span class="token punctuation">,</span> genome<span class="token punctuation">,</span> transcript <span class="token keyword">as</span> transcript_utils
+<span class="token keyword">from</span> alphagenome<span class="token punctuation">.</span>interpretation <span class="token keyword">import</span> ism
+<span class="token keyword">from</span> alphagenome<span class="token punctuation">.</span>models <span class="token keyword">import</span> dna_client<span class="token punctuation">,</span> variant_scorers
+<span class="token keyword">from</span> alphagenome<span class="token punctuation">.</span>visualization <span class="token keyword">import</span> plot_components
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+
+dna_model <span class="token operator">=</span> dna_client<span class="token punctuation">.</span>create<span class="token punctuation">(</span>colab_utils<span class="token punctuation">.</span>get_api_key<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># GENCODE v46 annotation (hg38), hosted by DeepMind as a feather file</span>
+gtf <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_feather<span class="token punctuation">(</span>
+    <span class="token string">'https://storage.googleapis.com/alphagenome/reference/gencode/'</span>
+    <span class="token string">'hg38/gencode.v46.annotation.gtf.gz.feather'</span>
+<span class="token punctuation">)</span>
+gtf_mane <span class="token operator">=</span> gene_annotation<span class="token punctuation">.</span>filter_to_mane_select_transcript<span class="token punctuation">(</span>
+    gene_annotation<span class="token punctuation">.</span>filter_protein_coding<span class="token punctuation">(</span>gtf<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+tx_mane <span class="token operator">=</span> transcript_utils<span class="token punctuation">.</span>TranscriptExtractor<span class="token punctuation">(</span>gtf_mane<span class="token punctuation">)</span>   <span class="token comment"># clean plots</span>
+tx_all <span class="token operator">=</span> transcript_utils<span class="token punctuation">.</span>TranscriptExtractor<span class="token punctuation">(</span>gtf<span class="token punctuation">)</span>          <span class="token comment"># all isoforms (for splicing)</span></code></pre></div>
+<details class="recipe" id="61-explore-the-track-catalogue-and-find-ontology-terms"><summary><h3><a class="anchor" href="#61-explore-the-track-catalogue-and-find-ontology-terms" aria-label="Link to this recipe">#</a>6.1 Explore the track catalogue and find ontology terms</h3></summary><div class="recipe-body"><div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">meta <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>output_metadata<span class="token punctuation">(</span>dna_client<span class="token punctuation">.</span>Organism<span class="token punctuation">.</span>HOMO_SAPIENS<span class="token punctuation">)</span><span class="token punctuation">.</span>concatenate<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># How many tracks per output type?</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>meta<span class="token punctuation">.</span>groupby<span class="token punctuation">(</span><span class="token string">'output_type'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Find biosamples matching a keyword</span>
+hits <span class="token operator">=</span> meta<span class="token punctuation">[</span>meta<span class="token punctuation">[</span><span class="token string">'biosample_name'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">str</span><span class="token punctuation">.</span>contains<span class="token punctuation">(</span><span class="token string">'T cell|monocyte|liver'</span><span class="token punctuation">,</span>
+                                                <span class="token keyword">case</span><span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> na<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>hits<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">'output_type'</span><span class="token punctuation">,</span> <span class="token string">'ontology_curie'</span><span class="token punctuation">,</span> <span class="token string">'biosample_name'</span><span class="token punctuation">,</span> <span class="token string">'strand'</span><span class="token punctuation">,</span> <span class="token string">'name'</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+      <span class="token punctuation">.</span>drop_duplicates<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Which output types exist for a given CURIE?</span>
+curie <span class="token operator">=</span> <span class="token string">'CL:0000084'</span>  <span class="token comment"># T cell</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>meta<span class="token punctuation">.</span>loc<span class="token punctuation">[</span>meta<span class="token punctuation">.</span>ontology_curie <span class="token operator">==</span> curie<span class="token punctuation">,</span> <span class="token string">'output_type'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value_counts<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+meta<span class="token punctuation">.</span>to_csv<span class="token punctuation">(</span><span class="token string">'alphagenome_human_tracks.csv'</span><span class="token punctuation">,</span> index<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>   <span class="token comment"># keep a local copy</span></code></pre></div>
+<aside class="callout callout-tip" role="note"><p class="callout-title">Tip</p><p>Tip: not every tissue has every assay. Check the counts above before you request, for example, <code>CHIP_TF</code> for a tissue that only has RNA-seq.</p>
+</aside>
+</div></details>
+<details class="recipe" id="62-predict-tracks-for-a-gene-locus-and-plot-them"><summary><h3><a class="anchor" href="#62-predict-tracks-for-a-gene-locus-and-plot-them" aria-label="Link to this recipe">#</a>6.2 Predict tracks for a gene locus and plot them</h3></summary><div class="recipe-body"><div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">interval <span class="token operator">=</span> gene_annotation<span class="token punctuation">.</span>get_gene_interval<span class="token punctuation">(</span>gtf<span class="token punctuation">,</span> gene_symbol<span class="token operator">=</span><span class="token string">'CYP2B6'</span><span class="token punctuation">)</span>
+interval <span class="token operator">=</span> interval<span class="token punctuation">.</span>resize<span class="token punctuation">(</span>dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_1MB<span class="token punctuation">)</span>
+
+out <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>predict_interval<span class="token punctuation">(</span>
+    interval<span class="token operator">=</span>interval<span class="token punctuation">,</span>
+    requested_outputs<span class="token operator">=</span><span class="token punctuation">[</span>dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>RNA_SEQ<span class="token punctuation">,</span>
+                       dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>DNASE<span class="token punctuation">,</span>
+                       dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>CHIP_HISTONE<span class="token punctuation">]</span><span class="token punctuation">,</span>
+    ontology_terms<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'UBERON:0002107'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>                      <span class="token comment"># liver</span>
+<span class="token punctuation">)</span>
+
+<span class="token comment"># Select only H3K27ac among histone tracks</span>
+h3k27ac <span class="token operator">=</span> out<span class="token punctuation">.</span>chip_histone<span class="token punctuation">.</span>filter_tracks<span class="token punctuation">(</span>
+    out<span class="token punctuation">.</span>chip_histone<span class="token punctuation">.</span>metadata<span class="token punctuation">[</span><span class="token string">'histone_mark'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">str</span><span class="token punctuation">.</span>upper<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span>eq<span class="token punctuation">(</span><span class="token string">'H3K27AC'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>to_numpy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+plot_components<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span>
+        plot_components<span class="token punctuation">.</span>TranscriptAnnotation<span class="token punctuation">(</span>tx_mane<span class="token punctuation">.</span>extract<span class="token punctuation">(</span>interval<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        plot_components<span class="token punctuation">.</span>Tracks<span class="token punctuation">(</span>out<span class="token punctuation">.</span>rna_seq<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        plot_components<span class="token punctuation">.</span>Tracks<span class="token punctuation">(</span>out<span class="token punctuation">.</span>dnase<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        plot_components<span class="token punctuation">.</span>Tracks<span class="token punctuation">(</span>h3k27ac<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    interval<span class="token operator">=</span>interval<span class="token punctuation">.</span>resize<span class="token punctuation">(</span><span class="token number">2</span><span class="token operator">**</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">,</span>     <span class="token comment"># zoom to 64 kb around the centre</span>
+<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Save raw arrays</span>
+np<span class="token punctuation">.</span>savez_compressed<span class="token punctuation">(</span><span class="token string">'cyp2b6_liver.npz'</span><span class="token punctuation">,</span>
+                    rna<span class="token operator">=</span>out<span class="token punctuation">.</span>rna_seq<span class="token punctuation">.</span>values<span class="token punctuation">,</span> dnase<span class="token operator">=</span>out<span class="token punctuation">.</span>dnase<span class="token punctuation">.</span>values<span class="token punctuation">)</span></code></pre></div>
+<aside class="callout callout-note" role="note"><p class="callout-title">Note</p><p>If the <code>histone_mark</code> column name differs in your version, print <code>out.chip_histone.metadata.columns</code>.</p>
+</aside>
+</div></details>
+<details class="recipe" id="63-predict-an-arbitrary-or-edited-sequence"><summary><h3><a class="anchor" href="#63-predict-an-arbitrary-or-edited-sequence" aria-label="Link to this recipe">#</a>6.3 Predict an arbitrary or edited sequence</h3></summary><div class="recipe-body"><p>Use this for reporter constructs, enhancer variants or designed edits. <strong>Embed your sequence in its real genomic context</strong>: N-padding works, but it is out of distribution and less reliable.</p>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python"><span class="token keyword">from</span> alphagenome<span class="token punctuation">.</span>io <span class="token keyword">import</span> fasta
+<span class="token comment"># Download a GRCh38.p13 FASTA (e.g. GENCODE) and index it: samtools faidx GRCh38.p13.genome.fa</span>
+fx <span class="token operator">=</span> fasta<span class="token punctuation">.</span>FastaExtractor<span class="token punctuation">(</span><span class="token string">'GRCh38.p13.genome.fa'</span><span class="token punctuation">)</span>
+
+L <span class="token operator">=</span> dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_1MB
+ctx <span class="token operator">=</span> genome<span class="token punctuation">.</span>Interval<span class="token punctuation">(</span><span class="token string">'chr11'</span><span class="token punctuation">,</span> <span class="token number">5_200_000</span><span class="token punctuation">,</span> <span class="token number">5_200_001</span><span class="token punctuation">)</span><span class="token punctuation">.</span>resize<span class="token punctuation">(</span>L<span class="token punctuation">)</span>
+ref_seq <span class="token operator">=</span> fx<span class="token punctuation">.</span>extract<span class="token punctuation">(</span>ctx<span class="token punctuation">)</span>
+
+<span class="token comment"># Replace a 200-bp window at the centre with a designed element</span>
+designed <span class="token operator">=</span> <span class="token string">'ACGT'</span> <span class="token operator">*</span> <span class="token number">50</span>
+mid <span class="token operator">=</span> L <span class="token operator">//</span> <span class="token number">2</span>
+edited <span class="token operator">=</span> ref_seq<span class="token punctuation">[</span><span class="token punctuation">:</span>mid<span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">]</span> <span class="token operator">+</span> designed <span class="token operator">+</span> ref_seq<span class="token punctuation">[</span>mid<span class="token operator">+</span><span class="token number">100</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+<span class="token keyword">assert</span> <span class="token builtin">len</span><span class="token punctuation">(</span>edited<span class="token punctuation">)</span> <span class="token operator">==</span> L            <span class="token comment"># keep the length EXACTLY supported</span>
+
+outs <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>predict_sequences<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span>ref_seq<span class="token punctuation">,</span> edited<span class="token punctuation">]</span><span class="token punctuation">,</span>
+    requested_outputs<span class="token operator">=</span><span class="token punctuation">[</span>dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>DNASE<span class="token punctuation">,</span> dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>CAGE<span class="token punctuation">]</span><span class="token punctuation">,</span>
+    ontology_terms<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'EFO:0002067'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>   <span class="token comment"># K562</span>
+    intervals<span class="token operator">=</span><span class="token punctuation">[</span>ctx<span class="token punctuation">,</span> ctx<span class="token punctuation">]</span><span class="token punctuation">,</span>             <span class="token comment"># optional: lets plots use genome coordinates</span>
+<span class="token punctuation">)</span>
+delta <span class="token operator">=</span> outs<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>dnase<span class="token punctuation">.</span>values <span class="token operator">-</span> outs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>dnase<span class="token punctuation">.</span>values
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'max |ΔDNase| near edit:'</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span><span class="token builtin">abs</span><span class="token punctuation">(</span>delta<span class="token punctuation">[</span>mid<span class="token operator">-</span><span class="token number">1000</span><span class="token punctuation">:</span>mid<span class="token operator">+</span><span class="token number">1000</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre></div>
+<p>For insertions or deletions, trim or extend the flanks so that the total length stays exactly <code>L</code>.</p>
+</div></details>
+<details class="recipe" id="64-visualise-a-variants-effect-ref-vs-alt-tracks"><summary><h3><a class="anchor" href="#64-visualise-a-variants-effect-ref-vs-alt-tracks" aria-label="Link to this recipe">#</a>6.4 Visualise a variant&#39;s effect (REF vs ALT tracks)</h3></summary><div class="recipe-body"><div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">variant <span class="token operator">=</span> genome<span class="token punctuation">.</span>Variant<span class="token punctuation">(</span><span class="token string">'chr22'</span><span class="token punctuation">,</span> <span class="token number">36201698</span><span class="token punctuation">,</span> <span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">)</span>         <span class="token comment"># 1-based, hg38</span>
+interval <span class="token operator">=</span> variant<span class="token punctuation">.</span>reference_interval<span class="token punctuation">.</span>resize<span class="token punctuation">(</span>dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_1MB<span class="token punctuation">)</span>
+
+vo <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>predict_variant<span class="token punctuation">(</span>
+    interval<span class="token operator">=</span>interval<span class="token punctuation">,</span> variant<span class="token operator">=</span>variant<span class="token punctuation">,</span>
+    requested_outputs<span class="token operator">=</span><span class="token punctuation">[</span>dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>RNA_SEQ<span class="token punctuation">]</span><span class="token punctuation">,</span>
+    ontology_terms<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'UBERON:0001157'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>                       <span class="token comment"># transverse colon</span>
+<span class="token punctuation">)</span>
+
+plot_components<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span>
+        plot_components<span class="token punctuation">.</span>TranscriptAnnotation<span class="token punctuation">(</span>tx_mane<span class="token punctuation">.</span>extract<span class="token punctuation">(</span>interval<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        plot_components<span class="token punctuation">.</span>OverlaidTracks<span class="token punctuation">(</span>
+            tdata<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">'REF'</span><span class="token punctuation">:</span> vo<span class="token punctuation">.</span>reference<span class="token punctuation">.</span>rna_seq<span class="token punctuation">,</span> <span class="token string">'ALT'</span><span class="token punctuation">:</span> vo<span class="token punctuation">.</span>alternate<span class="token punctuation">.</span>rna_seq<span class="token punctuation">}</span><span class="token punctuation">,</span>
+            colors<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">'REF'</span><span class="token punctuation">:</span> <span class="token string">'dimgrey'</span><span class="token punctuation">,</span> <span class="token string">'ALT'</span><span class="token punctuation">:</span> <span class="token string">'red'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    interval<span class="token operator">=</span>vo<span class="token punctuation">.</span>reference<span class="token punctuation">.</span>rna_seq<span class="token punctuation">.</span>interval<span class="token punctuation">.</span>resize<span class="token punctuation">(</span><span class="token number">2</span><span class="token operator">**</span><span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    annotations<span class="token operator">=</span><span class="token punctuation">[</span>plot_components<span class="token punctuation">.</span>VariantAnnotation<span class="token punctuation">(</span><span class="token punctuation">[</span>variant<span class="token punctuation">]</span><span class="token punctuation">,</span> alpha<span class="token operator">=</span><span class="token number">0.8</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre></div>
+</div></details>
+<details class="recipe" id="65-score-a-variant-scalar-effect-sizes"><summary><h3><a class="anchor" href="#65-score-a-variant-scalar-effect-sizes" aria-label="Link to this recipe">#</a>6.5 Score a variant (scalar effect sizes)</h3></summary><div class="recipe-body"><div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">scorers <span class="token operator">=</span> variant_scorers<span class="token punctuation">.</span>get_recommended_scorers<span class="token punctuation">(</span>
+    dna_client<span class="token punctuation">.</span>Organism<span class="token punctuation">.</span>HOMO_SAPIENS<span class="token punctuation">.</span>value
+<span class="token punctuation">)</span>                                   <span class="token comment"># every recommended scorer for human</span>
+<span class="token comment"># ...or pick a subset:</span>
+<span class="token comment"># scorers = [variant_scorers.RECOMMENDED_VARIANT_SCORERS[k]</span>
+<span class="token comment">#            for k in ('RNA_SEQ', 'DNASE', 'CHIP_HISTONE', 'SPLICE_SITES')]</span>
+
+scores <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>score_variant<span class="token punctuation">(</span>interval<span class="token operator">=</span>interval<span class="token punctuation">,</span> variant<span class="token operator">=</span>variant<span class="token punctuation">,</span>
+                                 variant_scorers<span class="token operator">=</span>scorers<span class="token punctuation">)</span>
+df <span class="token operator">=</span> variant_scorers<span class="token punctuation">.</span>tidy_scores<span class="token punctuation">(</span><span class="token punctuation">[</span>scores<span class="token punctuation">]</span><span class="token punctuation">,</span> match_gene_strand<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Strongest effects (quantile_score is calibrated against background variants)</span>
+col <span class="token operator">=</span> <span class="token string">'quantile_score'</span> <span class="token keyword">if</span> <span class="token string">'quantile_score'</span> <span class="token keyword">in</span> df <span class="token keyword">else</span> <span class="token string">'raw_score'</span>
+top <span class="token operator">=</span> <span class="token punctuation">(</span>df<span class="token punctuation">.</span>assign<span class="token punctuation">(</span>abs_q<span class="token operator">=</span>df<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">abs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+         <span class="token punctuation">.</span>sort_values<span class="token punctuation">(</span><span class="token string">'abs_q'</span><span class="token punctuation">,</span> ascending<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+         <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">'output_type'</span><span class="token punctuation">,</span> <span class="token string">'gene_name'</span><span class="token punctuation">,</span> <span class="token string">'biosample_name'</span><span class="token punctuation">,</span> <span class="token string">'track_name'</span><span class="token punctuation">,</span>
+           <span class="token string">'raw_score'</span><span class="token punctuation">,</span> col<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>top<span class="token punctuation">)</span>
+df<span class="token punctuation">.</span>to_csv<span class="token punctuation">(</span><span class="token string">'variant_scores.csv'</span><span class="token punctuation">,</span> index<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span></code></pre></div>
+<p><strong>Recommended scorers (what each one computes):</strong></p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th>Key</th>
+<th>Scorer</th>
+<th>Spatial mask</th>
+<th>Aggregation</th>
+</tr>
+</thead><tbody><tr>
+<td><code>RNA_SEQ</code></td>
+<td><code>GeneMaskLFCScorer</code></td>
+<td>exons of each gene</td>
+<td>log(mean ALT + 1e-3) − log(mean REF + 1e-3)</td>
+</tr>
+<tr>
+<td><code>CAGE</code>, <code>PROCAP</code>, <code>DNASE</code>, <code>ATAC</code>, <code>CHIP_TF</code></td>
+<td><code>CenterMaskScorer</code></td>
+<td>501 bp around the variant</td>
+<td><code>DIFF_LOG2_SUM</code> = log2(ΣALT+1) − log2(ΣREF+1)</td>
+</tr>
+<tr>
+<td><code>CHIP_HISTONE</code></td>
+<td><code>CenterMaskScorer</code></td>
+<td>2,001 bp</td>
+<td><code>DIFF_LOG2_SUM</code></td>
+</tr>
+<tr>
+<td><code>SPLICE_SITES</code>, <code>SPLICE_SITE_USAGE</code></td>
+<td><code>GeneMaskSplicingScorer</code></td>
+<td>gene body</td>
+<td>max |ALT − REF|</td>
+</tr>
+<tr>
+<td><code>SPLICE_JUNCTIONS</code></td>
+<td><code>SpliceJunctionScorer</code></td>
+<td>top junctions</td>
+<td>max |log-fold change|</td>
+</tr>
+<tr>
+<td><code>POLYADENYLATION</code></td>
+<td><code>PolyadenylationScorer</code></td>
+<td>gene 3′ end</td>
+<td>PAS usage change</td>
+</tr>
+<tr>
+<td><code>CONTACT_MAPS</code></td>
+<td><code>ContactMapScorer</code></td>
+<td>1 Mb</td>
+<td>mean |Δcontact|</td>
+</tr>
+<tr>
+<td><code>*_ACTIVE</code></td>
+<td><code>CenterMaskScorer</code>/<code>GeneMaskActiveScorer</code></td>
+<td>as above</td>
+<td>max(ALT, REF): &quot;is this region active at all?&quot;</td>
+</tr>
+</tbody></table></div>
+<p>Custom scorer example: a mean-difference DNase score over 1 kb.</p>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">custom <span class="token operator">=</span> variant_scorers<span class="token punctuation">.</span>CenterMaskScorer<span class="token punctuation">(</span>
+    requested_output<span class="token operator">=</span>dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>DNASE<span class="token punctuation">,</span>
+    width<span class="token operator">=</span><span class="token number">1001</span><span class="token punctuation">,</span>
+    aggregation_type<span class="token operator">=</span>variant_scorers<span class="token punctuation">.</span>AggregationType<span class="token punctuation">.</span>DIFF_MEAN<span class="token punctuation">,</span>
+<span class="token punctuation">)</span></code></pre></div>
+<p>Available <code>AggregationType</code> values: <code>DIFF_MEAN</code>, <code>DIFF_SUM</code>, <code>DIFF_SUM_LOG2</code>, <code>DIFF_LOG2_SUM</code>, <code>L2_DIFF</code>, <code>L2_DIFF_LOG1P</code>, <code>ACTIVE_MEAN</code>, <code>ACTIVE_SUM</code>.</p>
+</div></details>
+<details class="recipe" id="66-splicing-analysis"><summary><h3><a class="anchor" href="#66-splicing-analysis" aria-label="Link to this recipe">#</a>6.6 Splicing analysis</h3></summary><div class="recipe-body"><p>AlphaGenome has three complementary splicing heads:</p>
+<ul>
+<li><strong><code>SPLICE_SITES</code></strong>: the probability that each base is a donor or acceptor. Sequence-intrinsic, so there are no tissue tracks.</li>
+<li><strong><code>SPLICE_SITE_USAGE</code></strong>: the fraction of transcripts that use each site, per tissue.</li>
+<li><strong><code>SPLICE_JUNCTIONS</code></strong>: predicted split-read counts for donor–acceptor pairs, per tissue. This captures exon skipping, cryptic sites and intron retention, and is the basis for sashimi plots and PSI.</li>
+</ul>
+<h4 id="661-merged-splicing-score-the-method-used-in-the-paper"><a class="anchor" href="#661-merged-splicing-score-the-method-used-in-the-paper" aria-label="Link to this heading">#</a>6.6.1 Merged splicing score (the method used in the paper)</h4>
+<div class="code-block"><div class="code-head"><span class="lang-badge">text</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-text">alphagenome_splicing = max|Δ splice_sites| + max|Δ splice_site_usage| + max|Δ splice_junctions| / 5</code></pre></div>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">SPLICE_SCORERS <span class="token operator">=</span> <span class="token punctuation">[</span>variant_scorers<span class="token punctuation">.</span>RECOMMENDED_VARIANT_SCORERS<span class="token punctuation">[</span>k<span class="token punctuation">]</span>
+                  <span class="token keyword">for</span> k <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token string">'SPLICE_SITES'</span><span class="token punctuation">,</span> <span class="token string">'SPLICE_SITE_USAGE'</span><span class="token punctuation">,</span> <span class="token string">'SPLICE_JUNCTIONS'</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+<span class="token keyword">def</span> <span class="token function">merged_splicing</span><span class="token punctuation">(</span>df<span class="token punctuation">:</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">:</span>
+    df <span class="token operator">=</span> df<span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    df<span class="token punctuation">[</span><span class="token string">'variant_id'</span><span class="token punctuation">]</span> <span class="token operator">=</span> df<span class="token punctuation">[</span><span class="token string">'variant_id'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">)</span>
+    m <span class="token operator">=</span> <span class="token punctuation">(</span>df<span class="token punctuation">.</span>groupby<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'variant_id'</span><span class="token punctuation">,</span> <span class="token string">'output_type'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token string">'raw_score'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+           <span class="token punctuation">.</span>reset_index<span class="token punctuation">(</span><span class="token punctuation">)</span>
+           <span class="token punctuation">.</span>pivot<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">'variant_id'</span><span class="token punctuation">,</span> columns<span class="token operator">=</span><span class="token string">'output_type'</span><span class="token punctuation">,</span> values<span class="token operator">=</span><span class="token string">'raw_score'</span><span class="token punctuation">)</span>
+           <span class="token punctuation">.</span>fillna<span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    m<span class="token punctuation">[</span><span class="token string">'alphagenome_splicing'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>m<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'SPLICE_SITES'</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">)</span>
+                                 <span class="token operator">+</span> m<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'SPLICE_SITE_USAGE'</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">)</span>
+                                 <span class="token operator">+</span> m<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'SPLICE_JUNCTIONS'</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">5.0</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> m<span class="token punctuation">.</span>reset_index<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sort_values<span class="token punctuation">(</span><span class="token string">'alphagenome_splicing'</span><span class="token punctuation">,</span> ascending<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+
+v <span class="token operator">=</span> genome<span class="token punctuation">.</span>Variant<span class="token punctuation">(</span><span class="token string">'chr13'</span><span class="token punctuation">,</span> <span class="token number">32316462</span><span class="token punctuation">,</span> <span class="token string">'T'</span><span class="token punctuation">,</span> <span class="token string">'G'</span><span class="token punctuation">)</span>               <span class="token comment"># BRCA2, near a splice site</span>
+res <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>score_variant<span class="token punctuation">(</span>
+    interval<span class="token operator">=</span>v<span class="token punctuation">.</span>reference_interval<span class="token punctuation">.</span>resize<span class="token punctuation">(</span>dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_1MB<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    variant<span class="token operator">=</span>v<span class="token punctuation">,</span> variant_scorers<span class="token operator">=</span>SPLICE_SCORERS<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>merged_splicing<span class="token punctuation">(</span>variant_scorers<span class="token punctuation">.</span>tidy_scores<span class="token punctuation">(</span><span class="token punctuation">[</span>res<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre></div>
+<p><strong>Interpretation:</strong> the score runs from 0 upwards with no fixed maximum. Most variants fall between 0 and 6, and in practice <strong>&gt; 1.0 generally indicates a large effect</strong>. DeepMind has not yet published an official cutoff. Calibrate against known pathogenic and benign splice variants in your gene.</p>
+<h4 id="662-sashimi-plot-ref-vs-alt"><a class="anchor" href="#662-sashimi-plot-ref-vs-alt" aria-label="Link to this heading">#</a>6.6.2 Sashimi plot (REF vs ALT)</h4>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">v <span class="token operator">=</span> genome<span class="token punctuation">.</span>Variant<span class="token punctuation">(</span><span class="token string">'chr22'</span><span class="token punctuation">,</span> <span class="token number">36201698</span><span class="token punctuation">,</span> <span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">)</span>
+iv <span class="token operator">=</span> v<span class="token punctuation">.</span>reference_interval<span class="token punctuation">.</span>resize<span class="token punctuation">(</span>dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_1MB<span class="token punctuation">)</span>
+vo <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>predict_variant<span class="token punctuation">(</span>
+    interval<span class="token operator">=</span>iv<span class="token punctuation">,</span> variant<span class="token operator">=</span>v<span class="token punctuation">,</span>
+    requested_outputs<span class="token operator">=</span><span class="token punctuation">[</span>dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>SPLICE_JUNCTIONS<span class="token punctuation">,</span>
+                       dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>SPLICE_SITE_USAGE<span class="token punctuation">]</span><span class="token punctuation">,</span>
+    ontology_terms<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'CL:0000084'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>                         <span class="token comment"># T cell</span>
+<span class="token punctuation">)</span>
+
+plot_components<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span>
+        plot_components<span class="token punctuation">.</span>TranscriptAnnotation<span class="token punctuation">(</span>tx_all<span class="token punctuation">.</span>extract<span class="token punctuation">(</span>iv<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>   <span class="token comment"># all isoforms</span>
+        plot_components<span class="token punctuation">.</span>Sashimi<span class="token punctuation">(</span>vo<span class="token punctuation">.</span>reference<span class="token punctuation">.</span>splice_junctions<span class="token punctuation">,</span>
+            ylabel_template<span class="token operator">=</span><span class="token string">'REF {biosample_name} ({strand})\n{name}'</span><span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">'skyblue'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        plot_components<span class="token punctuation">.</span>Sashimi<span class="token punctuation">(</span>vo<span class="token punctuation">.</span>alternate<span class="token punctuation">.</span>splice_junctions<span class="token punctuation">,</span>
+            ylabel_template<span class="token operator">=</span><span class="token string">'ALT {biosample_name} ({strand})\n{name}'</span><span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">'red'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    annotations<span class="token operator">=</span><span class="token punctuation">[</span>plot_components<span class="token punctuation">.</span>VariantAnnotation<span class="token punctuation">(</span><span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    interval<span class="token operator">=</span>iv<span class="token punctuation">.</span>resize<span class="token punctuation">(</span><span class="token number">40_000</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre></div>
+<p>The numbers on the arcs are <strong>predicted normalised junction counts, not PSI</strong>.</p>
+<h4 id="663-derive-psi5--psi3-and-δpsi"><a class="anchor" href="#663-derive-psi5--psi3-and-δpsi" aria-label="Link to this heading">#</a>6.6.3 Derive PSI5 / PSI3 and ΔPSI</h4>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python"><span class="token keyword">def</span> <span class="token function">psi_tables</span><span class="token punctuation">(</span>jd<span class="token punctuation">,</span> track_idx<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    rows <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> i<span class="token punctuation">,</span> j <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>jd<span class="token punctuation">.</span>junctions<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        donor<span class="token punctuation">,</span> acceptor <span class="token operator">=</span> <span class="token punctuation">(</span>j<span class="token punctuation">.</span>start<span class="token punctuation">,</span> j<span class="token punctuation">.</span>end<span class="token punctuation">)</span> <span class="token keyword">if</span> j<span class="token punctuation">.</span>strand <span class="token operator">==</span> <span class="token string">'+'</span> <span class="token keyword">else</span> <span class="token punctuation">(</span>j<span class="token punctuation">.</span>end<span class="token punctuation">,</span> j<span class="token punctuation">.</span>start<span class="token punctuation">)</span>
+        rows<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'donor'</span><span class="token punctuation">:</span> donor<span class="token punctuation">,</span> <span class="token string">'acceptor'</span><span class="token punctuation">:</span> acceptor<span class="token punctuation">,</span>
+                     <span class="token string">'count'</span><span class="token punctuation">:</span> jd<span class="token punctuation">.</span>values<span class="token punctuation">[</span>i<span class="token punctuation">,</span> track_idx<span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    m <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>rows<span class="token punctuation">)</span><span class="token punctuation">.</span>pivot_table<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">'donor'</span><span class="token punctuation">,</span> columns<span class="token operator">=</span><span class="token string">'acceptor'</span><span class="token punctuation">,</span>
+                                       values<span class="token operator">=</span><span class="token string">'count'</span><span class="token punctuation">,</span> fill_value<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+    psi5 <span class="token operator">=</span> m<span class="token punctuation">.</span>div<span class="token punctuation">(</span>m<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fillna<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>   <span class="token comment"># donor → which acceptor</span>
+    psi3 <span class="token operator">=</span> m<span class="token punctuation">.</span>div<span class="token punctuation">(</span>m<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fillna<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>   <span class="token comment"># acceptor ← which donor</span>
+    <span class="token keyword">return</span> psi5<span class="token punctuation">,</span> psi3
+
+titles <span class="token operator">=</span> vo<span class="token punctuation">.</span>reference<span class="token punctuation">.</span>splice_junctions<span class="token punctuation">.</span>metadata<span class="token punctuation">[</span><span class="token string">'Assay title'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">str</span><span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span>
+polya <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>where<span class="token punctuation">(</span>titles<span class="token punctuation">.</span><span class="token builtin">str</span><span class="token punctuation">.</span>contains<span class="token punctuation">(</span><span class="token string">'polya'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>   <span class="token comment"># prefer polyA+ (mature mRNA)</span>
+
+psi5_ref<span class="token punctuation">,</span> _ <span class="token operator">=</span> psi_tables<span class="token punctuation">(</span>vo<span class="token punctuation">.</span>reference<span class="token punctuation">.</span>splice_junctions<span class="token punctuation">,</span> polya<span class="token punctuation">)</span>
+psi5_alt<span class="token punctuation">,</span> _ <span class="token operator">=</span> psi_tables<span class="token punctuation">(</span>vo<span class="token punctuation">.</span>alternate<span class="token punctuation">.</span>splice_junctions<span class="token punctuation">,</span> polya<span class="token punctuation">)</span>
+dpsi5 <span class="token operator">=</span> psi5_alt<span class="token punctuation">.</span>sub<span class="token punctuation">(</span>psi5_ref<span class="token punctuation">,</span> fill_value<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>dpsi5<span class="token punctuation">.</span>stack<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">abs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sort_values<span class="token punctuation">(</span>ascending<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>   <span class="token comment"># biggest ΔPSI</span></code></pre></div>
+<h4 id="664-splicing-checklist"><a class="anchor" href="#664-splicing-checklist" aria-label="Link to this heading">#</a>6.6.4 Splicing checklist</h4>
+<ol>
+<li>Use <strong>1 Mb</strong> context.</li>
+<li>Look at the merged score, then at which component drives it.</li>
+<li>Use a <strong>relevant tissue</strong> for <code>SPLICE_SITE_USAGE</code>/<code>SPLICE_JUNCTIONS</code>. Prefer polyA+ tracks.</li>
+<li>Sashimi: is a canonical junction lost? Did a new one appear (cryptic site, exon skipping)?</li>
+<li>Reconstruct the aberrant transcript, then check frame/PTC/NMD, then (optionally) AlphaFold (see §2.1).</li>
+<li>For deep-intronic variants, look for <strong>new</strong> donor/acceptor peaks in <code>SPLICE_SITES</code> (pseudo-exon creation).</li>
+</ol>
+</div></details>
+<details class="recipe" id="67-batch-scoring-from-a-vcf-production-style-script"><summary><h3><a class="anchor" href="#67-batch-scoring-from-a-vcf-production-style-script" aria-label="Link to this recipe">#</a>6.7 Batch scoring from a VCF (production-style script)</h3></summary><div class="recipe-body"><div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python"><span class="token triple-quoted-string string">"""score_vcf.py — usage: python score_vcf.py input.vcf out.csv"""</span>
+<span class="token keyword">import</span> sys<span class="token punctuation">,</span> time<span class="token punctuation">,</span> pandas <span class="token keyword">as</span> pd
+<span class="token keyword">from</span> cyvcf2 <span class="token keyword">import</span> VCF                      <span class="token comment"># pip install cyvcf2</span>
+<span class="token keyword">from</span> alphagenome <span class="token keyword">import</span> colab_utils
+<span class="token keyword">from</span> alphagenome<span class="token punctuation">.</span>data <span class="token keyword">import</span> genome
+<span class="token keyword">from</span> alphagenome<span class="token punctuation">.</span>models <span class="token keyword">import</span> dna_client<span class="token punctuation">,</span> variant_scorers
+
+vcf_path<span class="token punctuation">,</span> out_csv <span class="token operator">=</span> sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span>
+model <span class="token operator">=</span> dna_client<span class="token punctuation">.</span>create<span class="token punctuation">(</span>colab_utils<span class="token punctuation">.</span>get_api_key<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+L <span class="token operator">=</span> dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_1MB
+SCORERS <span class="token operator">=</span> <span class="token punctuation">[</span>variant_scorers<span class="token punctuation">.</span>RECOMMENDED_VARIANT_SCORERS<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token keyword">for</span> k <span class="token keyword">in</span>
+           <span class="token punctuation">(</span><span class="token string">'RNA_SEQ'</span><span class="token punctuation">,</span> <span class="token string">'DNASE'</span><span class="token punctuation">,</span> <span class="token string">'ATAC'</span><span class="token punctuation">,</span> <span class="token string">'CHIP_HISTONE'</span><span class="token punctuation">,</span> <span class="token string">'CAGE'</span><span class="token punctuation">,</span>
+            <span class="token string">'SPLICE_SITES'</span><span class="token punctuation">,</span> <span class="token string">'SPLICE_SITE_USAGE'</span><span class="token punctuation">,</span> <span class="token string">'SPLICE_JUNCTIONS'</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+variants <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> rec <span class="token keyword">in</span> VCF<span class="token punctuation">(</span>vcf_path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> alt <span class="token keyword">in</span> rec<span class="token punctuation">.</span>ALT<span class="token punctuation">:</span>                                      <span class="token comment"># split multi-allelic</span>
+        chrom <span class="token operator">=</span> rec<span class="token punctuation">.</span>CHROM <span class="token keyword">if</span> rec<span class="token punctuation">.</span>CHROM<span class="token punctuation">.</span>startswith<span class="token punctuation">(</span><span class="token string">'chr'</span><span class="token punctuation">)</span> <span class="token keyword">else</span> <span class="token string-interpolation"><span class="token string">f'chr</span><span class="token interpolation"><span class="token punctuation">{</span>rec<span class="token punctuation">.</span>CHROM<span class="token punctuation">}</span></span><span class="token string">'</span></span>
+        variants<span class="token punctuation">.</span>append<span class="token punctuation">(</span>genome<span class="token punctuation">.</span>Variant<span class="token punctuation">(</span>chrom<span class="token punctuation">,</span> rec<span class="token punctuation">.</span>POS<span class="token punctuation">,</span> rec<span class="token punctuation">.</span>REF<span class="token punctuation">,</span> alt<span class="token punctuation">,</span>
+                        name<span class="token operator">=</span><span class="token string-interpolation"><span class="token string">f'</span><span class="token interpolation"><span class="token punctuation">{</span>chrom<span class="token punctuation">}</span></span><span class="token string">_</span><span class="token interpolation"><span class="token punctuation">{</span>rec<span class="token punctuation">.</span>POS<span class="token punctuation">}</span></span><span class="token string">_</span><span class="token interpolation"><span class="token punctuation">{</span>rec<span class="token punctuation">.</span>REF<span class="token punctuation">}</span></span><span class="token string">_</span><span class="token interpolation"><span class="token punctuation">{</span>alt<span class="token punctuation">}</span></span><span class="token string">'</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'</span><span class="token interpolation"><span class="token punctuation">{</span><span class="token builtin">len</span><span class="token punctuation">(</span>variants<span class="token punctuation">)</span><span class="token punctuation">}</span></span><span class="token string"> variants'</span></span><span class="token punctuation">)</span>
+
+CHUNK <span class="token operator">=</span> <span class="token number">50</span>
+frames <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>variants<span class="token punctuation">)</span><span class="token punctuation">,</span> CHUNK<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    chunk <span class="token operator">=</span> variants<span class="token punctuation">[</span>i<span class="token punctuation">:</span>i<span class="token operator">+</span>CHUNK<span class="token punctuation">]</span>
+    intervals <span class="token operator">=</span> <span class="token punctuation">[</span>v<span class="token punctuation">.</span>reference_interval<span class="token punctuation">.</span>resize<span class="token punctuation">(</span>L<span class="token punctuation">)</span> <span class="token keyword">for</span> v <span class="token keyword">in</span> chunk<span class="token punctuation">]</span>
+    <span class="token keyword">for</span> attempt <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">try</span><span class="token punctuation">:</span>
+            res <span class="token operator">=</span> model<span class="token punctuation">.</span>score_variants<span class="token punctuation">(</span>intervals<span class="token punctuation">,</span> chunk<span class="token punctuation">,</span> SCORERS<span class="token punctuation">,</span> max_workers<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span>
+            <span class="token keyword">break</span>
+        <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>                               <span class="token comment"># quota / transient errors</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'retry'</span><span class="token punctuation">,</span> attempt<span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span> time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">30</span> <span class="token operator">*</span> <span class="token punctuation">(</span>attempt <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">continue</span>
+    df <span class="token operator">=</span> variant_scorers<span class="token punctuation">.</span>tidy_scores<span class="token punctuation">(</span>res<span class="token punctuation">,</span> match_gene_strand<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    frames<span class="token punctuation">.</span>append<span class="token punctuation">(</span>df<span class="token punctuation">)</span>
+    df<span class="token punctuation">.</span>to_csv<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'</span><span class="token interpolation"><span class="token punctuation">{</span>out_csv<span class="token punctuation">}</span></span><span class="token string">.part</span><span class="token interpolation"><span class="token punctuation">{</span>i<span class="token operator">//</span>CHUNK<span class="token punctuation">:</span><span class="token format-spec">04d</span><span class="token punctuation">}</span></span><span class="token string">.csv'</span></span><span class="token punctuation">,</span> index<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>   <span class="token comment"># checkpoint</span>
+
+pd<span class="token punctuation">.</span>concat<span class="token punctuation">(</span>frames<span class="token punctuation">)</span><span class="token punctuation">.</span>to_csv<span class="token punctuation">(</span>out_csv<span class="token punctuation">,</span> index<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span></code></pre></div>
+<p>Then summarise one row per variant:</p>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">df <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span><span class="token string">'out.csv'</span><span class="token punctuation">)</span>
+col <span class="token operator">=</span> <span class="token string">'quantile_score'</span> <span class="token keyword">if</span> <span class="token string">'quantile_score'</span> <span class="token keyword">in</span> df <span class="token keyword">else</span> <span class="token string">'raw_score'</span>
+summary <span class="token operator">=</span> <span class="token punctuation">(</span>df<span class="token punctuation">.</span>assign<span class="token punctuation">(</span>a<span class="token operator">=</span>df<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">abs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+             <span class="token punctuation">.</span>groupby<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'variant_id'</span><span class="token punctuation">,</span> <span class="token string">'output_type'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+             <span class="token punctuation">.</span>unstack<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+summary<span class="token punctuation">[</span><span class="token string">'max_any'</span><span class="token punctuation">]</span> <span class="token operator">=</span> summary<span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+summary<span class="token punctuation">.</span>sort_values<span class="token punctuation">(</span><span class="token string">'max_any'</span><span class="token punctuation">,</span> ascending<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token number">25</span><span class="token punctuation">)</span></code></pre></div>
+<aside class="callout callout-note" role="note"><p class="callout-title">Note</p><p>Filter early: score only the tissues you care about by filtering <code>ontology_curie</code> in the tidy table. If you use custom scorers, request fewer output types.</p>
+</aside>
+</div></details>
+<details class="recipe" id="68-in-silico-mutagenesis-ism-and-sequence-logos"><summary><h3><a class="anchor" href="#68-in-silico-mutagenesis-ism-and-sequence-logos" aria-label="Link to this recipe">#</a>6.8 In silico mutagenesis (ISM) and sequence logos</h3></summary><div class="recipe-body"><p>ISM finds which bases inside a region drive a signal: TF motifs, splice elements, promoter cores.</p>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">seq_iv <span class="token operator">=</span> genome<span class="token punctuation">.</span>Interval<span class="token punctuation">(</span><span class="token string">'chr20'</span><span class="token punctuation">,</span> <span class="token number">3_753_000</span><span class="token punctuation">,</span> <span class="token number">3_753_400</span><span class="token punctuation">)</span><span class="token punctuation">.</span>resize<span class="token punctuation">(</span>dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_16KB<span class="token punctuation">)</span>
+ism_iv <span class="token operator">=</span> seq_iv<span class="token punctuation">.</span>resize<span class="token punctuation">(</span><span class="token number">256</span><span class="token punctuation">)</span>                       <span class="token comment"># mutate the central 256 bp → 768 variants</span>
+
+scorer <span class="token operator">=</span> variant_scorers<span class="token punctuation">.</span>CenterMaskScorer<span class="token punctuation">(</span>
+    requested_output<span class="token operator">=</span>dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>DNASE<span class="token punctuation">,</span> width<span class="token operator">=</span><span class="token number">501</span><span class="token punctuation">,</span>
+    aggregation_type<span class="token operator">=</span>variant_scorers<span class="token punctuation">.</span>AggregationType<span class="token punctuation">.</span>DIFF_MEAN<span class="token punctuation">)</span>
+
+vs <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>score_ism_variants<span class="token punctuation">(</span>interval<span class="token operator">=</span>seq_iv<span class="token punctuation">,</span> ism_interval<span class="token operator">=</span>ism_iv<span class="token punctuation">,</span>
+                                  variant_scorers<span class="token operator">=</span><span class="token punctuation">[</span>scorer<span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">pick</span><span class="token punctuation">(</span>adata<span class="token punctuation">,</span> curie<span class="token operator">=</span><span class="token string">'EFO:0002067'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>             <span class="token comment"># K562</span>
+    x <span class="token operator">=</span> adata<span class="token punctuation">.</span>X<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> adata<span class="token punctuation">.</span>var<span class="token punctuation">[</span><span class="token string">'ontology_curie'</span><span class="token punctuation">]</span> <span class="token operator">==</span> curie<span class="token punctuation">]</span>
+    <span class="token keyword">return</span> x<span class="token punctuation">.</span>flatten<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+
+mat <span class="token operator">=</span> ism<span class="token punctuation">.</span>ism_matrix<span class="token punctuation">(</span><span class="token punctuation">[</span>pick<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> vs<span class="token punctuation">]</span><span class="token punctuation">,</span>
+                     variants<span class="token operator">=</span><span class="token punctuation">[</span>x<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>uns<span class="token punctuation">[</span><span class="token string">'variant'</span><span class="token punctuation">]</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> vs<span class="token punctuation">]</span><span class="token punctuation">)</span>   <span class="token comment"># (256, 4)</span>
+
+plot_components<span class="token punctuation">.</span>plot<span class="token punctuation">(</span><span class="token punctuation">[</span>plot_components<span class="token punctuation">.</span>SeqLogo<span class="token punctuation">(</span>scores<span class="token operator">=</span>mat<span class="token punctuation">,</span> scores_interval<span class="token operator">=</span>ism_iv<span class="token punctuation">,</span>
+                                              ylabel<span class="token operator">=</span><span class="token string">'ISM K562 DNase'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                     interval<span class="token operator">=</span>ism_iv<span class="token punctuation">,</span> fig_width<span class="token operator">=</span><span class="token number">35</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre></div>
+<p>Cost scales as 3 × width, so keep ISM windows small (≤ 256–512 bp) and use 16 kb context.</p>
+</div></details>
+<details class="recipe" id="69-indels-mnvs-and-haplotypes"><summary><h3><a class="anchor" href="#69-indels-mnvs-and-haplotypes" aria-label="Link to this recipe">#</a>6.9 Indels, MNVs and haplotypes</h3></summary><div class="recipe-body"><ul>
+<li><strong>Indels:</strong> pass them directly, e.g. <code>genome.Variant(&#39;chr1&#39;, 1000, &#39;ATG&#39;, &#39;A&#39;)</code>. Predictions are aligned back to REF coordinates for scoring.</li>
+<li><strong>Multiple variants in cis (haplotype / multi-edit):</strong> build one combined <code>Variant</code> that spans all of them, with REF = the reference stretch and ALT = the same stretch carrying every change. Compare it with the single variants to detect epistasis.</li>
+</ul>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python"><span class="token keyword">from</span> alphagenome<span class="token punctuation">.</span>io <span class="token keyword">import</span> fasta
+fx <span class="token operator">=</span> fasta<span class="token punctuation">.</span>FastaExtractor<span class="token punctuation">(</span><span class="token string">'GRCh38.p13.genome.fa'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">combine</span><span class="token punctuation">(</span>muts<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    chrom <span class="token operator">=</span> muts<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>chromosome
+    lo<span class="token punctuation">,</span> hi <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>position <span class="token keyword">for</span> m <span class="token keyword">in</span> muts<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">max</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>position <span class="token keyword">for</span> m <span class="token keyword">in</span> muts<span class="token punctuation">)</span>
+    ref <span class="token operator">=</span> fx<span class="token punctuation">.</span>extract<span class="token punctuation">(</span>genome<span class="token punctuation">.</span>Interval<span class="token punctuation">(</span>chrom<span class="token punctuation">,</span> lo <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> hi<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>upper<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    alt <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span>ref<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> m <span class="token keyword">in</span> muts<span class="token punctuation">:</span>                      <span class="token comment"># SNVs only in this simple version</span>
+        <span class="token keyword">assert</span> ref<span class="token punctuation">[</span>m<span class="token punctuation">.</span>position <span class="token operator">-</span> lo<span class="token punctuation">]</span> <span class="token operator">==</span> m<span class="token punctuation">.</span>reference_bases<span class="token punctuation">.</span>upper<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'REF mismatch'</span>
+        alt<span class="token punctuation">[</span>m<span class="token punctuation">.</span>position <span class="token operator">-</span> lo<span class="token punctuation">]</span> <span class="token operator">=</span> m<span class="token punctuation">.</span>alternate_bases<span class="token punctuation">.</span>upper<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> genome<span class="token punctuation">.</span>Variant<span class="token punctuation">(</span>chrom<span class="token punctuation">,</span> lo<span class="token punctuation">,</span> ref<span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>alt<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+muts <span class="token operator">=</span> <span class="token punctuation">[</span>genome<span class="token punctuation">.</span>Variant<span class="token punctuation">(</span><span class="token string">'chr5'</span><span class="token punctuation">,</span> <span class="token number">1295113</span><span class="token punctuation">,</span> <span class="token string">'G'</span><span class="token punctuation">,</span> <span class="token string">'A'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> genome<span class="token punctuation">.</span>Variant<span class="token punctuation">(</span><span class="token string">'chr5'</span><span class="token punctuation">,</span> <span class="token number">1295135</span><span class="token punctuation">,</span> <span class="token string">'G'</span><span class="token punctuation">,</span> <span class="token string">'A'</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+hap <span class="token operator">=</span> combine<span class="token punctuation">(</span>muts<span class="token punctuation">)</span>                     <span class="token comment"># TERT promoter double mutant</span></code></pre></div>
+<p>The model is <strong>not diploid-aware</strong>, so a heterozygous state is not modelled. Interpret ALT as homozygous or allele-specific.</p>
+</div></details>
+<details class="recipe" id="610-3d-contact-maps"><summary><h3><a class="anchor" href="#610-3d-contact-maps" aria-label="Link to this recipe">#</a>6.10 3D contact maps</h3></summary><div class="recipe-body"><div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">v <span class="token operator">=</span> genome<span class="token punctuation">.</span>Variant<span class="token punctuation">(</span><span class="token string">'chr7'</span><span class="token punctuation">,</span> <span class="token number">27_200_000</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token string">'T'</span><span class="token punctuation">)</span>   <span class="token comment"># illustrative: replace with your variant (REF must match hg38)</span>
+iv <span class="token operator">=</span> v<span class="token punctuation">.</span>reference_interval<span class="token punctuation">.</span>resize<span class="token punctuation">(</span>dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_1MB<span class="token punctuation">)</span>
+vo <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>predict_variant<span class="token punctuation">(</span>interval<span class="token operator">=</span>iv<span class="token punctuation">,</span> variant<span class="token operator">=</span>v<span class="token punctuation">,</span>
+        requested_outputs<span class="token operator">=</span><span class="token punctuation">[</span>dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>CONTACT_MAPS<span class="token punctuation">]</span><span class="token punctuation">,</span>
+        ontology_terms<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span>                              <span class="token comment"># few tracks (~28) → take all</span>
+
+diff <span class="token operator">=</span> vo<span class="token punctuation">.</span>alternate<span class="token punctuation">.</span>contact_maps<span class="token punctuation">.</span>values <span class="token operator">-</span> vo<span class="token punctuation">.</span>reference<span class="token punctuation">.</span>contact_maps<span class="token punctuation">.</span>values
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'max |Δcontact|:'</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span><span class="token builtin">abs</span><span class="token punctuation">(</span>diff<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+plot_components<span class="token punctuation">.</span>plot<span class="token punctuation">(</span><span class="token punctuation">[</span>plot_components<span class="token punctuation">.</span>ContactMaps<span class="token punctuation">(</span>vo<span class="token punctuation">.</span>reference<span class="token punctuation">.</span>contact_maps<span class="token punctuation">,</span> max_num_tracks<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                     interval<span class="token operator">=</span>iv<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre></div>
+<p><code>plot_components.ContactMapsDiff</code> plots differences on a diverging scale. Contact effects from single SNVs are usually small; they matter most for CTCF-site and boundary variants.</p>
+</div></details>
+<details class="recipe" id="611-interval-scoring-baseline-gene-activity"><summary><h3><a class="anchor" href="#611-interval-scoring-baseline-gene-activity" aria-label="Link to this recipe">#</a>6.11 Interval scoring (baseline gene activity)</h3></summary><div class="recipe-body"><div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python"><span class="token keyword">from</span> alphagenome<span class="token punctuation">.</span>models <span class="token keyword">import</span> interval_scorers
+iv <span class="token operator">=</span> gene_annotation<span class="token punctuation">.</span>get_gene_interval<span class="token punctuation">(</span>gtf<span class="token punctuation">,</span> gene_symbol<span class="token operator">=</span><span class="token string">'GATA1'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>resize<span class="token punctuation">(</span>
+        dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_1MB<span class="token punctuation">)</span>
+res <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>score_interval<span class="token punctuation">(</span>
+        interval<span class="token operator">=</span>iv<span class="token punctuation">,</span>
+        interval_scorers<span class="token operator">=</span><span class="token punctuation">[</span>interval_scorers<span class="token punctuation">.</span>RECOMMENDED_INTERVAL_SCORERS<span class="token punctuation">[</span><span class="token string">'RNA_SEQ'</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+expr <span class="token operator">=</span> variant_scorers<span class="token punctuation">.</span>tidy_scores<span class="token punctuation">(</span>res<span class="token punctuation">)</span>     <span class="token comment"># predicted expression per gene × track</span></code></pre></div>
+<p>Use this for &quot;is gene X predicted to be expressed in cell type Y?&quot;, or as a denominator to normalise variant effects.</p>
+</div></details>
+<details class="recipe" id="612-alphagenome-atlas-precomputed-scores-no-gpu-or-api-compute"><summary><h3><a class="anchor" href="#612-alphagenome-atlas-precomputed-scores-no-gpu-or-api-compute" aria-label="Link to this recipe">#</a>6.12 AlphaGenome Atlas (precomputed scores, no GPU or API compute)</h3></summary><div class="recipe-body"><p>The Atlas (released 8 September 2026) holds precomputed effect predictions for <strong>every possible SNV in the human genome (~9 billion)</strong>. Each variant also gets an <strong>AVI (AlphaGenome Variant Impact) score</strong>: a single number that combines regulatory predictions with AlphaMissense for coding changes, with feature attributions (accessibility, splicing, conservation…).</p>
+<ul>
+<li><strong>Web portal (no code):</strong> <a href="https://alphagenome.google/atlas" target="_blank" rel="noopener">https://alphagenome.google/atlas</a></li>
+<li><strong>Python (package ≥ 0.9.0):</strong></li>
+</ul>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python"><span class="token keyword">from</span> alphagenome <span class="token keyword">import</span> colab_utils
+<span class="token keyword">from</span> alphagenome<span class="token punctuation">.</span>atlas <span class="token keyword">import</span> atlas
+<span class="token keyword">from</span> alphagenome<span class="token punctuation">.</span>data <span class="token keyword">import</span> genome
+
+ac <span class="token operator">=</span> atlas<span class="token punctuation">.</span>create<span class="token punctuation">(</span>colab_utils<span class="token punctuation">.</span>get_api_key<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 1. Which precomputed scorers exist?</span>
+meta <span class="token operator">=</span> ac<span class="token punctuation">.</span>scorer_metadata<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> name<span class="token punctuation">,</span> m <span class="token keyword">in</span> meta<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> m<span class="token punctuation">)</span>
+
+scorer_names <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span>meta<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">3</span><span class="token punctuation">]</span>          <span class="token comment"># choose by name from the list above</span>
+
+<span class="token comment"># 2. One variant</span>
+res <span class="token operator">=</span> ac<span class="token punctuation">.</span>query_variant<span class="token punctuation">(</span>genome<span class="token punctuation">.</span>Variant<span class="token punctuation">(</span><span class="token string">'chr22'</span><span class="token punctuation">,</span> <span class="token number">36201698</span><span class="token punctuation">,</span> <span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                       requested_scorers<span class="token operator">=</span>scorer_names<span class="token punctuation">,</span>
+                       ontology_terms<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'UBERON:0001157'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 3. Many variants, or every SNV in a region (e.g. a promoter / exon)</span>
+res_iv <span class="token operator">=</span> ac<span class="token punctuation">.</span>query_interval<span class="token punctuation">(</span>genome<span class="token punctuation">.</span>Interval<span class="token punctuation">(</span><span class="token string">'chr22'</span><span class="token punctuation">,</span> <span class="token number">36201600</span><span class="token punctuation">,</span> <span class="token number">36201800</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                           requested_scorers<span class="token operator">=</span>scorer_names<span class="token punctuation">,</span>
+                           gene_names<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'APOL4'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> scorer<span class="token punctuation">,</span> adata <span class="token keyword">in</span> res_iv<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>scorer<span class="token punctuation">,</span> adata<span class="token punctuation">.</span>shape<span class="token punctuation">)</span></code></pre></div>
+<p>Atlas vs live API: the Atlas is instant and covers <strong>SNVs on hg38 only</strong>. Indels, haplotypes, custom sequences, mouse or custom scorers need the live API.</p>
+</div></details>
+<details class="recipe" id="613-mouse"><summary><h3><a class="anchor" href="#613-mouse" aria-label="Link to this recipe">#</a>6.13 Mouse</h3></summary><div class="recipe-body"><p>Add <code>organism=dna_client.Organism.MUS_MUSCULUS</code> to any call and use <strong>mm10</strong> coordinates. Track sets differ (there is no <code>PROCAP</code> in mouse), so check <code>output_metadata(Organism.MUS_MUSCULUS)</code>.</p>
+</div></details>
+<details class="recipe" id="614-local-inference-with-open-weights"><summary><h3><a class="anchor" href="#614-local-inference-with-open-weights" aria-label="Link to this recipe">#</a>6.14 Local inference with open weights</h3></summary><div class="recipe-body"><div class="code-block"><div class="code-head"><span class="lang-badge">bash</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-bash"><span class="token function">git</span> clone https://github.com/google-deepmind/alphagenome_research.git
+pip <span class="token function">install</span> <span class="token parameter variable">-e</span> ./alphagenome_research
+<span class="token comment"># Accept the model terms on Kaggle (google/alphagenome) or Hugging Face first</span></code></pre></div>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python"><span class="token keyword">from</span> alphagenome_research<span class="token punctuation">.</span>model <span class="token keyword">import</span> dna_model
+model <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>create_from_kaggle<span class="token punctuation">(</span><span class="token string">'all_folds'</span><span class="token punctuation">)</span>
+<span class="token comment"># Same interface: model.predict_variant(...), model.score_variant(...), ...</span></code></pre></div>
+<p>Requirements: an NVIDIA <strong>H100-class GPU</strong> with JAX/CUDA for inference (TPU v3+ for training). This makes sense for very large screens, sensitive data, or fine-tuning experiments.</p>
+</div></details>
+</section>
+
+<section id="7-use-case-catalogue" class="guide-section" data-num="7">
+<h2><a class="anchor" href="#7-use-case-catalogue" aria-label="Link to this heading">#</a>7. Use-case catalogue</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table data-filterable data-sortable><thead><tr>
+<th>#</th>
+<th>Use case</th>
+<th>What to run</th>
+<th>Key outputs / scorers</th>
+<th>Notes</th>
+</tr>
+</thead><tbody><tr>
+<td>1</td>
+<td><strong>Non-coding VUS prioritisation</strong> (rare disease, cancer)</td>
+<td>Batch scoring (§6.7) or Atlas lookup (§6.12)</td>
+<td>All recommended scorers; AVI</td>
+<td>Rank by max |quantile| in the relevant tissue</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Splice-variant interpretation</strong> (exonic, canonical ±1/2, deep intronic)</td>
+<td>§6.6 merged score + sashimi + PSI</td>
+<td><code>SPLICE_*</code></td>
+<td>Combine with SpliceAI/RNA-seq if available</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>GWAS / eQTL fine-mapping</strong></td>
+<td>Score all SNPs in a credible set</td>
+<td><code>RNA_SEQ</code>, <code>DNASE</code>, <code>CHIP_HISTONE</code>, <code>CAGE</code></td>
+<td>Look for one variant with a consistent multi-modal effect</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Mechanism of a regulatory variant</strong></td>
+<td><code>predict_variant</code> + ISM around the variant</td>
+<td><code>CHIP_TF</code>, <code>DNASE</code>, ISM logo</td>
+<td>Does it create or destroy a TF motif? Which TF?</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Enhancer–gene linking</strong></td>
+<td><code>predict_interval</code> (1 Mb) + contact maps; in-silico deletion of the enhancer</td>
+<td><code>RNA_SEQ</code> LFC on candidate genes, <code>CONTACT_MAPS</code></td>
+<td>Delete the element via <code>predict_sequence</code> on the edited sequence</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Promoter / UTR / polyA variants</strong></td>
+<td>Score with <code>CAGE</code>, <code>PROCAP</code>, <code>POLYADENYLATION</code></td>
+<td>TSS usage, PAS usage</td>
+<td>Good for 5′/3′ UTR VUS</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Designing genome edits in silico</strong> (base/prime editing, CRISPR KO of regulatory elements)</td>
+<td>Edited-sequence prediction (§6.3) or a multi-variant haplotype (§6.9)</td>
+<td>Δ tracks at the target and genome-wide within 1 Mb</td>
+<td>Check that intended corrections restore WT-like expression/splicing and that silent/PAM-disrupting edits don&#39;t create cryptic splice sites</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Transgene / vector cassette design</strong></td>
+<td>Predict the construct embedded in a genomic context</td>
+<td><code>SPLICE_SITES</code> (cryptic sites in the cDNA), <code>DNASE</code>, <code>CAGE</code></td>
+<td>Out-of-distribution: use for flagging risks, not for quantitative claims</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>CRISPR screen / MPRA follow-up</strong></td>
+<td>Score tiled variants; ISM</td>
+<td><code>DNASE</code>, <code>ATAC</code>, <code>CAGE</code></td>
+<td>Compare predicted vs measured activity to pick hits</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>Synthetic regulatory element design</strong></td>
+<td>Iterative mutate → predict loop</td>
+<td><code>DNASE</code>/<code>CAGE</code> in the target cell type</td>
+<td>Validate experimentally; designs drift off-distribution</td>
+</tr>
+<tr>
+<td>11</td>
+<td><strong>Cell-type-specific regulation</strong></td>
+<td>Same variant across many <code>ontology_terms</code></td>
+<td>Tidy table grouped by <code>biosample_name</code></td>
+<td>Shows where a variant acts</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>Cross-species (mouse model) checks</strong></td>
+<td>Same analysis with <code>MUS_MUSCULUS</code> on the orthologous locus</td>
+<td>All</td>
+<td>Is the human variant&#39;s effect conserved in your mouse model?</td>
+</tr>
+<tr>
+<td>13</td>
+<td><strong>Teaching / hypothesis generation</strong></td>
+<td>Plot tracks for any locus</td>
+<td>Everything</td>
+<td>Fast &quot;virtual ENCODE&quot; for loci without data</td>
+</tr>
+</tbody></table></div>
+</section>
+
+<section id="8-interpreting-scores--best-practices" class="guide-section" data-num="8">
+<h2><a class="anchor" href="#8-interpreting-scores--best-practices" aria-label="Link to this heading">#</a>8. Interpreting scores — best practices</h2>
+<ol>
+<li><strong>Prefer <code>quantile_score</code></strong> when it is present. It ranks the effect against a background distribution of common variants, so it is comparable across modalities. <code>raw_score</code> is in modality-specific units (log fold change, probability difference…).</li>
+<li><strong>Match the biology:</strong> filter to tissues or cell types relevant to your phenotype. A big effect in an irrelevant tissue is weak evidence.</li>
+<li><strong>Check strand:</strong> use <code>match_gene_strand=True</code> in <code>tidy_scores</code> so that a gene isn&#39;t scored on the opposite-strand RNA track.</li>
+<li><strong>Look at consistency across modalities:</strong> a real enhancer variant often moves DNase/ATAC, H3K27ac, the TF track and target-gene RNA in the same direction.</li>
+<li><strong>Always plot the top hits</strong> (REF/ALT overlay or sashimi) before believing a score.</li>
+<li><strong>Effect sizes are relative</strong>, not absolute expression levels. Use <code>*_ACTIVE</code> scorers or interval scoring to check that the region or gene is active at all.</li>
+<li><strong>Use 1 Mb context</strong> for anything gene-level.</li>
+<li><strong>Calibrate locally:</strong> score known pathogenic and benign variants in your gene of interest, then set your own thresholds.</li>
+<li><strong>ACMG/AMP:</strong> treat AlphaGenome as <em>computational supporting evidence</em> (PP3/BP4-type), never as stand-alone proof.</li>
+<li><strong>Report</strong> the package version, model version (<code>ALL_FOLDS</code>), sequence length, ontology terms and scorers used.</li>
+</ol>
+</section>
+
+<section id="9-limitations" class="guide-section" data-num="9">
+<h2><a class="anchor" href="#9-limitations" aria-label="Link to this heading">#</a>9. Limitations</h2>
+<ul>
+<li><strong>Not diploid-aware.</strong> It sees one sequence and does not model heterozygosity or allele interactions in trans.</li>
+<li><strong>Personal genomes and large structural variants</strong> are not benchmarked. Synthetic or heavily edited sequences are out of distribution.</li>
+<li><strong>Very distal (&gt; ~100 kb) enhancer effects and fine tissue specificity</strong> remain hard. The 1 Mb window helps but is not perfect.</li>
+<li><strong>Molecular, not phenotypic:</strong> it predicts molecular readouts, not disease, penetrance or complex traits.</li>
+<li><strong>Species:</strong> human and mouse only. Quality on other species is untested.</li>
+<li><strong>Training-data bias:</strong> it is limited to the cell types and assays in ENCODE, GTEx, FANTOM5, 4DN and similar. Rare cell states may be missing.</li>
+<li><strong>Licence:</strong> the API and weights are <strong>non-commercial</strong>. Commercial work must go through Google Cloud.</li>
+</ul>
+</section>
+
+<section id="10-troubleshooting-and-quotas" class="guide-section" data-num="10">
+<h2><a class="anchor" href="#10-troubleshooting-and-quotas" aria-label="Link to this heading">#</a>10. Troubleshooting and quotas</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Fix</th>
+</tr>
+</thead><tbody><tr>
+<td><code>ValueError</code> on sequence length</td>
+<td>Length is not 16,384 / 131,072 / 524,288 / 1,048,576</td>
+<td><code>interval.resize(dna_client.SEQUENCE_LENGTH_1MB)</code></td>
+</tr>
+<tr>
+<td>Scores look like noise / REF mismatch</td>
+<td>hg19 coordinates, or 0- vs 1-based confusion</td>
+<td>LiftOver to hg38; Variant = 1-based, Interval = 0-based</td>
+</tr>
+<tr>
+<td>Empty output for a tissue</td>
+<td>No tracks of that assay for that CURIE</td>
+<td>Check <code>output_metadata</code> (§6.1)</td>
+</tr>
+<tr>
+<td>Gene missing from RNA scores</td>
+<td>Gene is outside the interval, or a strand mismatch</td>
+<td>Use 1 Mb; check <code>match_gene_strand</code></td>
+</tr>
+<tr>
+<td><code>RESOURCE_EXHAUSTED</code> / timeouts</td>
+<td>Rate limits under high demand</td>
+<td>Lower <code>max_workers</code>, chunk, back off and retry (§6.7), run overnight</td>
+</tr>
+<tr>
+<td>Very slow responses</td>
+<td>Requesting all tracks × all outputs at 1 Mb</td>
+<td>Request fewer <code>requested_outputs</code>; set <code>ontology_terms</code></td>
+</tr>
+<tr>
+<td>Memory blow-up</td>
+<td>Saving full 1 Mb × 600+ tracks for many variants</td>
+<td>Save scores (tidy CSV), not raw tracks; or <code>.slice_by_interval()</code> first</td>
+</tr>
+<tr>
+<td>&gt; 1M predictions needed</td>
+<td>Beyond the API&#39;s intended scale</td>
+<td>Use the Atlas for SNVs, or local weights</td>
+</tr>
+</tbody></table></div>
+<p>The client already retries transient RPC errors. Wrap long jobs with checkpointing anyway.</p>
+</section>
+
+<section id="11-resources-and-citation" class="guide-section" data-num="11">
+<h2><a class="anchor" href="#11-resources-and-citation" aria-label="Link to this heading">#</a>11. Resources and citation</h2>
+<p><strong>Official</strong></p>
+<ul>
+<li>Documentation: <a href="https://www.alphagenomedocs.com" target="_blank" rel="noopener">https://www.alphagenomedocs.com</a></li>
+<li>API client: <a href="https://github.com/google-deepmind/alphagenome" target="_blank" rel="noopener">https://github.com/google-deepmind/alphagenome</a> (Apache 2.0) · PyPI <code>alphagenome</code></li>
+<li>Research code + weights: <a href="https://github.com/google-deepmind/alphagenome_research" target="_blank" rel="noopener">https://github.com/google-deepmind/alphagenome_research</a> · Kaggle <code>google/alphagenome</code> · Hugging Face <code>google/alphagenome</code></li>
+<li>API key: <a href="https://deepmind.google.com/science/alphagenome" target="_blank" rel="noopener">https://deepmind.google.com/science/alphagenome</a></li>
+<li>Atlas portal: <a href="https://alphagenome.google/atlas" target="_blank" rel="noopener">https://alphagenome.google/atlas</a> · announcement: <a href="https://blog.google/innovation-and-ai/models-and-research/google-deepmind/alphagenome-atlas/" target="_blank" rel="noopener">https://blog.google/innovation-and-ai/models-and-research/google-deepmind/alphagenome-atlas/</a></li>
+<li>Community forum: <a href="https://www.alphagenomecommunity.com" target="_blank" rel="noopener">https://www.alphagenomecommunity.com</a></li>
+<li>Tutorials (Colab): quick start, visualisation tour, variant scoring UI, ontology mapping, batch scoring, TAL1 locus workflow, splicing scoring, PSI derivation, haplotypes</li>
+</ul>
+<p><strong>Related tools</strong></p>
+<ul>
+<li>AlphaFold Server (AF3): <a href="https://alphafoldserver.com" target="_blank" rel="noopener">https://alphafoldserver.com</a> · AlphaFold DB: <a href="https://alphafold.ebi.ac.uk" target="_blank" rel="noopener">https://alphafold.ebi.ac.uk</a></li>
+<li>AlphaMissense: <a href="https://github.com/google-deepmind/alphamissense" target="_blank" rel="noopener">https://github.com/google-deepmind/alphamissense</a></li>
+<li>EBI Ontology Lookup Service: <a href="https://www.ebi.ac.uk/ols4" target="_blank" rel="noopener">https://www.ebi.ac.uk/ols4</a> · UCSC LiftOver: <a href="https://genome.ucsc.edu/cgi-bin/hgLiftOver" target="_blank" rel="noopener">https://genome.ucsc.edu/cgi-bin/hgLiftOver</a></li>
+</ul>
+<p><strong>Cite</strong></p>
+<aside class="callout callout-note" role="note"><p class="callout-title">Note</p><p>Avsec Ž. et al. <em>Advancing regulatory variant effect prediction with AlphaGenome.</em> <strong>Nature</strong> 649, 1206–1218 (2026). doi:10.1038/s41586-025-10014-0</p>
+</aside>
+<p>The AlphaGenome Atlas has its own preprint (medRxiv, September 2026). Cite it when you use Atlas/AVI scores.</p>
+<div class="citation card">
+<h3 class="plain-h">Cite AlphaGenome</h3>
+<pre id="cite-text" class="cite" tabindex="0">Avsec Ž. et al. Advancing regulatory variant effect prediction with AlphaGenome. Nature 649, 1206–1218 (2026). doi:10.1038/s41586-025-10014-0</pre>
+<pre id="cite-bib" class="cite" tabindex="0">@article{avsec2026alphagenome,
+  author  = {Avsec, {\v{Z}}. and others},
+  title   = {Advancing regulatory variant effect prediction with AlphaGenome},
+  journal = {Nature},
+  volume  = {649},
+  pages   = {1206--1218},
+  year    = {2026},
+  doi     = {10.1038/s41586-025-10014-0}
+}</pre>
+<div class="btn-row"><button type="button" class="btn" data-copy-from="#cite-text">Copy citation (plain text)</button><button type="button" class="btn" data-copy-from="#cite-bib">Copy BibTeX</button></div>
+</div>
+</section>
+</article>
+<footer class="site-footer">
+<p>Unofficial internal guide — not affiliated with Google DeepMind. AlphaGenome API and weights are for non-commercial use.</p>
+<p>Official resources:
+<a href="https://alphagenomedocs.com" target="_blank" rel="noopener">AlphaGenome docs</a> ·
+<a href="https://deepmind.google.com/science/alphagenome" target="_blank" rel="noopener">API access &amp; terms</a> ·
+<a href="https://github.com/google-deepmind/alphagenome" target="_blank" rel="noopener">GitHub repository</a> ·
+<a href="https://www.ebi.ac.uk/ols4" target="_blank" rel="noopener">EBI OLS (ontology terms)</a></p>
+</footer>
+</main>
+<aside class="toc" aria-label="On this page"><p class="toc-title">On this page</p><ul id="toc-list"></ul></aside>
+</div>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

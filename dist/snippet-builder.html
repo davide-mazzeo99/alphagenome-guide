@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Snippet builder — AlphaGenome Guide</title>
+<meta name="description" content="Unofficial internal guide to AlphaGenome: installation, variant scoring, splicing analysis and troubleshooting.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script>try{var t=localStorage.getItem('ag-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="builder">
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+<button type="button" class="icon-btn menu-btn" id="menu-btn" aria-label="Toggle navigation" aria-expanded="false" aria-controls="sidebar"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+<a class="brand" href="index.html">AlphaGenome Guide</a>
+<div class="search" role="search">
+<input id="search" type="search" placeholder="Search the guide  ( / )" aria-label="Search the guide" role="combobox" aria-expanded="false" aria-controls="search-results" aria-autocomplete="list" autocomplete="off" spellcheck="false">
+<ul id="search-results" role="listbox" aria-label="Search results" hidden></ul>
+</div>
+<button type="button" class="icon-btn" id="theme-btn" aria-label="Toggle light/dark theme" title="Toggle theme"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2a8 8 0 1 0 8 8 6 6 0 0 1-8-8z" fill="currentColor"/></svg></button>
+</header>
+<div class="layout">
+<nav class="sidebar" id="sidebar" aria-label="Guide sections"><ul><li><a href="index.html#home" data-section="home">Home</a></li><li><a href="index.html#1-what-alphagenome-is-and-isnt" data-section="1-what-alphagenome-is-and-isnt">1. What AlphaGenome is (and isn't)</a></li><li><a href="index.html#2-alphagenome-vs-alphafold-vs-alphamissense" data-section="2-alphagenome-vs-alphafold-vs-alphamissense">2. AlphaGenome vs AlphaFold vs AlphaMissense</a></li><li><a href="index.html#3-ways-to-access-the-model" data-section="3-ways-to-access-the-model">3. Ways to access the model</a></li><li><a href="index.html#4-installation-and-api-key" data-section="4-installation-and-api-key">4. Installation and API key</a></li><li><a href="index.html#5-core-concepts-you-must-get-right" data-section="5-core-concepts-you-must-get-right">5. Core concepts you must get right</a></li><li><a href="index.html#6-recipes-code" data-section="6-recipes-code">6. Recipes (code)</a></li><li><a href="index.html#7-use-case-catalogue" data-section="7-use-case-catalogue">7. Use-case catalogue</a></li><li><a href="index.html#8-interpreting-scores--best-practices" data-section="8-interpreting-scores--best-practices">8. Interpreting scores — best practices</a></li><li><a href="index.html#9-limitations" data-section="9-limitations">9. Limitations</a></li><li><a href="index.html#10-troubleshooting-and-quotas" data-section="10-troubleshooting-and-quotas">10. Troubleshooting and quotas</a></li><li><a href="index.html#11-resources-and-citation" data-section="11-resources-and-citation">11. Resources and citation</a></li>
+<li class="nav-sep"><a href="snippet-builder.html" data-page="builder" aria-current="page">Snippet builder</a></li></ul></nav>
+<div class="scrim" id="scrim" hidden></div>
+<div class="content-wrap">
+<main id="main" class="content" tabindex="-1">
+<article>
+<section id="builder" class="guide-section" data-num="0">
+<h1>Snippet builder</h1>
+<p class="subtitle">Fill in the form to get a ready-to-run Python script for scoring one variant. Nothing is sent anywhere — the code is generated in your browser. Your API key is <strong>never</strong> requested: the script reads <code>ALPHA_GENOME_API_KEY</code> from the environment (see <a href="index.html#4-installation-and-api-key">§4</a>).</p>
+<aside class="callout callout-warning" role="note"><p class="callout-title">Coordinates</p><p>The variant position is <strong>1-based</strong> (copy <code>POS</code> straight from a VCF) and must be on <strong>hg38</strong>. Check that <code>REF</code> matches hg38 at that position. See <a href="index.html#51-coordinates-the-1-source-of-bugs">§5.1</a>.</p></aside>
+<form id="builder-form" class="card builder" novalidate autocomplete="off">
+<div class="form-grid">
+<div class="field"><label for="f-chrom">Chromosome</label><input id="f-chrom" list="chrom-list" value="chr22" inputmode="text" aria-describedby="e-chrom"><datalist id="chrom-list"></datalist><span class="hint">chr1–chr22, chrX, chrY</span><span class="err" id="e-chrom" aria-live="polite"></span></div>
+<div class="field"><label for="f-pos">Position (1-based)</label><input id="f-pos" value="36201698" inputmode="numeric" aria-describedby="e-pos"><span class="hint">Positive integer, VCF-style</span><span class="err" id="e-pos" aria-live="polite"></span></div>
+<div class="field"><label for="f-ref">REF</label><input id="f-ref" value="A" aria-describedby="e-ref" spellcheck="false"><span class="hint">Letters A, C, G, T only</span><span class="err" id="e-ref" aria-live="polite"></span></div>
+<div class="field"><label for="f-alt">ALT</label><input id="f-alt" value="C" aria-describedby="e-alt" spellcheck="false"><span class="hint">Letters A, C, G, T only</span><span class="err" id="e-alt" aria-live="polite"></span></div>
+<div class="field"><label for="f-len">Sequence length</label>
+<select id="f-len"><option value="SEQUENCE_LENGTH_16KB">16 KB</option><option value="SEQUENCE_LENGTH_100KB">100 KB</option><option value="SEQUENCE_LENGTH_500KB">500 KB</option><option value="SEQUENCE_LENGTH_1MB" selected>1 MB (recommended)</option></select>
+<span class="hint">16 KB for fast exploration; 1 MB gives the best results (§5.2)</span></div>
+<div class="field"><label for="f-onto">Ontology term(s)</label><input id="f-onto" value="UBERON:0002107" aria-describedby="e-onto" spellcheck="false" placeholder="e.g. UBERON:0002107"><div class="presets" role="group" aria-label="Ontology presets">
+<button type="button" data-onto="UBERON:0002107">Liver</button><button type="button" data-onto="UBERON:0002048">Lung</button><button type="button" data-onto="CL:0000084">T cell</button><button type="button" data-onto="EFO:0002067">K562</button></div>
+<span class="hint">Comma-separate several; leave empty for all tracks (§5.3)</span><span class="err" id="e-onto" aria-live="polite"></span></div>
+</div>
+<fieldset class="field"><legend class="lbl">Scorers</legend>
+<div class="scorers" id="scorers">
+<label><input type="checkbox" value="RNA_SEQ" checked> RNA_SEQ</label>
+<label><input type="checkbox" value="DNASE"> DNASE</label>
+<label><input type="checkbox" value="ATAC"> ATAC</label>
+<label><input type="checkbox" value="CHIP_HISTONE"> CHIP_HISTONE</label>
+<label><input type="checkbox" value="CAGE"> CAGE</label>
+<label><input type="checkbox" value="SPLICE_SITES"> SPLICE_SITES</label>
+<label><input type="checkbox" value="SPLICE_SITE_USAGE"> SPLICE_SITE_USAGE</label>
+<label><input type="checkbox" value="SPLICE_JUNCTIONS"> SPLICE_JUNCTIONS</label>
+</div><span class="err" id="e-scorers" aria-live="polite"></span></fieldset>
+</form>
+<div class="builder">
+<div class="btn-row"><button type="button" class="btn btn-primary" id="copy-snippet">Copy code</button></div>
+<p id="snippet-status" role="status" aria-live="polite"></p>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span></div><pre tabindex="0"><code id="snippet-output" class="language-python"></code></pre></div>
+</div>
+</section>
+</article>
+<footer class="site-footer">
+<p>Unofficial internal guide — not affiliated with Google DeepMind. AlphaGenome API and weights are for non-commercial use.</p>
+<p>Official resources:
+<a href="https://alphagenomedocs.com" target="_blank" rel="noopener">AlphaGenome docs</a> ·
+<a href="https://deepmind.google.com/science/alphagenome" target="_blank" rel="noopener">API access &amp; terms</a> ·
+<a href="https://github.com/google-deepmind/alphagenome" target="_blank" rel="noopener">GitHub repository</a> ·
+<a href="https://www.ebi.ac.uk/ols4" target="_blank" rel="noopener">EBI OLS (ontology terms)</a></p>
+</footer>
+</main>
+
+</div>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/builder.js"></script>
+</body>
+</html>
