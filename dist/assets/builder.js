@@ -114,5 +114,28 @@
     if (f.errs) { status.textContent = 'Fix the highlighted fields before copying.'; return; }
     window.agCopy(out.textContent, this);
   });
+  // Worked examples (variants from the paper and from guide §6.4/§6.6.1)
+  var PRESETS = {
+    rs9610445: { chrom: 'chr22', pos: '36201698', ref: 'A', alt: 'C', len: 'SEQUENCE_LENGTH_1MB', onto: 'UBERON:0001157', scorers: ['RNA_SEQ', 'DNASE', 'CHIP_HISTONE'],
+      note: 'Known eQTL/sQTL. Expected: ALT (C) lowers expression of the gene; paper variant score -1.52, quantile -1.00. Tissue: transverse colon (as in guide section 6.4).' },
+    brca2: { chrom: 'chr13', pos: '32316462', ref: 'T', alt: 'G', len: 'SEQUENCE_LENGTH_1MB', onto: '', scorers: ['SPLICE_SITES', 'SPLICE_SITE_USAGE', 'SPLICE_JUNCTIONS'],
+      note: 'BRCA2 variant near a splice site, from guide section 6.6.1. Splice scorers have no tissue filter, so the ontology field is empty.' },
+    exonskip: { chrom: 'chr3', pos: '197081044', ref: 'TACTC', alt: 'T', len: 'SEQUENCE_LENGTH_1MB', onto: '', scorers: ['SPLICE_SITES', 'SPLICE_SITE_USAGE', 'SPLICE_JUNCTIONS'],
+      note: '4-bp deletion seen to cause exon skipping in tibial artery (GTEx). Expected: lower exon splice-site usage, new junction bypassing the exon.' },
+    newjunction: { chrom: 'chr21', pos: '46126238', ref: 'G', alt: 'C', len: 'SEQUENCE_LENGTH_1MB', onto: '', scorers: ['SPLICE_SITES', 'SPLICE_SITE_USAGE', 'SPLICE_JUNCTIONS'],
+      note: 'Seen in a GTEx RNA-seq sample as a new splice junction and an extended exon.' },
+    tal1: { chrom: 'chr1', pos: '47239296', ref: 'C', alt: 'ACG', len: 'SEQUENCE_LENGTH_1MB', onto: '', scorers: ['RNA_SEQ', 'DNASE', 'CHIP_HISTONE'],
+      note: 'Oncogenic T-ALL neo-enhancer near TAL1. The paper used CD34+ common myeloid progenitor (CMP) tracks: find their ontology term with guide section 6.1 and paste it into the tissue field (see G4).' }
+  };
+  document.querySelectorAll('[data-preset]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var p = PRESETS[b.getAttribute('data-preset')];
+      $('#f-chrom').value = p.chrom; $('#f-pos').value = p.pos; $('#f-ref').value = p.ref; $('#f-alt').value = p.alt;
+      $('#f-len').value = p.len; $('#f-onto').value = p.onto;
+      document.querySelectorAll('#scorers input').forEach(function (c) { c.checked = p.scorers.indexOf(c.value) >= 0; });
+      $('#preset-note').textContent = p.note;
+      update();
+    });
+  });
   update();
 })();

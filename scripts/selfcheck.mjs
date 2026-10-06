@@ -73,6 +73,21 @@ check('copy button gives feedback', (await page.locator('.code-block .copy-btn')
 check('external links are noopener + new tab', await page.evaluate(() => [...document.querySelectorAll('a[href^="http"]')].every((a) => a.target === '_blank' && /noopener/.test(a.rel))));
 check('no API key text', !(await page.content()).match(/AIza[0-9A-Za-z_-]{20,}/));
 
+// beginner material
+const navGroups = await page.locator('.sidebar .nav-group').allTextContents();
+check('sidebar groups: Start here / Practical guides / Reference guide', navGroups.join('|') === 'Start here|Practical guides|Reference guide', navGroups.join('|'));
+check('7 practical guides + 5 start-here sections', (await page.locator('.sidebar a[data-section^="g"]').count()) === 8 && (await page.locator('.sidebar a[data-section^="s"]').count()) >= 5);
+check('glossary table is filterable', (await page.locator('[id^="s3-"] table[data-filterable]').count()) === 1);
+check('§ references became links', (await page.locator('a.xref').count()) > 50, String(await page.locator('a.xref').count()));
+await page.fill('#search', 'MYB');
+check('search "MYB" finds the TAL1 guide', (await page.locator('#search-results a[role="option"]').count()) > 0);
+await page.fill('#search', 'positive control');
+check('search "positive control" finds guides', (await page.locator('#search-results a[role="option"]').count()) > 0);
+await page.keyboard.press('Escape'); await page.keyboard.press('Escape');
+await page.locator('[id="g2-score-one-variant-and-read-the-table-worked-example-rs9610445"]').scrollIntoViewIfNeeded();
+await page.waitForTimeout(400);
+await page.screenshot({ path: path.join(SHOTS, 'guide-g2-1280.png') });
+
 // theme toggle persists
 await page.click('#theme-btn');
 const th = await page.evaluate(() => [document.documentElement.dataset.theme, localStorage.getItem('ag-theme')]);
@@ -106,6 +121,11 @@ await page.click('[data-onto="CL:0000084"]');
 await page.selectOption('#f-len', 'SEQUENCE_LENGTH_16KB');
 const code2 = await page.locator('#snippet-output').textContent();
 check('form values flow into code', code2.includes("genome.Variant('chrX', 123, 'A', 'C')") && code2.includes('CL:0000084') && code2.includes('SEQUENCE_LENGTH_16KB'));
+for (const [name, needle] of [['rs9610445', "'chr22', 36201698, 'A', 'C'"], ['brca2', "'chr13', 32316462, 'T', 'G'"], ['exonskip', "'chr3', 197081044, 'TACTC', 'T'"], ['newjunction', "'chr21', 46126238, 'G', 'C'"], ['tal1', "'chr1', 47239296, 'C', 'ACG'"]]) {
+  await page.click(`[data-preset="${name}"]`);
+  check(`builder example "${name}" generates the right variant`, (await page.locator('#snippet-output').textContent()).includes(needle));
+}
+check('builder examples show no validation errors', (await page.locator('.err:not(:empty)').count()) === 0);
 await page.screenshot({ path: path.join(SHOTS, 'builder-1280.png'), fullPage: true });
 
 // ---- mobile ----
@@ -139,18 +159,19 @@ if (recipes) {
   check('print: no nav', !(await page.locator('.sidebar').isVisible()));
   await page.emulateMedia({ media: 'screen' });
 }
-if (await page.locator('table[data-filterable]').count()) {
-  const n0 = await page.locator('table[data-filterable] tbody tr:not([hidden])').count();
-  await page.fill('.table-tools input', 'splic');
-  const n1 = await page.locator('table[data-filterable] tbody tr:not([hidden])').count();
+const UC = '[id="7-use-case-catalogue"]';
+if (await page.locator(`${UC} table[data-filterable]`).count()) {
+  const n0 = await page.locator(`${UC} tbody tr:not([hidden])`).count();
+  await page.fill(`${UC} .table-tools input`, 'splic');
+  const n1 = await page.locator(`${UC} tbody tr:not([hidden])`).count();
   check('use-case table filters', n1 < n0, `${n0} → ${n1}`);
-  await page.fill('.table-tools input', '');
-  await page.selectOption('.table-tools select[aria-label="Filter by output type"]', 'DNASE');
-  const n2 = await page.locator('table[data-filterable] tbody tr:not([hidden])').count();
+  await page.fill(`${UC} .table-tools input`, '');
+  await page.selectOption(`${UC} .table-tools select[aria-label="Filter by output type"]`, 'DNASE');
+  const n2 = await page.locator(`${UC} tbody tr:not([hidden])`).count();
   check('output-type filter works', n2 > 0 && n2 < n0, `${n0} → ${n2}`);
-  await page.selectOption('.table-tools select[aria-label="Filter by output type"]', '');
-  await page.selectOption('.table-tools select[aria-label="Filter by task"]', { index: 2 });
-  check('task filter works', (await page.locator('table[data-filterable] tbody tr:not([hidden])').count()) === 1);
+  await page.selectOption(`${UC} .table-tools select[aria-label="Filter by output type"]`, '');
+  await page.selectOption(`${UC} .table-tools select[aria-label="Filter by task"]`, { index: 2 });
+  check('task filter works', (await page.locator(`${UC} tbody tr:not([hidden])`).count()) === 1);
   check('BibTeX generated from the guide citation', (await page.locator('#cite-bib').textContent()).includes('10.1038/s41586-025-10014-0'));
   check('14 recipe cards (6.1–6.14)', (await page.locator('details.recipe').count()) === 14, String(await page.locator('details.recipe').count()));
 }

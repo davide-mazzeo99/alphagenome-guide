@@ -108,6 +108,31 @@ for (const t of tokens) {
 const order = contents.length ? contents : [...sections.values()].map(({ title, id }) => ({ title, id }));
 for (const s of sections.values()) if (!order.some((o) => o.id === s.id)) order.push({ title: s.title, id: s.id });
 
+// ---------- extra parts (extras/NN-*.md): beginner material placed around the reference guide ----------
+const GROUPS = { '00': 'Start here', '10': 'Practical guides' };
+const groupOf = new Map();
+const before = [], after = [];
+const extrasDir = path.join(ROOT, 'extras');
+if (fs.existsSync(extrasDir)) {
+  for (const f of fs.readdirSync(extrasDir).filter((x) => x.endsWith('.md')).sort()) {
+    const prefix = f.slice(0, 2);
+    const label = GROUPS[prefix] || f.replace(/^\d+-|\.md$/g, '').replace(/-/g, ' ');
+    let part = null;
+    for (const t of marked.lexer(fs.readFileSync(path.join(extrasDir, f), 'utf8'))) {
+      if (t.type === 'heading' && (t.depth === 2 || (t.depth === 1 && !part))) {
+        part = { title: t.text, id: slug(t.text), tokens: [] };
+        sections.set(part.id, part); groupOf.set(part.id, label);
+        (+prefix < 50 ? before : after).push({ title: part.title, id: part.id });
+      } else if (part && t.type !== 'space') part.tokens.push(t);
+    }
+    // a lone "# title" with no introduction text is just the file title: drop it
+    for (const e of [...before, ...after]) if (sections.get(e.id)?.tokens.length === 0) { sections.delete(e.id); groupOf.delete(e.id); }
+    for (const list of [before, after]) for (let i = list.length - 1; i >= 0; i--) if (!sections.has(list[i].id)) list.splice(i, 1);
+  }
+}
+order.forEach((o) => groupOf.set(o.id, 'Reference guide'));
+order.unshift(...before); order.push(...after);
+
 // ---------- render sections ----------
 const num = (t) => { const m = t.match(/^(\d+)\./); return m ? +m[1] : 0; };
 const splitSubs = (toks) => {
@@ -168,7 +193,7 @@ ${n === 11 ? citationHtml(null) : ''}
   }
   headings.push({ level: 2, text: o.title, id: o.id });
   used.add(o.id);
-  tableAttr = n === 1 ? 'data-sortable' : n === 7 ? 'data-filterable data-sortable' : '';
+  tableAttr = n === 1 ? 'data-sortable' : n === 7 ? 'data-filterable data-sortable' : /glossary/i.test(o.title) ? 'data-filterable' : '';
   const { intro, subs } = splitSubs(s.tokens);
   const ctx = {};
   const colabSub = subs.find((x) => /^4\.3/.test(x.head.text));
@@ -221,6 +246,7 @@ const sectionHtml = order.map(renderSection).join('\n');
 const findId = (re) => headings.find((h) => re.test(h.text))?.id;
 const sec1 = sections.get(order.find((o) => num(o.title) === 1)?.id);
 const whatIs = sec1?.tokens.find((t) => t.type === 'paragraph');
+const idOf = (prefix) => order.find((o) => o.title.startsWith(prefix + '.'))?.id || '';
 const cardTarget = {
   install: '#' + (order.find((o) => num(o.title) === 4)?.id || ''),
   predict: '#' + (findId(/^5\.6/) || ''),
@@ -265,14 +291,34 @@ ${whatIs ? render([whatIs]) : '<!-- TODO: §1 intro paragraph missing -->'}
 <a class="card link-card" href="${cardTarget.score}"><span class="card-kicker">3</span><strong>Score variants</strong><span>Scalar ALT-vs-REF effect scores — try the snippet builder</span></a>
 <a class="card link-card" href="${cardTarget.splice}"><span class="card-kicker">4</span><strong>Splicing</strong><span><code>SPLICE_SITES</code>, <code>SPLICE_SITE_USAGE</code>, <code>SPLICE_JUNCTIONS</code></span></a>
 </div>
+<aside class="callout callout-tip" role="note"><p class="callout-title">New to bioinformatics?</p><p>Start with <a href="#${idOf('S1')}">S1 · AlphaGenome in plain language</a>, keep the <a href="#${idOf('S3')}">glossary</a> open, then follow a <a href="#${idOf('G1')}">practical guide</a>: first prediction (G1), scoring a variant (G2), splicing (G3), a leukaemia locus screen (G4).</p></aside>
 ${decisionHtml}
 <p class="updated">${inline(checked)} · Site built ${new Date().toISOString().slice(0, 10)}.</p>
 </section>\n`;
 
+// ---------- turn "§6.6.1", "G5", "S4" references into links (never inside code or existing links) ----------
+const refMap = new Map();
+for (const h of headings) {
+  const m = h.text.match(/^(\d+(?:\.\d+)*)\.?\s/) || h.text.match(/^([SG]\d+)\.\s/);
+  if (m && !refMap.has(m[1])) refMap.set(m[1], h.id);
+}
+const linkify = (html) => html.split(/(<button[\s\S]*?<\/button>|<h[1-6][\s\S]*?<\/h[1-6]>|<pre[\s\S]*?<\/pre>|<a [\s\S]*?<\/a>|<code[\s\S]*?<\/code>|<[^>]+>)/).map((part, i) => {
+  if (i % 2) return part;
+  return part
+    .replace(/§(\d+(?:\.\d+)*)/g, (all, n) => (refMap.has(n) ? `<a class="xref" href="#${refMap.get(n)}">${all}</a>` : all))
+    .replace(/\b([SG]\d+)\b/g, (all, n) => (refMap.has(n) ? `<a class="xref" href="#${refMap.get(n)}">${all}</a>` : all));
+}).join('');
+
 // ---------- page chrome ----------
 const navItems = [{ id: 'home', title: 'Home' }, ...order];
-const navHtml = (page) => `<ul>${navItems.map((o) => `<li><a href="${page === 'index' ? '' : 'index.html'}#${o.id}" data-section="${o.id}">${esc(o.title)}</a></li>`).join('')}
-<li class="nav-sep"><a href="snippet-builder.html" data-page="builder"${page === 'builder' ? ' aria-current="page"' : ''}>Snippet builder</a></li></ul>`;
+let lastGroup = null;
+const navHtml = (page) => (lastGroup = null, `<ul>${navItems.map((o) => {
+  const g = groupOf.get(o.id); let head = '';
+  if (g && g !== lastGroup) { head = `<li class="nav-group" role="presentation">${esc(g)}</li>`; }
+  lastGroup = g || lastGroup;
+  return `${head}<li><a href="${page === 'index' ? '' : 'index.html'}#${o.id}" data-section="${o.id}">${esc(o.title)}</a></li>`;
+}).join('')}
+<li class="nav-sep"><a href="snippet-builder.html" data-page="builder"${page === 'builder' ? ' aria-current="page"' : ''}>Snippet builder</a></li></ul>`);
 
 const layout = ({ page, pageTitle, body, scripts }) => `<!doctype html>
 <html lang="en">
@@ -345,12 +391,23 @@ fs.writeFileSync(path.join(ASSETS, 'favicon.svg'), '<svg xmlns="http://www.w3.or
 fs.writeFileSync(path.join(ASSETS, 'search-index.js'), 'window.SEARCH_INDEX=' + JSON.stringify(index) + ';');
 fs.writeFileSync(path.join(DIST, 'index.html'), layout({
   page: 'index', pageTitle: `${title} — ${SITE_TITLE}`,
-  body: `<article>\n${homeHtml}${sectionHtml}</article>`,
+  body: `<article>\n${linkify(homeHtml + sectionHtml)}</article>`,
   scripts: '<script src="assets/search-index.js"></script>\n<script src="assets/app.js"></script>',
 }));
 fs.writeFileSync(path.join(DIST, 'snippet-builder.html'), layout({
-  page: 'builder', pageTitle: `Snippet builder — ${SITE_TITLE}`, body: `<article>\n${builderBody}</article>`,
+  page: 'builder', pageTitle: `Snippet builder — ${SITE_TITLE}`, body: `<article>\n${linkify(builderBody)}</article>`,
   scripts: '<script src="assets/search-index.js"></script>\n<script src="assets/app.js"></script>\n<script src="assets/builder.js"></script>',
 }));
 fs.writeFileSync(path.join(DIST, '.nojekyll'), '');
+// ---------- internal link check ----------
+{
+  const ids = new Set(); const page = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8');
+  for (const m of page.matchAll(/\sid="([^"]+)"/g)) ids.add(m[1]);
+  const bad = [];
+  for (const f of ['index.html', 'snippet-builder.html']) {
+    const html = fs.readFileSync(path.join(DIST, f), 'utf8');
+    for (const m of html.matchAll(/href="(?:index\.html)?#([^"]+)"/g)) if (m[1] && !ids.has(m[1])) bad.push(`${f}: #${m[1]}`);
+  }
+  if (bad.length) { console.error('BROKEN INTERNAL LINKS:\n  ' + [...new Set(bad)].join('\n  ')); process.exitCode = 1; }
+}
 console.log(`Built ${order.length} sections (${order.filter((o) => !sections.has(o.id)).length} stubbed), ${index.length} search entries → dist/`);

@@ -22,7 +22,7 @@
 <button type="button" class="icon-btn" id="theme-btn" aria-label="Toggle light/dark theme" title="Toggle theme"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2a8 8 0 1 0 8 8 6 6 0 0 1-8-8z" fill="currentColor"/></svg></button>
 </header>
 <div class="layout">
-<nav class="sidebar" id="sidebar" aria-label="Guide sections"><ul><li><a href="#home" data-section="home">Home</a></li><li><a href="#1-what-alphagenome-is-and-isnt" data-section="1-what-alphagenome-is-and-isnt">1. What AlphaGenome is (and isn't)</a></li><li><a href="#2-alphagenome-vs-alphafold-vs-alphamissense" data-section="2-alphagenome-vs-alphafold-vs-alphamissense">2. AlphaGenome vs AlphaFold vs AlphaMissense</a></li><li><a href="#3-ways-to-access-the-model" data-section="3-ways-to-access-the-model">3. Ways to access the model</a></li><li><a href="#4-installation-and-api-key" data-section="4-installation-and-api-key">4. Installation and API key</a></li><li><a href="#5-core-concepts-you-must-get-right" data-section="5-core-concepts-you-must-get-right">5. Core concepts you must get right</a></li><li><a href="#6-recipes-code" data-section="6-recipes-code">6. Recipes (code)</a></li><li><a href="#7-use-case-catalogue" data-section="7-use-case-catalogue">7. Use-case catalogue</a></li><li><a href="#8-interpreting-scores--best-practices" data-section="8-interpreting-scores--best-practices">8. Interpreting scores — best practices</a></li><li><a href="#9-limitations" data-section="9-limitations">9. Limitations</a></li><li><a href="#10-troubleshooting-and-quotas" data-section="10-troubleshooting-and-quotas">10. Troubleshooting and quotas</a></li><li><a href="#11-resources-and-citation" data-section="11-resources-and-citation">11. Resources and citation</a></li>
+<nav class="sidebar" id="sidebar" aria-label="Guide sections"><ul><li><a href="#home" data-section="home">Home</a></li><li class="nav-group" role="presentation">Start here</li><li><a href="#s1-alphagenome-in-plain-language" data-section="s1-alphagenome-in-plain-language">S1. AlphaGenome in plain language</a></li><li><a href="#s2-which-route-fits-me" data-section="s2-which-route-fits-me">S2. Which route fits me?</a></li><li><a href="#s3-glossary" data-section="s3-glossary">S3. Glossary</a></li><li><a href="#s4-how-to-read-the-results" data-section="s4-how-to-read-the-results">S4. How to read the results</a></li><li><a href="#s5-how-far-can-i-trust-it" data-section="s5-how-far-can-i-trust-it">S5. How far can I trust it?</a></li><li class="nav-group" role="presentation">Practical guides</li><li><a href="#g0-how-to-use-these-guides" data-section="g0-how-to-use-these-guides">G0. How to use these guides</a></li><li><a href="#g1-your-first-prediction-in-google-colab-no-installation" data-section="g1-your-first-prediction-in-google-colab-no-installation">G1. Your first prediction in Google Colab (no installation)</a></li><li><a href="#g2-score-one-variant-and-read-the-table-worked-example-rs9610445" data-section="g2-score-one-variant-and-read-the-table-worked-example-rs9610445">G2. Score one variant and read the table (worked example: rs9610445)</a></li><li><a href="#g3-is-my-variant-splice-disrupting" data-section="g3-is-my-variant-splice-disrupting">G3. Is my variant splice-disrupting?</a></li><li><a href="#g4-screen-a-locus-like-the-papers-tal1-example" data-section="g4-screen-a-locus-like-the-papers-tal1-example">G4. Screen a locus like the paper's TAL1 example</a></li><li><a href="#g5-find-the-mechanism-with-in-silico-mutagenesis-ism" data-section="g5-find-the-mechanism-with-in-silico-mutagenesis-ism">G5. Find the mechanism with in silico mutagenesis (ISM)</a></li><li><a href="#g6-from-a-variant-list-to-a-ranked-shortlist" data-section="g6-from-a-variant-list-to-a-ranked-shortlist">G6. From a variant list to a ranked shortlist</a></li><li><a href="#g7-planning-wet-lab-follow-up" data-section="g7-planning-wet-lab-follow-up">G7. Planning wet-lab follow-up</a></li><li class="nav-group" role="presentation">Reference guide</li><li><a href="#1-what-alphagenome-is-and-isnt" data-section="1-what-alphagenome-is-and-isnt">1. What AlphaGenome is (and isn't)</a></li><li><a href="#2-alphagenome-vs-alphafold-vs-alphamissense" data-section="2-alphagenome-vs-alphafold-vs-alphamissense">2. AlphaGenome vs AlphaFold vs AlphaMissense</a></li><li><a href="#3-ways-to-access-the-model" data-section="3-ways-to-access-the-model">3. Ways to access the model</a></li><li><a href="#4-installation-and-api-key" data-section="4-installation-and-api-key">4. Installation and API key</a></li><li><a href="#5-core-concepts-you-must-get-right" data-section="5-core-concepts-you-must-get-right">5. Core concepts you must get right</a></li><li><a href="#6-recipes-code" data-section="6-recipes-code">6. Recipes (code)</a></li><li><a href="#7-use-case-catalogue" data-section="7-use-case-catalogue">7. Use-case catalogue</a></li><li><a href="#8-interpreting-scores--best-practices" data-section="8-interpreting-scores--best-practices">8. Interpreting scores — best practices</a></li><li><a href="#9-limitations" data-section="9-limitations">9. Limitations</a></li><li><a href="#10-troubleshooting-and-quotas" data-section="10-troubleshooting-and-quotas">10. Troubleshooting and quotas</a></li><li><a href="#11-resources-and-citation" data-section="11-resources-and-citation">11. Resources and citation</a></li>
 <li class="nav-sep"><a href="snippet-builder.html" data-page="builder">Snippet builder</a></li></ul></nav>
 <div class="scrim" id="scrim" hidden></div>
 <div class="content-wrap">
@@ -40,6 +40,7 @@
 <a class="card link-card" href="snippet-builder.html"><span class="card-kicker">3</span><strong>Score variants</strong><span>Scalar ALT-vs-REF effect scores — try the snippet builder</span></a>
 <a class="card link-card" href="#21-how-to-combine-them-variant-to-structure"><span class="card-kicker">4</span><strong>Splicing</strong><span><code>SPLICE_SITES</code>, <code>SPLICE_SITE_USAGE</code>, <code>SPLICE_JUNCTIONS</code></span></a>
 </div>
+<aside class="callout callout-tip" role="note"><p class="callout-title">New to bioinformatics?</p><p>Start with <a href="#s1-alphagenome-in-plain-language">S1 · AlphaGenome in plain language</a>, keep the <a href="#s3-glossary">glossary</a> open, then follow a <a href="#g1-your-first-prediction-in-google-colab-no-installation">practical guide</a>: first prediction (<a class="xref" href="#g1-your-first-prediction-in-google-colab-no-installation">G1</a>), scoring a variant (<a class="xref" href="#g2-score-one-variant-and-read-the-table-worked-example-rs9610445">G2</a>), splicing (<a class="xref" href="#g3-is-my-variant-splice-disrupting">G3</a>), a leukaemia locus screen (<a class="xref" href="#g4-screen-a-locus-like-the-papers-tal1-example">G4</a>).</p></aside>
 <div class="card helper" id="model-helper"><h3 class="plain-h">Which DeepMind model do I need?</h3>
 <fieldset><legend>I want to know…</legend>
 <label class="opt"><input type="radio" name="model" value="0"><span>What does this DNA <em>do</em> in this cell type, and what changes when I mutate it?</span></label>
@@ -55,6 +56,732 @@
 </div></div>
 <p class="updated"><em>Last checked against the <code>alphagenome</code> Python package v0.9.x and alphagenomedocs.com, October 2026.</em> · Site built 2026-10-06.</p>
 </section>
+<section id="s1-alphagenome-in-plain-language" class="guide-section" data-num="0">
+<h2><a class="anchor" href="#s1-alphagenome-in-plain-language" aria-label="Link to this heading">#</a>S1. AlphaGenome in plain language</h2>
+<p><strong>The one-sentence version.</strong> You give AlphaGenome a stretch of DNA (up to one million letters). It predicts what lab experiments would measure along that DNA: is the gene switched on, is the DNA open, which proteins sit on it, how the RNA gets spliced. Then you change one letter and ask: <strong>what changed?</strong></p>
+<h3 id="the-mental-model-in-four-steps"><a class="anchor" href="#the-mental-model-in-four-steps" aria-label="Link to this heading">#</a>The mental model in four steps</h3>
+<ol>
+<li><strong>Pick a place in the genome.</strong> For example a variant from a patient, a GWAS hit or a spot you plan to edit.</li>
+<li><strong>Describe the change.</strong> The original letter(s) are called <strong>REF</strong> (reference) and the new letter(s) are called <strong>ALT</strong> (alternative).</li>
+<li><strong>AlphaGenome predicts &quot;tracks&quot; for both versions.</strong> A <em>track</em> is a line graph along the genome, like the coverage plot you would get from RNA-seq, ATAC-seq or ChIP-seq. There are thousands of tracks, one per assay and cell type.</li>
+<li><strong>Compare ALT with REF.</strong> If the ALT line is higher, the change is predicted to <em>increase</em> that signal (more RNA, more open chromatin, more histone mark…). If it is lower, the change is predicted to <em>decrease</em> it. The effect score is simply ALT − REF.</li>
+</ol>
+<h3 id="why-this-is-useful-at-the-bench"><a class="anchor" href="#why-this-is-useful-at-the-bench" aria-label="Link to this heading">#</a>Why this is useful at the bench</h3>
+<p>According to the AlphaGenome paper, more than 98% of the genetic variation observed in humans lies outside protein-coding regions, and these non-coding variants can act in many ways: changing chromatin accessibility, histone marks, 3D genome contacts, expression levels or splicing, often only in some cell types. Testing all of that experimentally is not feasible, so predictions help you decide <strong>which variants and which experiments are worth your time</strong>. The paper&#39;s discussion describes AlphaGenome as an engine for <em>in silico experimentation</em>: rapid hypothesis generation and prioritisation of resource-intensive wet-lab experiments.</p>
+<aside class="callout callout-note" role="note"><p class="callout-title">Note</p><p><strong>Note:</strong> AlphaGenome gives you <strong>hypotheses</strong>, not results. A prediction tells you what to test, and the experiment tells you what is true.</p>
+</aside>
+<h3 id="what-it-does-not-do"><a class="anchor" href="#what-it-does-not-do" aria-label="Link to this heading">#</a>What it does not do</h3>
+<ul>
+<li>It does <strong>not</strong> predict protein structure or protein function (see <a class="xref" href="#2-alphagenome-vs-alphafold-vs-alphamissense">§2</a> for AlphaFold and AlphaMissense).</li>
+<li>It does <strong>not</strong> predict disease, penetrance or complex traits. It predicts <em>molecular</em> readouts.</li>
+<li>It is <strong>not a clinical diagnostic tool</strong> and is not diploid-aware (it does not model heterozygous combinations).</li>
+</ul>
+<h3 id="numbers-worth-knowing"><a class="anchor" href="#numbers-worth-knowing" aria-label="Link to this heading">#</a>Numbers worth knowing</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th>Fact</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead><tbody><tr>
+<td>DNA it reads in one go</td>
+<td>up to 1 Mb</td>
+<td><a class="xref" href="#1-what-alphagenome-is-and-isnt">§1</a>, paper</td>
+</tr>
+<tr>
+<td>Predicted tracks (human / mouse)</td>
+<td>5,930 / 1,128, across 11 modalities</td>
+<td>paper</td>
+</tr>
+<tr>
+<td>Species</td>
+<td>human (hg38) and mouse (mm10)</td>
+<td><a class="xref" href="#1-what-alphagenome-is-and-isnt">§1</a></td>
+</tr>
+<tr>
+<td>Why 1 Mb?</td>
+<td>99% (465 of 471) of validated enhancer–gene pairs lie within 1 Mb</td>
+<td>paper</td>
+</tr>
+<tr>
+<td>Speed</td>
+<td>the final model needs less than 1 s per variant on an NVIDIA H100 GPU</td>
+<td>paper</td>
+</tr>
+</tbody></table></div>
+<p><em>Source for &quot;paper&quot;: Avsec et al., Nature 2026, <a href="https://doi.org/10.1038/s41586-025-10014-0" target="_blank" rel="noopener">doi:10.1038/s41586-025-10014-0</a>.</em></p>
+</section>
+
+<section id="s2-which-route-fits-me" class="guide-section" data-num="0">
+<h2><a class="anchor" href="#s2-which-route-fits-me" aria-label="Link to this heading">#</a>S2. Which route fits me?</h2>
+<p>You do <strong>not</strong> need to be a programmer to start. Pick the row that matches what you want to do.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th>I want to…</th>
+<th>Use</th>
+<th>Do I need code?</th>
+<th>Where to go</th>
+</tr>
+</thead><tbody><tr>
+<td>Look up one single-nucleotide variant (SNV) quickly</td>
+<td><strong>AlphaGenome Atlas</strong> web portal (precomputed scores)</td>
+<td>No</td>
+<td><a href="https://alphagenome.google/atlas" target="_blank" rel="noopener">alphagenome.google/atlas</a>, <a class="xref" href="#612-alphagenome-atlas-precomputed-scores-no-gpu-or-api-compute">§6.12</a></td>
+</tr>
+<tr>
+<td>Score a few variants or plot tracks, and I can copy and paste</td>
+<td><strong>Snippet builder + Google Colab</strong></td>
+<td>Copy and paste only</td>
+<td><a class="xref" href="#g1-your-first-prediction-in-google-colab-no-installation">G1</a>, <a class="xref" href="#g2-score-one-variant-and-read-the-table-worked-example-rs9610445">G2</a>, <a href="snippet-builder.html">Snippet builder</a></td>
+</tr>
+<tr>
+<td>Score a list of variants (a VCF file)</td>
+<td>Batch script from the guide</td>
+<td>Run one script (ask a colleague the first time)</td>
+<td><a class="xref" href="#g6-from-a-variant-list-to-a-ranked-shortlist">G6</a>, <a class="xref" href="#67-batch-scoring-from-a-vcf-production-style-script">§6.7</a></td>
+</tr>
+<tr>
+<td>Study insertions, deletions, designed edits, haplotypes, mouse or my own sequence</td>
+<td>Live API</td>
+<td>Yes, a little Python</td>
+<td><a class="xref" href="#63-predict-an-arbitrary-or-edited-sequence">§6.3</a>, <a class="xref" href="#69-indels-mnvs-and-haplotypes">§6.9</a>, <a class="xref" href="#613-mouse">§6.13</a></td>
+</tr>
+<tr>
+<td>Run more than about 1 million predictions, or keep data private</td>
+<td>Local weights on a GPU</td>
+<td>Yes, plus a GPU</td>
+<td><a class="xref" href="#614-local-inference-with-open-weights">§6.14</a>, <a class="xref" href="#3-ways-to-access-the-model">§3</a></td>
+</tr>
+<tr>
+<td>Do commercial work</td>
+<td>Google Cloud</td>
+<td>Yes</td>
+<td><a class="xref" href="#3-ways-to-access-the-model">§3</a></td>
+</tr>
+</tbody></table></div>
+<aside class="callout callout-warning" role="note"><p class="callout-title">Warning</p><p><strong>Warning:</strong> the API and weights are <strong>non-commercial</strong>. Commercial work must go through Google Cloud (<a class="xref" href="#3-ways-to-access-the-model">§3</a>, <a class="xref" href="#9-limitations">§9</a>).</p>
+</aside>
+<h3 id="before-you-start-checklist"><a class="anchor" href="#before-you-start-checklist" aria-label="Link to this heading">#</a>Before you start: checklist</h3>
+<ul>
+<li><input disabled="" type="checkbox"> A <strong>Google account</strong> (for Colab, the free notebook service used in the guide).</li>
+<li><input disabled="" type="checkbox"> An <strong>API key</strong> from DeepMind (<a class="xref" href="#41-get-an-api-key">§4.1</a>). Keep it private: never paste it into a notebook you share.</li>
+<li><input disabled="" type="checkbox"> Your variant in <strong>hg38</strong> coordinates, with a <strong>1-based</strong> position (like a VCF). If your coordinates are hg19, convert them with UCSC LiftOver first (<a class="xref" href="#51-coordinates-the-1-source-of-bugs">§5.1</a>).</li>
+<li><input disabled="" type="checkbox"> The <strong>tissue or cell type</strong> you care about (<a class="xref" href="#53-ontology-terms-cell-type--tissue">§5.3</a>). This matters a lot for the interpretation.</li>
+</ul>
+<h3 id="when-to-ask-a-bioinformatician"><a class="anchor" href="#when-to-ask-a-bioinformatician" aria-label="Link to this heading">#</a>When to ask a bioinformatician</h3>
+<ul>
+<li>Your variants are in hg19, or you are not sure which genome build you have.</li>
+<li>You need to process hundreds of variants or more (<a class="xref" href="#g6-from-a-variant-list-to-a-ranked-shortlist">G6</a>).</li>
+<li>You plan to put AlphaGenome scores into a paper, a patient report or a grant. Ask for a second pair of eyes on thresholds and controls (<a class="xref" href="#8-interpreting-scores--best-practices">§8</a>).</li>
+</ul>
+</section>
+
+<section id="s3-glossary" class="guide-section" data-num="0">
+<h2><a class="anchor" href="#s3-glossary" aria-label="Link to this heading">#</a>S3. Glossary</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table data-filterable><thead><tr>
+<th>Term</th>
+<th>Plain-language meaning</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>Variant</strong></td>
+<td>A difference in the DNA letters compared with the reference genome.</td>
+</tr>
+<tr>
+<td><strong>REF / ALT</strong></td>
+<td>The reference letter(s) and the alternative letter(s) at the variant position.</td>
+</tr>
+<tr>
+<td><strong>SNV</strong></td>
+<td>Single-nucleotide variant: one letter changed (A→C).</td>
+</tr>
+<tr>
+<td><strong>Indel</strong></td>
+<td>An insertion or deletion of one or more letters.</td>
+</tr>
+<tr>
+<td><strong>Non-coding</strong></td>
+<td>DNA that does not directly code for protein, such as promoters, enhancers, introns and UTRs.</td>
+</tr>
+<tr>
+<td><strong>Promoter / TSS</strong></td>
+<td>The region where transcription of a gene starts; TSS is the transcription start site.</td>
+</tr>
+<tr>
+<td><strong>Enhancer</strong></td>
+<td>A DNA element that boosts the expression of a gene, sometimes far away from it.</td>
+</tr>
+<tr>
+<td><strong>Track</strong></td>
+<td>A line graph along the genome for one assay and cell type (RNA-seq coverage, DNase signal…).</td>
+</tr>
+<tr>
+<td><strong>Output type</strong></td>
+<td>The family of tracks, for example <code>RNA_SEQ</code>, <code>DNASE</code>, <code>CHIP_HISTONE</code> (<a class="xref" href="#11-output-types-human-model">§1.1</a>).</td>
+</tr>
+<tr>
+<td><strong>Resolution</strong></td>
+<td>How many bases one value of a track covers (1 bp, 128 bp…).</td>
+</tr>
+<tr>
+<td><strong>hg38 / mm10</strong></td>
+<td>The human and mouse reference genome versions AlphaGenome uses.</td>
+</tr>
+<tr>
+<td><strong>0-based vs 1-based</strong></td>
+<td>Two ways of counting positions. Variants are 1-based (like VCF); intervals are 0-based (like BED). See <a class="xref" href="#51-coordinates-the-1-source-of-bugs">§5.1</a>.</td>
+</tr>
+<tr>
+<td><strong>VCF</strong></td>
+<td>A tab-separated text file listing variants (chromosome, position, REF, ALT…).</td>
+</tr>
+<tr>
+<td><strong>Ontology term (CURIE)</strong></td>
+<td>A standard ID for a tissue or cell type, such as <code>UBERON:0002107</code> (liver) or <code>CL:0000084</code> (T cell).</td>
+</tr>
+<tr>
+<td><strong>Histone marks</strong></td>
+<td>Chemical tags on histones. H3K27ac and H3K4me1 typically mark active enhancers; H3K9me3 and H3K27me3 are repressive; H3K36me3 marks actively transcribed gene bodies.</td>
+</tr>
+<tr>
+<td><strong>Chromatin accessibility</strong></td>
+<td>How open the DNA is (measured by DNase-seq or ATAC-seq). Open DNA is where regulators can bind.</td>
+</tr>
+<tr>
+<td><strong>TF binding (ChIP-seq)</strong></td>
+<td>Where a transcription factor sits on the DNA.</td>
+</tr>
+<tr>
+<td><strong>Splice donor / acceptor</strong></td>
+<td>The two ends of an intron, where the cell cuts and joins the RNA.</td>
+</tr>
+<tr>
+<td><strong>Exon skipping</strong></td>
+<td>An exon is left out of the mature RNA.</td>
+</tr>
+<tr>
+<td><strong>Cryptic splice site</strong></td>
+<td>A site that is normally unused but becomes used, for example after a variant.</td>
+</tr>
+<tr>
+<td><strong>Splice junction</strong></td>
+<td>A connection between a donor and an acceptor, seen as a split read in RNA-seq.</td>
+</tr>
+<tr>
+<td><strong>PSI</strong></td>
+<td>Percent spliced in: the fraction of transcripts that use a given exon or site.</td>
+</tr>
+<tr>
+<td><strong>Sashimi plot</strong></td>
+<td>A plot of RNA-seq coverage with arcs for splice junctions.</td>
+</tr>
+<tr>
+<td><strong>PTC / NMD</strong></td>
+<td>A premature stop codon can trigger nonsense-mediated decay, a cell mechanism that destroys the RNA.</td>
+</tr>
+<tr>
+<td><strong>eQTL / sQTL / caQTL</strong></td>
+<td>A variant statistically associated with expression, splicing or chromatin accessibility in a population.</td>
+</tr>
+<tr>
+<td><strong>GWAS / credible set</strong></td>
+<td>A genome-wide association study; a credible set is the small group of variants that probably contains the causal one.</td>
+</tr>
+<tr>
+<td><strong>ISM</strong></td>
+<td>In silico mutagenesis: change every base of a small region one by one and predict the effect of each (<a class="xref" href="#68-in-silico-mutagenesis-ism-and-sequence-logos">§6.8</a>).</td>
+</tr>
+<tr>
+<td><strong>Motif</strong></td>
+<td>A short DNA pattern recognised by a protein, for example a transcription factor.</td>
+</tr>
+<tr>
+<td><strong>Raw score</strong></td>
+<td>The effect size in the units of the modality (log fold change, probability difference…).</td>
+</tr>
+<tr>
+<td><strong>Quantile score</strong></td>
+<td>The effect ranked against a background of common variants, so it is comparable across modalities (<a class="xref" href="#8-interpreting-scores--best-practices">§8</a>).</td>
+</tr>
+<tr>
+<td><strong>MPRA</strong></td>
+<td>Massively parallel reporter assay: measures the regulatory activity of many short DNA sequences.</td>
+</tr>
+<tr>
+<td><strong>ClinVar</strong></td>
+<td>A public database of variants with clinical interpretations.</td>
+</tr>
+<tr>
+<td><strong>PP3 / BP4</strong></td>
+<td>ACMG/AMP evidence codes for computational evidence for or against pathogenicity (<a class="xref" href="#8-interpreting-scores--best-practices">§8</a>).</td>
+</tr>
+</tbody></table></div>
+</section>
+
+<section id="s4-how-to-read-the-results" class="guide-section" data-num="0">
+<h2><a class="anchor" href="#s4-how-to-read-the-results" aria-label="Link to this heading">#</a>S4. How to read the results</h2>
+<h3 id="track-plots-ref-vs-alt"><a class="anchor" href="#track-plots-ref-vs-alt" aria-label="Link to this heading">#</a>Track plots (REF vs ALT)</h3>
+<p>In the plot from <a class="xref" href="#64-visualise-a-variants-effect-ref-vs-alt-tracks">§6.4</a>, the <strong>grey line is REF</strong> and the <strong>red line is ALT</strong>. Read it like this:</p>
+<ol>
+<li>Find the <strong>variant marker</strong>. Changes near the marker are most direct.</li>
+<li>Is red <strong>above</strong> grey? Then the variant is predicted to increase the signal. Is red <strong>below</strong>? Then it is predicted to decrease it.</li>
+<li>Check the <strong>gene annotation</strong> on top: does the change fall on exons, near the TSS, in an intron?</li>
+<li>Always check <strong>which tissue and which assay</strong> the track represents. A change in an unrelated tissue is weak evidence (§8.2).</li>
+</ol>
+<h3 id="sashimi-plots-splicing"><a class="anchor" href="#sashimi-plots-splicing" aria-label="Link to this heading">#</a>Sashimi plots (splicing)</h3>
+<p>The arcs are <strong>predicted junction counts</strong>. The numbers on the arcs are normalised counts, <strong>not PSI</strong> (<a class="xref" href="#662-sashimi-plot-ref-vs-alt">§6.6.2</a>). What to look for:</p>
+<ul>
+<li>A <strong>canonical arc disappears</strong> in ALT: a normal junction is lost.</li>
+<li>A <strong>new arc appears</strong> in ALT: a new junction, which suggests a cryptic site, exon skipping or a pseudo-exon.</li>
+</ul>
+<h3 id="the-score-table"><a class="anchor" href="#the-score-table" aria-label="Link to this heading">#</a>The score table</h3>
+<p>The tidy table from <a class="xref" href="#65-score-a-variant-scalar-effect-sizes">§6.5</a> has one row per <strong>gene × track</strong>, so it can be very long. The columns you will use most:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th>Column</th>
+<th>What it tells you</th>
+</tr>
+</thead><tbody><tr>
+<td><code>output_type</code></td>
+<td>Which assay family (<code>RNA_SEQ</code>, <code>DNASE</code>, …).</td>
+</tr>
+<tr>
+<td><code>gene_name</code></td>
+<td>The gene the score refers to (for expression and splicing scorers).</td>
+</tr>
+<tr>
+<td><code>biosample_name</code></td>
+<td>The tissue or cell type.</td>
+</tr>
+<tr>
+<td><code>track_name</code></td>
+<td>The specific track.</td>
+</tr>
+<tr>
+<td><code>raw_score</code></td>
+<td>Effect size in assay-specific units. <strong>Negative = ALT lowers the signal, positive = ALT raises it.</strong></td>
+</tr>
+<tr>
+<td><code>quantile_score</code></td>
+<td>The effect ranked against common variants. Prefer it when present (§8.1).</td>
+</tr>
+</tbody></table></div>
+<p><strong>A real example from the paper.</strong> The variant rs9610445 (<code>chr22:36201698 A&gt;C</code>) is a known eQTL and sQTL. In GTEx data the ALT allele C is associated with <em>lower</em> expression of the gene. AlphaGenome predicted the same direction, with a variant score of <strong>−1.52</strong> and a quantile score of <strong>−1.00</strong>. A negative number here means &quot;ALT lowers expression&quot;.</p>
+<p><strong>How to work with the CSV in Excel or Google Sheets:</strong> open <code>variant_scores.csv</code>, switch on filters, keep only the tissue you care about (<code>biosample_name</code>), then sort by the absolute value of <code>quantile_score</code>. The biggest effects are at the top; then check whether the <em>other</em> assays agree (§8.4).</p>
+<h3 id="the-merged-splicing-score"><a class="anchor" href="#the-merged-splicing-score" aria-label="Link to this heading">#</a>The merged splicing score</h3>
+<p>For splicing, the guide combines three scores into one number (<a class="xref" href="#661-merged-splicing-score-the-method-used-in-the-paper">§6.6.1</a>). It starts at 0 and has no fixed maximum. Most variants fall between 0 and 6, and in practice <strong>above 1.0 generally indicates a large effect</strong>. DeepMind has not published an official cutoff, so calibrate against known pathogenic and benign variants in your gene.</p>
+<h3 id="agreement-between-assays-is-your-best-friend"><a class="anchor" href="#agreement-between-assays-is-your-best-friend" aria-label="Link to this heading">#</a>Agreement between assays is your best friend</h3>
+<p>A real regulatory variant often moves several things in the same direction: accessibility, H3K27ac, a TF track and the RNA of the target gene (§8.4). A strong score in only one assay and one unrelated tissue deserves suspicion.</p>
+</section>
+
+<section id="s5-how-far-can-i-trust-it" class="guide-section" data-num="0">
+<h2><a class="anchor" href="#s5-how-far-can-i-trust-it" aria-label="Link to this heading">#</a>S5. How far can I trust it?</h2>
+<h3 id="what-the-paper-reports"><a class="anchor" href="#what-the-paper-reports" aria-label="Link to this heading">#</a>What the paper reports</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th>Task</th>
+<th>Result reported in the paper</th>
+</tr>
+</thead><tbody><tr>
+<td>Benchmarks overall</td>
+<td>Matched or outperformed external models in 25 of 26 variant-effect evaluations and outperformed them in 22 of 24 track-prediction evaluations</td>
+</tr>
+<tr>
+<td>eQTL direction of effect</td>
+<td>Mean sign auROC 0.75 → 0.80 vs. Borzoi; Spearman 0.39 → 0.49</td>
+</tr>
+<tr>
+<td>Recovering GTEx eQTLs</td>
+<td>At a score threshold giving 90% sign accuracy: 41% of eQTLs recovered vs. 19% for Borzoi</td>
+</tr>
+<tr>
+<td>GWAS credible sets (18,537)</td>
+<td>With a threshold calibrated to 80% accuracy on eQTLs, a confident direction for at least one variant in 49% of credible sets (11% with a conservative PIP-weighted approach); largely complementary to co-localisation (COLOC)</td>
+</tr>
+<tr>
+<td>Splicing, ClinVar</td>
+<td>auPRC 0.66 (deep intronic and synonymous), 0.57 (splice region), 0.18 (missense)</td>
+</tr>
+<tr>
+<td>Splicing, minigene assay (MFASS)</td>
+<td>auPRC 0.51; Pangolin was better at 0.54</td>
+</tr>
+<tr>
+<td>Trait-altering variants</td>
+<td>A high score threshold strongly enriches for causal candidates, but <strong>recall is low</strong>, particularly for GWAS variants</td>
+</tr>
+</tbody></table></div>
+<h3 id="known-limits-paper-and-guide"><a class="anchor" href="#known-limits-paper-and-guide" aria-label="Link to this heading">#</a>Known limits (paper and guide)</h3>
+<ul>
+<li>Very <strong>distal enhancers (more than about 100 kb away)</strong> are still hard, and both AlphaGenome and Borzoi underestimate their effect.</li>
+<li><strong>Tissue- and cell-type-specific</strong> patterns, and condition-specific effects, are only partly captured. Overall expression levels are predicted well, but cell-type-specific differences are harder. Intermediate splicing efficiencies are also hard.</li>
+<li>Training and evaluation focus on <strong>protein-coding genes</strong>; non-coding genes such as microRNAs are less well covered.</li>
+<li><strong>Human and mouse only.</strong> Personal genomes and large structural variants are not benchmarked.</li>
+<li>The model gives <strong>no uncertainty estimate</strong> for a prediction.</li>
+<li>It predicts <strong>molecular effects</strong>, not phenotypes (<a class="xref" href="#9-limitations">§9</a>).</li>
+</ul>
+<h3 id="using-it-in-a-report"><a class="anchor" href="#using-it-in-a-report" aria-label="Link to this heading">#</a>Using it in a report</h3>
+<ul>
+<li>Treat AlphaGenome as <strong>computational supporting evidence</strong> (PP3/BP4-type), never as stand-alone proof (§8.9).</li>
+<li><strong>Report</strong> the package version, model version (<code>ALL_FOLDS</code>), sequence length, ontology terms and scorers (§8.10).</li>
+<li><strong>Calibrate locally:</strong> score known pathogenic and benign variants in your gene of interest first (§8.8).</li>
+<li><strong>Always plot</strong> your top hits before believing a score (§8.5).</li>
+</ul>
+</section>
+
+<section id="g0-how-to-use-these-guides" class="guide-section" data-num="0">
+<h2><a class="anchor" href="#g0-how-to-use-these-guides" aria-label="Link to this heading">#</a>G0. How to use these guides</h2>
+<p>Each guide starts from a real question and ends with something you can do at the bench. The examples come from the AlphaGenome paper (Avsec et al., Nature 2026, <a href="https://doi.org/10.1038/s41586-025-10014-0" target="_blank" rel="noopener">doi:10.1038/s41586-025-10014-0</a>) and from the recipes in <a class="xref" href="#6-recipes-code">§6</a>. Code is copied from the guide; only the variant or the tissue changes.</p>
+<aside class="callout callout-tip" role="note"><p class="callout-title">Tip</p><p><strong>Tip:</strong> run a <strong>known example first</strong> (a positive control). If your setup reproduces the direction of effect reported in the paper, you can trust that your coordinates, tissue and code are set up correctly before moving to your own variants.</p>
+</aside>
+<aside class="callout callout-note" role="note"><p class="callout-title">Note</p><p><strong>Note:</strong> the paper&#39;s figures come from the model and tracks used by the authors. Your numbers can differ slightly (different tissue track or model version). What should match is the <strong>direction</strong> and the overall pattern.</p>
+</aside>
+</section>
+
+<section id="g1-your-first-prediction-in-google-colab-no-installation" class="guide-section" data-num="0">
+<h2><a class="anchor" href="#g1-your-first-prediction-in-google-colab-no-installation" aria-label="Link to this heading">#</a>G1. Your first prediction in Google Colab (no installation)</h2>
+<p><strong>Goal:</strong> confirm that your API key works and that you can get a prediction back. <strong>Level:</strong> copy and paste.</p>
+<ol>
+<li><strong>Get an API key</strong> at <a href="https://deepmind.google.com/science/alphagenome" target="_blank" rel="noopener">deepmind.google.com/science/alphagenome</a> (you have to accept the non-commercial terms). See <a class="xref" href="#41-get-an-api-key">§4.1</a>.</li>
+<li><strong>Open a new notebook in Google Colab.</strong></li>
+<li><strong>Store the key as a secret</strong> (<a class="xref" href="#43-google-colab">§4.3</a>): click the 🔑 <strong>Secrets</strong> icon in the left panel, add a secret named exactly <code>ALPHA_GENOME_API_KEY</code>, paste your key, and switch on notebook access.</li>
+<li><strong>Install the package.</strong> In the first cell, run:</li>
+</ol>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">!pip install alphagenome</code></pre></div>
+<ol start="5">
+<li><strong>Run the smoke test</strong> in a second cell (this is the code from <a class="xref" href="#44-smoke-test">§4.4</a>):</li>
+</ol>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python"><span class="token keyword">from</span> alphagenome <span class="token keyword">import</span> colab_utils
+<span class="token keyword">from</span> alphagenome<span class="token punctuation">.</span>models <span class="token keyword">import</span> dna_client
+
+dna_model <span class="token operator">=</span> dna_client<span class="token punctuation">.</span>create<span class="token punctuation">(</span>colab_utils<span class="token punctuation">.</span>get_api_key<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+out <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>predict_sequence<span class="token punctuation">(</span>
+    sequence<span class="token operator">=</span><span class="token string">'GATTACA'</span><span class="token punctuation">.</span>center<span class="token punctuation">(</span>dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_16KB<span class="token punctuation">,</span> <span class="token string">'N'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    requested_outputs<span class="token operator">=</span><span class="token punctuation">[</span>dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>DNASE<span class="token punctuation">]</span><span class="token punctuation">,</span>
+    ontology_terms<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'UBERON:0002048'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>   <span class="token comment"># lung</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>out<span class="token punctuation">.</span>dnase<span class="token punctuation">.</span>values<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>            <span class="token comment"># (16384, n_tracks)</span></code></pre></div>
+<p><strong>What success looks like:</strong> a shape such as <code>(16384, n_tracks)</code> is printed. That means one row per DNA position (16,384) and one column per track.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th>If you see…</th>
+<th>It probably means…</th>
+</tr>
+</thead><tbody><tr>
+<td>The key is not found</td>
+<td>The secret name is not exactly <code>ALPHA_GENOME_API_KEY</code>, or notebook access is switched off (<a class="xref" href="#41-get-an-api-key">§4.1</a>, <a class="xref" href="#43-google-colab">§4.3</a>).</td>
+</tr>
+<tr>
+<td>A <code>ValueError</code> about length</td>
+<td>The sequence length is not one of the supported ones (<a class="xref" href="#52-supported-sequence-lengths">§5.2</a>, <a class="xref" href="#10-troubleshooting-and-quotas">§10</a>).</td>
+</tr>
+<tr>
+<td><code>RESOURCE_EXHAUSTED</code> or timeouts</td>
+<td>Rate limits under high demand: retry later (<a class="xref" href="#10-troubleshooting-and-quotas">§10</a>).</td>
+</tr>
+</tbody></table></div>
+<aside class="callout callout-warning" role="note"><p class="callout-title">Warning</p><p><strong>Warning:</strong> never paste your key into a notebook cell and never share a notebook that contains it (<a class="xref" href="#41-get-an-api-key">§4.1</a>).</p>
+</aside>
+</section>
+
+<section id="g2-score-one-variant-and-read-the-table-worked-example-rs9610445" class="guide-section" data-num="0">
+<h2><a class="anchor" href="#g2-score-one-variant-and-read-the-table-worked-example-rs9610445" aria-label="Link to this heading">#</a>G2. Score one variant and read the table (worked example: rs9610445)</h2>
+<p><strong>Goal:</strong> get an effect score for one variant and understand it. <strong>Level:</strong> copy and paste.</p>
+<p><strong>The example.</strong> rs9610445 (<code>chr22:36201698 A&gt;C</code>) is a known eQTL and sQTL. In GTEx, the ALT allele <strong>C</strong> is associated with <strong>lower</strong> expression of the gene. The paper reports that AlphaGenome recovers the direction (variant score −1.52, quantile score −1.00) and that in silico mutagenesis suggests the variant disrupts a splice donor motif.</p>
+<ol>
+<li>Open the <a href="snippet-builder.html">Snippet builder</a> and click the example <strong>&quot;rs9610445 (eQTL / sQTL, paper)&quot;</strong>. It fills in the form: <code>chr22</code>, position <code>36201698</code>, REF <code>A</code>, ALT <code>C</code>, 1 MB of context, tissue <code>UBERON:0001157</code> (transverse colon, the tissue used in <a class="xref" href="#64-visualise-a-variants-effect-ref-vs-alt-tracks">§6.4</a>) and the scorers <code>RNA_SEQ</code>, <code>DNASE</code> and <code>CHIP_HISTONE</code>.</li>
+<li>Click <strong>Copy code</strong>.</li>
+<li>In Colab (after <a class="xref" href="#g1-your-first-prediction-in-google-colab-no-installation">G1</a>), paste the code in a new cell and run it. The first lines create the client, define the variant, resize the interval to 1 Mb, and call <code>score_variant</code>.</li>
+<li>The last line saves <code>variant_scores.csv</code>. Download it from the Colab files panel.</li>
+<li>Open the CSV in Excel or Google Sheets, filter <code>output_type</code> = <code>RNA_SEQ</code>, and sort by the absolute value of <code>quantile_score</code> (<a class="xref" href="#s4-how-to-read-the-results">S4</a>).</li>
+<li><strong>Check the direction:</strong> a negative score for the gene means ALT lowers expression, which is what the paper reports.</li>
+</ol>
+<p><strong>Look at the tracks too (<a class="xref" href="#64-visualise-a-variants-effect-ref-vs-alt-tracks">§6.4</a>).</strong> Run the common setup cell from <a class="xref" href="#6-recipes-code">§6</a> first, then this code (copied from <a class="xref" href="#64-visualise-a-variants-effect-ref-vs-alt-tracks">§6.4</a>):</p>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">variant <span class="token operator">=</span> genome<span class="token punctuation">.</span>Variant<span class="token punctuation">(</span><span class="token string">'chr22'</span><span class="token punctuation">,</span> <span class="token number">36201698</span><span class="token punctuation">,</span> <span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">)</span>         <span class="token comment"># 1-based, hg38</span>
+interval <span class="token operator">=</span> variant<span class="token punctuation">.</span>reference_interval<span class="token punctuation">.</span>resize<span class="token punctuation">(</span>dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_1MB<span class="token punctuation">)</span>
+
+vo <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>predict_variant<span class="token punctuation">(</span>
+    interval<span class="token operator">=</span>interval<span class="token punctuation">,</span> variant<span class="token operator">=</span>variant<span class="token punctuation">,</span>
+    requested_outputs<span class="token operator">=</span><span class="token punctuation">[</span>dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>RNA_SEQ<span class="token punctuation">]</span><span class="token punctuation">,</span>
+    ontology_terms<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'UBERON:0001157'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>                       <span class="token comment"># transverse colon</span>
+<span class="token punctuation">)</span>
+
+plot_components<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span>
+        plot_components<span class="token punctuation">.</span>TranscriptAnnotation<span class="token punctuation">(</span>tx_mane<span class="token punctuation">.</span>extract<span class="token punctuation">(</span>interval<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        plot_components<span class="token punctuation">.</span>OverlaidTracks<span class="token punctuation">(</span>
+            tdata<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">'REF'</span><span class="token punctuation">:</span> vo<span class="token punctuation">.</span>reference<span class="token punctuation">.</span>rna_seq<span class="token punctuation">,</span> <span class="token string">'ALT'</span><span class="token punctuation">:</span> vo<span class="token punctuation">.</span>alternate<span class="token punctuation">.</span>rna_seq<span class="token punctuation">}</span><span class="token punctuation">,</span>
+            colors<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">'REF'</span><span class="token punctuation">:</span> <span class="token string">'dimgrey'</span><span class="token punctuation">,</span> <span class="token string">'ALT'</span><span class="token punctuation">:</span> <span class="token string">'red'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    interval<span class="token operator">=</span>vo<span class="token punctuation">.</span>reference<span class="token punctuation">.</span>rna_seq<span class="token punctuation">.</span>interval<span class="token punctuation">.</span>resize<span class="token punctuation">(</span><span class="token number">2</span><span class="token operator">**</span><span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    annotations<span class="token operator">=</span><span class="token punctuation">[</span>plot_components<span class="token punctuation">.</span>VariantAnnotation<span class="token punctuation">(</span><span class="token punctuation">[</span>variant<span class="token punctuation">]</span><span class="token punctuation">,</span> alpha<span class="token operator">=</span><span class="token number">0.8</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre></div>
+<p><strong>Next step:</strong> to see <em>why</em> (which bases matter), go to <a class="xref" href="#g5-find-the-mechanism-with-in-silico-mutagenesis-ism">G5</a>.</p>
+<aside class="callout callout-tip" role="note"><p class="callout-title">Tip</p><p><strong>Tip:</strong> use your own tissue. The score is only meaningful in a tissue where the gene is expressed. Find the right <code>ontology_curie</code> with <a class="xref" href="#61-explore-the-track-catalogue-and-find-ontology-terms">§6.1</a>.</p>
+</aside>
+</section>
+
+<section id="g3-is-my-variant-splice-disrupting" class="guide-section" data-num="0">
+<h2><a class="anchor" href="#g3-is-my-variant-splice-disrupting" aria-label="Link to this heading">#</a>G3. Is my variant splice-disrupting?</h2>
+<p><strong>Goal:</strong> decide whether a variant changes splicing, and how. <strong>Level:</strong> copy and paste, a little reading.</p>
+<p><strong>Why three views?</strong> The paper models splicing at three levels: <em>splice sites</em> (is this base a donor or acceptor?), <em>splice site usage</em> (how often is each site used?) and <em>splice junctions</em> (which donor pairs with which acceptor?). The guide&#39;s merged score combines all three (<a class="xref" href="#661-merged-splicing-score-the-method-used-in-the-paper">§6.6.1</a>).</p>
+<p><strong>Examples from the paper</strong> (variants seen in real GTEx RNA-seq data):</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th>Variant</th>
+<th>What was observed</th>
+<th>What AlphaGenome predicted</th>
+</tr>
+</thead><tbody><tr>
+<td><code>chr3:197081044 TACTC&gt;T</code> (4-bp deletion)</td>
+<td>Exon skipping in tibial artery</td>
+<td>Lower usage of the exon&#39;s splice site, loss of the junctions linking the exon edges, a new junction bypassing the exon, and a strong drop in predicted RNA-seq coverage of the exon</td>
+</tr>
+<tr>
+<td><code>chr21:46126238 G&gt;C</code></td>
+<td>A new splice junction and an extended exon</td>
+<td>The new junction and the extended exon</td>
+</tr>
+</tbody></table></div>
+<p><strong>Steps</strong></p>
+<ol>
+<li><strong>Check your coordinates.</strong> Position is 1-based, genome is hg38, and REF must match the genome at that position (<a class="xref" href="#51-coordinates-the-1-source-of-bugs">§5.1</a>). For a deletion such as <code>TACTC&gt;T</code>, REF is the full reference stretch.</li>
+<li><strong>Compute the merged score.</strong> Use the code of <a class="xref" href="#661-merged-splicing-score-the-method-used-in-the-paper">§6.6.1</a> (define <code>SPLICE_SCORERS</code> and <code>merged_splicing</code> once as shown there), then change only the variant line:</li>
+</ol>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">v <span class="token operator">=</span> genome<span class="token punctuation">.</span>Variant<span class="token punctuation">(</span><span class="token string">'chr3'</span><span class="token punctuation">,</span> <span class="token number">197081044</span><span class="token punctuation">,</span> <span class="token string">'TACTC'</span><span class="token punctuation">,</span> <span class="token string">'T'</span><span class="token punctuation">)</span>       <span class="token comment"># 4-bp deletion from the paper</span>
+res <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>score_variant<span class="token punctuation">(</span>
+    interval<span class="token operator">=</span>v<span class="token punctuation">.</span>reference_interval<span class="token punctuation">.</span>resize<span class="token punctuation">(</span>dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_1MB<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    variant<span class="token operator">=</span>v<span class="token punctuation">,</span> variant_scorers<span class="token operator">=</span>SPLICE_SCORERS<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>merged_splicing<span class="token punctuation">(</span>variant_scorers<span class="token punctuation">.</span>tidy_scores<span class="token punctuation">(</span><span class="token punctuation">[</span>res<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre></div>
+<ol start="3">
+<li><strong>Read the number</strong> (<a class="xref" href="#s4-how-to-read-the-results">S4</a>): above 1.0 generally indicates a large effect; there is no official cutoff, so compare with known variants in your gene.</li>
+<li><strong>Look at the components.</strong> The table shows which part drives the score: sites, usage or junctions.</li>
+<li><strong>Plot the junctions (<a class="xref" href="#662-sashimi-plot-ref-vs-alt">§6.6.2</a>).</strong> Replace the first line of the sashimi recipe with your variant and choose a relevant tissue (<code>ontology_terms</code>). Prefer polyA+ tracks.</li>
+<li><strong>Interpret the picture:</strong></li>
+</ol>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th>What you see in ALT vs REF</th>
+<th>What it suggests</th>
+</tr>
+</thead><tbody><tr>
+<td>A canonical arc disappears</td>
+<td>A normal junction is lost</td>
+</tr>
+<tr>
+<td>A new arc bridges over an exon</td>
+<td>Exon skipping</td>
+</tr>
+<tr>
+<td>A new arc with a new splice site peak</td>
+<td>A cryptic site is used or an exon is extended</td>
+</tr>
+<tr>
+<td>New donor/acceptor peaks deep in an intron (<code>SPLICE_SITES</code>)</td>
+<td>Possible pseudo-exon creation (<a class="xref" href="#664-splicing-checklist">§6.6.4</a>)</td>
+</tr>
+</tbody></table></div>
+<ol start="7">
+<li><strong>Follow the transcript.</strong> Reconstruct the likely aberrant RNA, check whether the reading frame is kept, whether there is a premature stop codon, and whether it would trigger NMD (<a class="xref" href="#21-how-to-combine-them-variant-to-structure">§2.1</a>).</li>
+</ol>
+<p><strong>Caveats from the paper</strong></p>
+<ul>
+<li>Splicing is where AlphaGenome is strongest: it achieved state-of-the-art on six of seven splicing benchmarks. But on a minigene reporter assay (MFASS), Pangolin did slightly better.</li>
+<li>The model has difficulty with <em>intermediate</em> splicing efficiencies and tissue-specific nuances.</li>
+<li>For a diagnosis-style question, combine it with other tools and with RNA data if you have them (<a class="xref" href="#7-use-case-catalogue">§7</a>, use case 2).</li>
+</ul>
+<p><strong>Try the BRCA2 example from the guide:</strong> in the Snippet builder, load <strong>&quot;BRCA2 near a splice site (<a class="xref" href="#661-merged-splicing-score-the-method-used-in-the-paper">§6.6.1</a>)&quot;</strong>.</p>
+</section>
+
+<section id="g4-screen-a-locus-like-the-papers-tal1-example" class="guide-section" data-num="0">
+<h2><a class="anchor" href="#g4-screen-a-locus-like-the-papers-tal1-example" aria-label="Link to this heading">#</a>G4. Screen a locus like the paper&#39;s TAL1 example</h2>
+<p><strong>Goal:</strong> understand a variant that acts through several mechanisms at once. <strong>Level:</strong> a little Python.</p>
+<p><strong>The story.</strong> In T cell acute lymphoblastic leukaemia (T-ALL), several different non-coding mutations around the <em>TAL1</em> oncogene all converge on the same result: <em>TAL1</em> becomes over-expressed. They include a cluster of 5′ &quot;neo-enhancer&quot; mutations, an intronic SNV and a 3′ neo-enhancer. The paper uses AlphaGenome to &quot;virtually screen&quot; the locus. For the variant <code>chr1:47239296 C&gt;ACG</code> it predicted:</p>
+<ul>
+<li><strong>more</strong> H3K27ac and H3K4me1 (activating marks) at the variant, consistent with a new enhancer forming at that position;</li>
+<li><strong>less</strong> H3K9me3 and H3K27me3 (repressive marks) near the <em>TAL1</em> TSS;</li>
+<li><strong>more</strong> H3K36me3 (an active transcription mark) across the gene body;</li>
+<li>a <strong>higher</strong> <em>TAL1</em> mRNA level.</li>
+</ul>
+<p><strong>Steps</strong></p>
+<ol>
+<li><strong>Choose the right cell type.</strong> The authors used CD34⁺ common myeloid progenitor (CMP) data, &quot;the closest available match to the T-ALL cell of origin&quot;. Lesson: pick the tissue or cell type that best matches <em>your</em> disease, not just any track. Find it in the metadata with the code of <a class="xref" href="#61-explore-the-track-catalogue-and-find-ontology-terms">§6.1</a>, changing the keyword:</li>
+</ol>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">meta <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>output_metadata<span class="token punctuation">(</span>dna_client<span class="token punctuation">.</span>Organism<span class="token punctuation">.</span>HOMO_SAPIENS<span class="token punctuation">)</span><span class="token punctuation">.</span>concatenate<span class="token punctuation">(</span><span class="token punctuation">)</span>
+hits <span class="token operator">=</span> meta<span class="token punctuation">[</span>meta<span class="token punctuation">[</span><span class="token string">'biosample_name'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">str</span><span class="token punctuation">.</span>contains<span class="token punctuation">(</span><span class="token string">'progenitor|CMP'</span><span class="token punctuation">,</span> <span class="token keyword">case</span><span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> na<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>hits<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">'output_type'</span><span class="token punctuation">,</span> <span class="token string">'ontology_curie'</span><span class="token punctuation">,</span> <span class="token string">'biosample_name'</span><span class="token punctuation">,</span> <span class="token string">'strand'</span><span class="token punctuation">,</span> <span class="token string">'name'</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+      <span class="token punctuation">.</span>drop_duplicates<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre></div>
+<ol start="2">
+<li><strong>Predict REF vs ALT in several modalities</strong> (adapting <a class="xref" href="#64-visualise-a-variants-effect-ref-vs-alt-tracks">§6.4</a>). Put the CURIE you found in step 1 where indicated:</li>
+</ol>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">variant <span class="token operator">=</span> genome<span class="token punctuation">.</span>Variant<span class="token punctuation">(</span><span class="token string">'chr1'</span><span class="token punctuation">,</span> <span class="token number">47239296</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token string">'ACG'</span><span class="token punctuation">)</span>       <span class="token comment"># from the paper</span>
+interval <span class="token operator">=</span> variant<span class="token punctuation">.</span>reference_interval<span class="token punctuation">.</span>resize<span class="token punctuation">(</span>dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_1MB<span class="token punctuation">)</span>
+
+vo <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>predict_variant<span class="token punctuation">(</span>
+    interval<span class="token operator">=</span>interval<span class="token punctuation">,</span> variant<span class="token operator">=</span>variant<span class="token punctuation">,</span>
+    requested_outputs<span class="token operator">=</span><span class="token punctuation">[</span>dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>RNA_SEQ<span class="token punctuation">,</span>
+                       dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>CHIP_HISTONE<span class="token punctuation">,</span>
+                       dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>DNASE<span class="token punctuation">]</span><span class="token punctuation">,</span>
+    ontology_terms<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'&lt;CURIE from step 1>'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span></code></pre></div>
+<ol start="3">
+<li><strong>Plot and compare</strong> RNA-seq, accessibility and histone tracks (<a class="xref" href="#62-predict-tracks-for-a-gene-locus-and-plot-them">§6.2</a> shows how to select a single mark such as H3K27ac from the histone tracks; <a class="xref" href="#64-visualise-a-variants-effect-ref-vs-alt-tracks">§6.4</a> shows the REF/ALT overlay).</li>
+<li><strong>Use controls.</strong> The paper compared each oncogenic variant with a background of length-matched, sequence-shuffled variants (for the single intronic SNV, with the other possible SNVs at that site). A prediction only means something when it stands out from that background. You can do the same with a few random variants of the same type scored with the same code.</li>
+<li><strong>Look for the mechanism</strong> with in silico mutagenesis (<a class="xref" href="#g5-find-the-mechanism-with-in-silico-mutagenesis-ism">G5</a>). In the paper, the ALT sequence created a <strong>MYB</strong> binding motif at the variant, which raised predicted expression, accessibility and H3K27ac, and the model also flagged a nearby ETS-like motif.</li>
+</ol>
+<aside class="callout callout-note" role="note"><p class="callout-title">Note</p><p><strong>Note:</strong> the paper reports that these differences are tissue-specific: oncogenic variants stood out most in T-ALL-relevant tracks (for example thymus, CMP, haematopoietic multipotent progenitors).</p>
+</aside>
+<p><strong>Shortcut:</strong> in the Snippet builder, load <strong>&quot;TAL1 neo-enhancer (paper)&quot;</strong>; it prepares the scoring code for this variant.</p>
+</section>
+
+<section id="g5-find-the-mechanism-with-in-silico-mutagenesis-ism" class="guide-section" data-num="0">
+<h2><a class="anchor" href="#g5-find-the-mechanism-with-in-silico-mutagenesis-ism" aria-label="Link to this heading">#</a>G5. Find the mechanism with in silico mutagenesis (ISM)</h2>
+<p><strong>Goal:</strong> find which bases inside a region drive a signal. <strong>Level:</strong> a little Python.</p>
+<p><strong>Idea.</strong> ISM changes every base of a small window, one by one, and records the effect of each change. The result is a <strong>sequence logo</strong>: tall letters mark the bases the model considers important. The paper uses it to reveal motifs, for example a splice donor motif disrupted by rs9610445, a MYB motif created in the <em>TAL1</em> example, NF-κB-like motifs at accessibility QTLs, SPI1 motifs, and the canonical polyadenylation motif.</p>
+<p><strong>The code (<a class="xref" href="#68-in-silico-mutagenesis-ism-and-sequence-logos">§6.8</a>).</strong> Run the common setup from <a class="xref" href="#6-recipes-code">§6</a>, then this recipe:</p>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">seq_iv <span class="token operator">=</span> genome<span class="token punctuation">.</span>Interval<span class="token punctuation">(</span><span class="token string">'chr20'</span><span class="token punctuation">,</span> <span class="token number">3_753_000</span><span class="token punctuation">,</span> <span class="token number">3_753_400</span><span class="token punctuation">)</span><span class="token punctuation">.</span>resize<span class="token punctuation">(</span>dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_16KB<span class="token punctuation">)</span>
+ism_iv <span class="token operator">=</span> seq_iv<span class="token punctuation">.</span>resize<span class="token punctuation">(</span><span class="token number">256</span><span class="token punctuation">)</span>                       <span class="token comment"># mutate the central 256 bp → 768 variants</span>
+
+scorer <span class="token operator">=</span> variant_scorers<span class="token punctuation">.</span>CenterMaskScorer<span class="token punctuation">(</span>
+    requested_output<span class="token operator">=</span>dna_client<span class="token punctuation">.</span>OutputType<span class="token punctuation">.</span>DNASE<span class="token punctuation">,</span> width<span class="token operator">=</span><span class="token number">501</span><span class="token punctuation">,</span>
+    aggregation_type<span class="token operator">=</span>variant_scorers<span class="token punctuation">.</span>AggregationType<span class="token punctuation">.</span>DIFF_MEAN<span class="token punctuation">)</span>
+
+vs <span class="token operator">=</span> dna_model<span class="token punctuation">.</span>score_ism_variants<span class="token punctuation">(</span>interval<span class="token operator">=</span>seq_iv<span class="token punctuation">,</span> ism_interval<span class="token operator">=</span>ism_iv<span class="token punctuation">,</span>
+                                  variant_scorers<span class="token operator">=</span><span class="token punctuation">[</span>scorer<span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">pick</span><span class="token punctuation">(</span>adata<span class="token punctuation">,</span> curie<span class="token operator">=</span><span class="token string">'EFO:0002067'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>             <span class="token comment"># K562</span>
+    x <span class="token operator">=</span> adata<span class="token punctuation">.</span>X<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> adata<span class="token punctuation">.</span>var<span class="token punctuation">[</span><span class="token string">'ontology_curie'</span><span class="token punctuation">]</span> <span class="token operator">==</span> curie<span class="token punctuation">]</span>
+    <span class="token keyword">return</span> x<span class="token punctuation">.</span>flatten<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+
+mat <span class="token operator">=</span> ism<span class="token punctuation">.</span>ism_matrix<span class="token punctuation">(</span><span class="token punctuation">[</span>pick<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> vs<span class="token punctuation">]</span><span class="token punctuation">,</span>
+                     variants<span class="token operator">=</span><span class="token punctuation">[</span>x<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>uns<span class="token punctuation">[</span><span class="token string">'variant'</span><span class="token punctuation">]</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> vs<span class="token punctuation">]</span><span class="token punctuation">)</span>   <span class="token comment"># (256, 4)</span>
+
+plot_components<span class="token punctuation">.</span>plot<span class="token punctuation">(</span><span class="token punctuation">[</span>plot_components<span class="token punctuation">.</span>SeqLogo<span class="token punctuation">(</span>scores<span class="token operator">=</span>mat<span class="token punctuation">,</span> scores_interval<span class="token operator">=</span>ism_iv<span class="token punctuation">,</span>
+                                              ylabel<span class="token operator">=</span><span class="token string">'ISM K562 DNase'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                     interval<span class="token operator">=</span>ism_iv<span class="token punctuation">,</span> fig_width<span class="token operator">=</span><span class="token number">35</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre></div>
+<p><strong>What to edit for your own question</strong></p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th>Line</th>
+<th>Change it to…</th>
+</tr>
+</thead><tbody><tr>
+<td><code>seq_iv</code></td>
+<td>Your region of interest (0-based, half-open interval). It is resized to 16 kb of context.</td>
+</tr>
+<tr>
+<td><code>ism_iv</code></td>
+<td>The window to mutate (centre of <code>seq_iv</code>). Keep it small.</td>
+</tr>
+<tr>
+<td><code>requested_output</code></td>
+<td>The assay you care about, e.g. <code>RNA_SEQ</code> or <code>CHIP_HISTONE</code>.</td>
+</tr>
+<tr>
+<td><code>curie</code> in <code>pick</code></td>
+<td>Your cell type or tissue (<a class="xref" href="#53-ontology-terms-cell-type--tissue">§5.3</a>).</td>
+</tr>
+</tbody></table></div>
+<p><strong>Cost:</strong> the number of predictions is 3 × the window width, so keep windows at 256–512 bp and use 16 kb of context (<a class="xref" href="#68-in-silico-mutagenesis-ism-and-sequence-logos">§6.8</a>).</p>
+<p><strong>How to read the logo:</strong> look for short stretches of tall letters. If a stretch matches a known transcription factor motif (for example from a motif database), that factor is a candidate regulator, and a variant that creates or destroys that stretch is a candidate mechanism. Treat it as a hypothesis for a reporter or CRISPR experiment.</p>
+</section>
+
+<section id="g6-from-a-variant-list-to-a-ranked-shortlist" class="guide-section" data-num="0">
+<h2><a class="anchor" href="#g6-from-a-variant-list-to-a-ranked-shortlist" aria-label="Link to this heading">#</a>G6. From a variant list to a ranked shortlist</h2>
+<p><strong>Goal:</strong> score many variants (for example a credible set or a list of VUS) and pick the ones worth following up. <strong>Level:</strong> run a script (ask a colleague the first time).</p>
+<ol>
+<li><strong>Prepare a VCF.</strong> A VCF is a tab-separated text file. A minimal example with three variants from this guide (the columns must be separated by tabs):</li>
+</ol>
+<div class="code-block"><div class="code-head"><span class="lang-badge">text</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-text">##fileformat=VCFv4.2
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
+chr22	36201698	rs9610445	A	C	.	.	.
+chr3	197081044	.	TACTC	T	.	.	.
+chr21	46126238	.	G	C	.	.	.</code></pre></div>
+<ol start="2">
+<li><strong>Check the build and the REF letters.</strong> hg38 only, 1-based positions (<a class="xref" href="#51-coordinates-the-1-source-of-bugs">§5.1</a>). Using hg19 coordinates is the most common source of noise.</li>
+<li><strong>Run the batch script of <a class="xref" href="#67-batch-scoring-from-a-vcf-production-style-script">§6.7</a></strong> (<code>score_vcf.py</code>) exactly as written:</li>
+</ol>
+<div class="code-block"><div class="code-head"><span class="lang-badge">bash</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-bash">python score_vcf.py input.vcf out.csv</code></pre></div>
+<p>Start with the three-variant file above. When it works, run your full list. The script splits multi-allelic sites, processes variants in chunks, retries on transient errors and saves checkpoint files.</p>
+<ol start="4">
+<li><strong>Summarise one row per variant</strong> with the code at the end of <a class="xref" href="#67-batch-scoring-from-a-vcf-production-style-script">§6.7</a>:</li>
+</ol>
+<div class="code-block"><div class="code-head"><span class="lang-badge">python</span><button type="button" class="copy-btn" aria-label="Copy code to clipboard">Copy</button></div><pre tabindex="0"><code class="language-python">df <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span><span class="token string">'out.csv'</span><span class="token punctuation">)</span>
+col <span class="token operator">=</span> <span class="token string">'quantile_score'</span> <span class="token keyword">if</span> <span class="token string">'quantile_score'</span> <span class="token keyword">in</span> df <span class="token keyword">else</span> <span class="token string">'raw_score'</span>
+summary <span class="token operator">=</span> <span class="token punctuation">(</span>df<span class="token punctuation">.</span>assign<span class="token punctuation">(</span>a<span class="token operator">=</span>df<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">abs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+             <span class="token punctuation">.</span>groupby<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'variant_id'</span><span class="token punctuation">,</span> <span class="token string">'output_type'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+             <span class="token punctuation">.</span>unstack<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+summary<span class="token punctuation">[</span><span class="token string">'max_any'</span><span class="token punctuation">]</span> <span class="token operator">=</span> summary<span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+summary<span class="token punctuation">.</span>sort_values<span class="token punctuation">(</span><span class="token string">'max_any'</span><span class="token punctuation">,</span> ascending<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token number">25</span><span class="token punctuation">)</span></code></pre></div>
+<ol start="5">
+<li><strong>Filter to your tissue.</strong> Keep only rows with the <code>ontology_curie</code> of the cell types you care about before ranking (<a class="xref" href="#67-batch-scoring-from-a-vcf-production-style-script">§6.7</a>, §8.2).</li>
+<li><strong>Plot the top hits</strong> (<a class="xref" href="#g2-score-one-variant-and-read-the-table-worked-example-rs9610445">G2</a> and <a class="xref" href="#g3-is-my-variant-splice-disrupting">G3</a>) and check agreement across assays (§8.4).</li>
+</ol>
+<p><strong>Practical tips</strong></p>
+<ul>
+<li><strong>Be gentle with the API.</strong> If you see <code>RESOURCE_EXHAUSTED</code> or timeouts, lower <code>max_workers</code>, use chunks, back off and retry, or run overnight (<a class="xref" href="#10-troubleshooting-and-quotas">§10</a>). The API is meant for thousands of predictions, not more than about a million.</li>
+<li><strong>Save scores, not raw tracks.</strong> Raw 1 Mb tracks for many variants blow up memory (<a class="xref" href="#10-troubleshooting-and-quotas">§10</a>).</li>
+<li><strong>For SNVs genome-wide</strong>, the Atlas has precomputed scores (<a class="xref" href="#612-alphagenome-atlas-precomputed-scores-no-gpu-or-api-compute">§6.12</a>).</li>
+</ul>
+<p><strong>GWAS context from the paper.</strong> For 18,537 GWAS credible sets, the authors used a score threshold calibrated to 80% sign accuracy on eQTLs and obtained a confident direction of effect for at least one variant in 49% of credible sets. The sets resolved were largely different from those resolved by co-localisation (COLOC), so the two approaches are complementary. They also note that a high threshold enriches causal candidates but has low recall for GWAS variants. In practice: <strong>a high score is a good reason to prioritise a variant; a low score is not proof that a variant is irrelevant.</strong></p>
+</section>
+
+<section id="g7-planning-wet-lab-follow-up" class="guide-section" data-num="0">
+<h2><a class="anchor" href="#g7-planning-wet-lab-follow-up" aria-label="Link to this heading">#</a>G7. Planning wet-lab follow-up</h2>
+<p><strong>Goal:</strong> turn predictions into a short, defensible list of experiments. <strong>Level:</strong> reading and planning.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table ><thead><tr>
+<th>Wet-lab goal</th>
+<th>What to run</th>
+<th>What to check</th>
+<th>Caveat</th>
+</tr>
+</thead><tbody><tr>
+<td>Choose which variants to test in cells</td>
+<td><a class="xref" href="#g6-from-a-variant-list-to-a-ranked-shortlist">G6</a> on the full list, then plots of the top hits</td>
+<td>Direction and agreement across assays in the <em>right</em> tissue</td>
+<td>A high score is a prioritisation, not a verdict</td>
+</tr>
+<tr>
+<td>Test an enhancer or a regulatory SNV</td>
+<td><a class="xref" href="#g2-score-one-variant-and-read-the-table-worked-example-rs9610445">G2</a> and <a class="xref" href="#g5-find-the-mechanism-with-in-silico-mutagenesis-ism">G5</a> (ISM)</td>
+<td>Does the change create or destroy a motif? Is the target gene&#39;s RNA predicted to move?</td>
+<td>Effects of very distal enhancers (&gt; ~100 kb) are underestimated</td>
+</tr>
+<tr>
+<td>Design a genome edit (base, prime, CRISPR)</td>
+<td>Edited sequence (<a class="xref" href="#63-predict-an-arbitrary-or-edited-sequence">§6.3</a>) or a multi-variant haplotype (<a class="xref" href="#69-indels-mnvs-and-haplotypes">§6.9</a>)</td>
+<td>Does the correction restore WT-like expression and splicing? Do silent or PAM-disrupting edits create cryptic splice sites?</td>
+<td>Edited sequences are out of distribution; check the effect on neighbouring genes</td>
+</tr>
+<tr>
+<td>Check a transgene or vector cassette</td>
+<td>Predict the construct inside a genomic context (<a class="xref" href="#63-predict-an-arbitrary-or-edited-sequence">§6.3</a>)</td>
+<td>Cryptic splice sites in the cDNA (<code>SPLICE_SITES</code>), accessibility, TSS activity</td>
+<td>Use for flagging risks, not for quantitative claims</td>
+</tr>
+<tr>
+<td>Follow up a CRISPR screen or MPRA</td>
+<td>Score the tiled variants and run ISM</td>
+<td>Predicted vs measured activity</td>
+<td>Calibrate on your own data</td>
+</tr>
+<tr>
+<td>Design a splice-modulating oligo or a tissue-specific enhancer</td>
+<td>Splicing analysis (<a class="xref" href="#g3-is-my-variant-splice-disrupting">G3</a>), iterative mutate → predict loops</td>
+<td>The effect in the <em>target</em> tissue and in tissues where you do not want it</td>
+<td>The paper discusses these uses as promising; validate every design experimentally</td>
+</tr>
+</tbody></table></div>
+<aside class="callout callout-warning" role="note"><p class="callout-title">Warning</p><p><strong>Warning:</strong> designs that you optimise against the model can drift off the data the model knows. Always validate experimentally (<a class="xref" href="#7-use-case-catalogue">§7</a>, use cases 7–10).</p>
+</aside>
+<h3 id="before-you-order-anything-checklist"><a class="anchor" href="#before-you-order-anything-checklist" aria-label="Link to this heading">#</a>Before you order anything: checklist</h3>
+<ul>
+<li><input disabled="" type="checkbox"> I ran a <strong>known example</strong> (<a class="xref" href="#g2-score-one-variant-and-read-the-table-worked-example-rs9610445">G2</a> or <a class="xref" href="#g3-is-my-variant-splice-disrupting">G3</a>) and got the expected direction.</li>
+<li><input disabled="" type="checkbox"> My variants are <strong>hg38</strong>, 1-based, and <strong>REF matches</strong> the reference genome (<a class="xref" href="#51-coordinates-the-1-source-of-bugs">§5.1</a>).</li>
+<li><input disabled="" type="checkbox"> I used the <strong>tissue or cell type that matches my biology</strong> (<a class="xref" href="#g4-screen-a-locus-like-the-papers-tal1-example">G4</a>).</li>
+<li><input disabled="" type="checkbox"> I looked at the <strong>plots</strong> of my top hits, not only at the scores (§8.5).</li>
+<li><input disabled="" type="checkbox"> At least <strong>two assays agree</strong> (for example accessibility and expression) (§8.4).</li>
+<li><input disabled="" type="checkbox"> I have a <strong>control</strong>: a variant I expect to have no effect, or a shuffled or neighbouring variant (<a class="xref" href="#g4-screen-a-locus-like-the-papers-tal1-example">G4</a>).</li>
+<li><input disabled="" type="checkbox"> I <strong>recorded</strong> the package version, model version, sequence length, ontology terms and scorers (§8.10).</li>
+<li><input disabled="" type="checkbox"> I describe the result as <strong>computational evidence that supports a hypothesis</strong>, not as proof (<a class="xref" href="#s5-how-far-can-i-trust-it">S5</a>).</li>
+</ul>
+</section>
+
 <section id="1-what-alphagenome-is-and-isnt" class="guide-section" data-num="1">
 <h2><a class="anchor" href="#1-what-alphagenome-is-and-isnt" aria-label="Link to this heading">#</a>1. What AlphaGenome is (and isn&#39;t)</h2>
 <p>AlphaGenome (Google DeepMind; Avsec et al., <em>Nature</em> 2026) is a sequence-to-function deep learning model. It takes <strong>up to 1 Mb of DNA sequence</strong> and predicts thousands of <strong>functional genomic tracks</strong>, mostly at <strong>single-base resolution</strong>, for human (hg38) and mouse (mm10).</p>
@@ -135,7 +862,7 @@
 <td>28</td>
 </tr>
 </tbody></table></div>
-<p>Track counts differ for mouse. Query them with <code>dna_model.output_metadata(...)</code> (see §6.1).</p>
+<p>Track counts differ for mouse. Query them with <code>dna_model.output_metadata(...)</code> (see <a class="xref" href="#61-explore-the-track-catalogue-and-find-ontology-terms">§6.1</a>).</p>
 <h3 id="12-model-versions"><a class="anchor" href="#12-model-versions" aria-label="Link to this heading">#</a>1.2 Model versions</h3>
 <ul>
 <li><code>ModelVersion.ALL_FOLDS</code> (the default): a distilled student model trained from an ensemble of teachers. Use this one.</li>
@@ -186,7 +913,7 @@
 <h3 id="21-how-to-combine-them-variant-to-structure"><a class="anchor" href="#21-how-to-combine-them-variant-to-structure" aria-label="Link to this heading">#</a>2.1 How to combine them: variant to structure</h3>
 <p>A typical workflow for a variant near an exon:</p>
 <ol>
-<li><strong>AlphaGenome:</strong> score the variant for splicing (§6.6). Is a donor or acceptor lost, a cryptic site created, or an exon skipped?</li>
+<li><strong>AlphaGenome:</strong> score the variant for splicing (<a class="xref" href="#66-splicing-analysis">§6.6</a>). Is a donor or acceptor lost, a cryptic site created, or an exon skipped?</li>
 <li><strong>AlphaGenome:</strong> inspect the predicted junctions (sashimi plot, PSI) to reconstruct the likely aberrant transcript.</li>
 <li><strong>Translate</strong> the aberrant transcript yourself (Biopython/EMBOSS). Does it keep the frame or create an in-frame deletion? Is there a premature stop codon (PTC)? A PTC that sits more than ~50–55 nt upstream of the last exon–exon junction usually triggers NMD.</li>
 <li><strong>AlphaFold (Server/AF3):</strong> for an in-frame isoform, predict the variant protein&#39;s structure. Compare it to the WT model in the AlphaFold DB (pLDDT, domain integrity, interfaces with partners).</li>
@@ -329,7 +1056,7 @@ dna_client<span class="token punctuation">.</span>SEQUENCE_LENGTH_1MB     <span 
 <li><code>CL:</code> = cell types (e.g. <code>CL:0000084</code> T cell)</li>
 <li><code>EFO:</code> / <code>CLO:</code> = cell lines (e.g. <code>EFO:0002067</code> K562)</li>
 </ul>
-<p>Pass <code>ontology_terms=[...]</code> to restrict predictions, which makes them faster and lighter. Pass <code>None</code> to get every track. Look up terms in the metadata (§6.1) or with EBI OLS (<a href="https://www.ebi.ac.uk/ols4" target="_blank" rel="noopener">https://www.ebi.ac.uk/ols4</a>).</p>
+<p>Pass <code>ontology_terms=[...]</code> to restrict predictions, which makes them faster and lighter. Pass <code>None</code> to get every track. Look up terms in the metadata (<a class="xref" href="#61-explore-the-track-catalogue-and-find-ontology-terms">§6.1</a>) or with EBI OLS (<a href="https://www.ebi.ac.uk/ols4" target="_blank" rel="noopener">https://www.ebi.ac.uk/ols4</a>).</p>
 <h3 id="54-strand"><a class="anchor" href="#54-strand" aria-label="Link to this heading">#</a>5.4 Strand</h3>
 <p>Track metadata uses <code>+</code>, <code>-</code> or <code>.</code> (unstranded). Stranded RNA assays have two tracks per biosample. For a minus-strand gene, use <code>.filter_to_negative_strand()</code> or <code>.filter_to_nonpositive_strand()</code>, which keeps unstranded tracks too.</p>
 <h3 id="55-key-objects"><a class="anchor" href="#55-key-objects" aria-label="Link to this heading">#</a>5.5 Key objects</h3>
@@ -677,7 +1404,7 @@ dpsi5 <span class="token operator">=</span> psi5_alt<span class="token punctuati
 <li>Look at the merged score, then at which component drives it.</li>
 <li>Use a <strong>relevant tissue</strong> for <code>SPLICE_SITE_USAGE</code>/<code>SPLICE_JUNCTIONS</code>. Prefer polyA+ tracks.</li>
 <li>Sashimi: is a canonical junction lost? Did a new one appear (cryptic site, exon skipping)?</li>
-<li>Reconstruct the aberrant transcript, then check frame/PTC/NMD, then (optionally) AlphaFold (see §2.1).</li>
+<li>Reconstruct the aberrant transcript, then check frame/PTC/NMD, then (optionally) AlphaFold (see <a class="xref" href="#21-how-to-combine-them-variant-to-structure">§2.1</a>).</li>
 <li>For deep-intronic variants, look for <strong>new</strong> donor/acceptor peaks in <code>SPLICE_SITES</code> (pseudo-exon creation).</li>
 </ol>
 </div></details>
@@ -854,14 +1581,14 @@ model <span class="token operator">=</span> dna_model<span class="token punctuat
 </thead><tbody><tr>
 <td>1</td>
 <td><strong>Non-coding VUS prioritisation</strong> (rare disease, cancer)</td>
-<td>Batch scoring (§6.7) or Atlas lookup (§6.12)</td>
+<td>Batch scoring (<a class="xref" href="#67-batch-scoring-from-a-vcf-production-style-script">§6.7</a>) or Atlas lookup (<a class="xref" href="#612-alphagenome-atlas-precomputed-scores-no-gpu-or-api-compute">§6.12</a>)</td>
 <td>All recommended scorers; AVI</td>
 <td>Rank by max |quantile| in the relevant tissue</td>
 </tr>
 <tr>
 <td>2</td>
 <td><strong>Splice-variant interpretation</strong> (exonic, canonical ±1/2, deep intronic)</td>
-<td>§6.6 merged score + sashimi + PSI</td>
+<td><a class="xref" href="#66-splicing-analysis">§6.6</a> merged score + sashimi + PSI</td>
 <td><code>SPLICE_*</code></td>
 <td>Combine with SpliceAI/RNA-seq if available</td>
 </tr>
@@ -896,7 +1623,7 @@ model <span class="token operator">=</span> dna_model<span class="token punctuat
 <tr>
 <td>7</td>
 <td><strong>Designing genome edits in silico</strong> (base/prime editing, CRISPR KO of regulatory elements)</td>
-<td>Edited-sequence prediction (§6.3) or a multi-variant haplotype (§6.9)</td>
+<td>Edited-sequence prediction (<a class="xref" href="#63-predict-an-arbitrary-or-edited-sequence">§6.3</a>) or a multi-variant haplotype (<a class="xref" href="#69-indels-mnvs-and-haplotypes">§6.9</a>)</td>
 <td>Δ tracks at the target and genome-wide within 1 Mb</td>
 <td>Check that intended corrections restore WT-like expression/splicing and that silent/PAM-disrupting edits don&#39;t create cryptic splice sites</td>
 </tr>
@@ -994,7 +1721,7 @@ model <span class="token operator">=</span> dna_model<span class="token punctuat
 <tr>
 <td>Empty output for a tissue</td>
 <td>No tracks of that assay for that CURIE</td>
-<td>Check <code>output_metadata</code> (§6.1)</td>
+<td>Check <code>output_metadata</code> (<a class="xref" href="#61-explore-the-track-catalogue-and-find-ontology-terms">§6.1</a>)</td>
 </tr>
 <tr>
 <td>Gene missing from RNA scores</td>
@@ -1004,7 +1731,7 @@ model <span class="token operator">=</span> dna_model<span class="token punctuat
 <tr>
 <td><code>RESOURCE_EXHAUSTED</code> / timeouts</td>
 <td>Rate limits under high demand</td>
-<td>Lower <code>max_workers</code>, chunk, back off and retry (§6.7), run overnight</td>
+<td>Lower <code>max_workers</code>, chunk, back off and retry (<a class="xref" href="#67-batch-scoring-from-a-vcf-production-style-script">§6.7</a>), run overnight</td>
 </tr>
 <tr>
 <td>Very slow responses</td>

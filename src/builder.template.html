@@ -2,6 +2,14 @@
 <h1>Snippet builder</h1>
 <p class="subtitle">Fill in the form to get a ready-to-run Python script for scoring one variant. Nothing is sent anywhere — the code is generated in your browser. Your API key is <strong>never</strong> requested: the script reads <code>ALPHA_GENOME_API_KEY</code> from the environment (see <a href="index.html#4-installation-and-api-key">§4</a>).</p>
 <aside class="callout callout-warning" role="note"><p class="callout-title">Coordinates</p><p>The variant position is <strong>1-based</strong> (copy <code>POS</code> straight from a VCF) and must be on <strong>hg38</strong>. Check that <code>REF</code> matches hg38 at that position. See <a href="index.html#51-coordinates-the-1-source-of-bugs">§5.1</a>.</p></aside>
+<div class="card examples" id="examples"><p class="lbl"><strong>Load a worked example</strong> <span class="hint">(variants from the AlphaGenome paper and the guide; good positive controls, see <a href="index.html#g2-score-one-variant-and-read-the-table-worked-example-rs9610445">G2</a>)</span></p>
+<div class="presets" role="group" aria-label="Worked examples">
+<button type="button" data-preset="rs9610445">rs9610445 · eQTL/sQTL (paper)</button>
+<button type="button" data-preset="brca2">BRCA2 near a splice site (§6.6.1)</button>
+<button type="button" data-preset="exonskip">Exon skipping, 4-bp deletion (paper)</button>
+<button type="button" data-preset="newjunction">New splice junction (paper)</button>
+<button type="button" data-preset="tal1">TAL1 neo-enhancer, T-ALL (paper)</button>
+</div><p class="hint" id="preset-note" aria-live="polite"></p></div>
 <form id="builder-form" class="card builder" novalidate autocomplete="off">
 <div class="form-grid">
 <div class="field"><label for="f-chrom">Chromosome</label><input id="f-chrom" list="chrom-list" value="chr22" inputmode="text" aria-describedby="e-chrom"><datalist id="chrom-list"></datalist><span class="hint">chr1–chr22, chrX, chrY</span><span class="err" id="e-chrom" aria-live="polite"></span></div>
